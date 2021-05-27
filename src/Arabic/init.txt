@@ -1,1 +1,7 @@
 THIS IS ARABIC FOLDER
+
+FOLDERS MUST BE CREATED:
+1- components
+2- helper
+3- layout
+4- reusable
