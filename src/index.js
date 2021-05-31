@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import reducers from './reducers/reducers';
+import Header from './header/header' 
 
 const rootReducers = combineReducers({
   reducers: reducers,
@@ -17,6 +18,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
+      <Header/>
     </Provider>
   </BrowserRouter>,
   document.getElementById("root")
