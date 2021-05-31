@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { combineReducers, createStore } from "redux";
 import reducers from './reducers/reducers';
 import Header from './header/header' 
+import Footer from './components/footer';
 
 const rootReducers = combineReducers({
   reducers: reducers,
@@ -18,10 +19,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
-      <Header/>
+      <Header />
     </Provider>
   </BrowserRouter>,
   document.getElementById("root")
-  // fateam
+ 
 );
-//hi 
