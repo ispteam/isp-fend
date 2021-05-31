@@ -19,6 +19,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
+      <Header />
      <Footer/>
     </Provider>
   </BrowserRouter>,
