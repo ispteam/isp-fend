@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap');
+.cardContainer{
+    width: 20rem;
+    height: 25rem;
+}
+
+.cardContainerRectangle{
+    width: 25rem;
+    height: 15rem;
+}
+
+.cardContainerRectangleDetails{
+    width: 25rem;
+    height: 15rem;
+}
+
+.titleStyle {
+    text-align: center;
+    color: white;
+    margin-top: 1.5rem;
+    font-family: "Raleway";
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.tableContainer{
+    width: 100%;
+    margin: 18px 0 0 1px;
+}
+
+.tableContainer th{
+    color: white;
+}
+
+.tableContainer td {
+    padding: 0.7rem;
+    text-align: center;
+    color: #34d399;
+    font-family:'Raleway';
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.detailsTable {
+    display: block;
+    width: fit-content;
+    margin: 18px 0 0 5rem;
+    margin-bottom: 27rem;
+    background-color: #1f2937;
+    height: 27rem;
+    overflow-y: auto
+}
+
+.detailsTable th {
+    color: #34d399;
+    padding: 1rem;
+}
+
+.detailsTable td{
+    border-bottom: 1px solid white;
+    /* border-right: 1px solid white; */
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    font-family:'Raleway';
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.tdAction{
+    border-left: 1px solid #34d399;
+}
+
+.editModeTable{
+    display: block;
+    width: 105%;
+    margin: 18px 0 0 -5rem;
+    margin-bottom: 27rem;
+    background-color: #1f2937;
+    max-height: 80rem;
+    overflow-y: auto;
+}
+
+.editModeTable th {
+    color: #34d399;
+    padding: 1rem;
+}
+
+.editModeTable td{
+    border-bottom: 1px solid white;
+    /* border-right: 1px solid white; */
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    font-family:'Raleway';
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+
+.inputStyle{
+    size: 16px;
+}
+
+.searchInput{
+    width: 140% !important;
+    
+}
+
+.btnBack{
+    position: absolute;
+    top: 0;
+    display: none;
+}
+
+
+.tableContainerInformation td {
+    padding: 1.7rem;
+    text-align: center;
+    font-family:'Raleway';
+    font-size: 1rem;
+    border: 1px solid #1f2937;
+}
+
+.tdetails{
+    /* padding: 1.7rem !important; */
+    font-size: 1rem !important;
+    font-family:'Raleway' !important;
+    width: 100%;
+    border-bottom: 1px solid black !important;
+}
+
+.theader{
+    background-color: #1f2937 !important;
+    color: white !important;
+    border-bottom: 1px solid white !important;
+}
+
+
+.brandTable{
+    display: block;
+    width: 86.5% !important;
+    margin: 18px 0 0 5rem;
+    margin-bottom: 27rem;
+    background-color: #1f2937;
+    height: 30rem;
+    overflow-y: auto
+}
+
+.brandTable th {
+    color: #34d399;
+    padding: 1rem;
+    width: 30% !important;}
+
+.brandTable td{
+    border-bottom: 1px solid white;
+    /* width: 30% !important; */
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    font-family:'Raleway';
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.notVerified{
+    color: red !important;
+}
+
+.suspend{
+    color: yellow !important;
+}
+
+
+
+
+
+
+.footer{
+    margin-left: -25rem;
+    width: 135%;
+}
+
+@media only screen and (max-width: 700px){
+    .cardContainerRectangle{
+        width: 20rem;
+    }
+
+    .cardContainerRectangleDetails{
+        width: 24rem;
+    }
+
+    .detailsTable{
+        margin-left: -5rem;
+        display: block;
+        width: 36rem;
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+    .editModeTable{
+        display: block;
+        width: 36rem;
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .btnBack{
+        display: block;
+        top: 8rem;
+        left: 1rem;
+    }
+
+    .searchInput{
+        width: 140% !important;
+    }
+
+    .brandTable{
+        margin-left: -5rem;
+        display: block;
+        width: 140% !important;
+        padding: 1.5rem;
+        overflow-x: auto;
+        margin-left: 0.1rem;
+    }
+
+   
+    .footer{
+        margin-left: 0;
+        width: 130%;
+    }
+
+
+}

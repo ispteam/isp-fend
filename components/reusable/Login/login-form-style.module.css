@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap');
+
+
+.LoginFormContainer{
+    height: 100vh;
+}
+
+.cardContainer{
+    position: absolute !important;
+    top: 7rem !important;
+    left: 3.6rem !important;
+    height: 70vh !important;
+}
+
+.cardContent{
+    padding: 3rem !important;
+}
+
+.cardHeader{
+    font-family:'Raleway' !important;
+    font-size: 2rem !important;
+    font-weight: bold !important;
+    padding-bottom: 1rem;
+}
+
+.cardForm{
+    position: relative;
+    margin-top: 2rem;
+}
+
+.cardForm div {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.cardForm label {
+    display: block;
+    font-family: 'Raleway';
+    font-size: 0.7rem;
+    color: #b1b1b1;
+}
+
+.cardForm input {
+    font-size: 16px;
+    display: block;
+    padding: 0.9rem;
+    padding-left: 1.7rem;
+    border-bottom: 2px solid #c6c6c6;
+    outline: none;
+    font-family: 'Raleway';
+}
+
+.cardForm input:focus{
+    outline: none;
+}
+
+.cardForm input::placeholder{
+    font-size: 0.8rem;
+}
+
+.icon{
+    position: absolute;
+    top: 2.3rem;
+}
+
+.iconPassword{
+    position: absolute;
+    top: 2.3rem;
+}
+
+@media only screen and (min-width:735px) {
+    .cardContainer{
+        left: 45rem !important;
+    }
+}

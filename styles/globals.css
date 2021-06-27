@@ -1,16 +1,86 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
+
+
+.anchor-style{
+    @apply text-green-400 font-Raleway text-lg border-transparent border-b hover:border-green-400 hover:text-green-400 transition-all duration-300 ease-in
+}
+.anchor-style-active{
+    @apply text-white font-Raleway text-lg border-transparent border-b hover:border-green-400 hover:text-green-400 transition-all duration-300 ease-in
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/** start mobile styling for navbar */
+
+.mobile-nav-container{
+    @apply fixed top-0 w-full bg-gray-900
 }
 
-* {
-  box-sizing: border-box;
+.mobile-position-nav{
+    @apply flex flex-row justify-between p-10
+}
+
+.mobile-nav-ul{
+    @apply grid grid-cols-3 gap-5 place-content-center text-center
+}
+
+/** end mobile styling for navbar */
+
+/** start big device screen styling for navbar */
+
+.big-device-nav{
+    @apply flex flex-col mt-3
+}
+
+.big-device-position-nav{
+    @apply block p-7
+}
+
+.big-device-nav-container{
+    @apply fixed left-0 bg-gray-900
+}
+
+/** end big device screen styling for navbar */
+
+/** start general styling for any device screem */
+
+.logo-text-style{
+    @apply mb-10 md:text-2xl text-3xl font-Raleway text-white hover:text-white text-center
+}
+
+.btn-logout-style{
+    @apply border border-green-400 p-2 text-lg text-green-400 font-Raleway outline-none focus:outline-none
+}
+
+.grid-container-style{
+    @apply grid grid-cols-1  ml-14 md:mt-14 md:-ml-40
+}
+
+.grid-list-gray-style{
+    @apply bg-gray-800 border-gray-800 rounded-md
+}
+
+.grid-list-container-style{
+    @apply shadow-lg hover:shadow-xl mb-10 md:mb-0
+}
+
+.grid-list-inner-container-style{
+    @apply flex flex-row justify-evenly items-center
+}
+
+.grid-list-icon-title-container-style{
+    @apply rounded-full border border-green-700 w-20 bg-green-700 shadow-lg hover:shadow-xl hover:bg-green-600 transition-all duration-200 m-5
+}
+
+.grid-list-title-style{
+    @apply text-center text-lg font-bold text-white font-Raleway
+}
+
+/** end general styling for any device screem */
+
+
+.request-status-style{
+    @apply text-center text-xl font-Raleway mt-32
 }
