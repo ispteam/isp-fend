@@ -17,9 +17,18 @@ import Td from "../reusable/Table/Td";
 import MyChart from "../reusable/charts/Chart";
 import {Bar} from 'react-chartjs-2';
 import {getSession} from 'next-auth/client';
+
+
 const TABLE_CLIENTS_HEADERS = ["ID", "Name", "Name(AR)", "Eamil", "Phone", "Country", "City"];
 
 const ClientsDashboard = ({token, moderator}) => {
+
+      /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
   const [session, setSession] = useState();
   const router = useRouter();
   const clients = useSelector((state) => state.clientsReducer);

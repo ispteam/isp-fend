@@ -18,23 +18,36 @@ import MyChart from "../reusable/charts/Chart";
 import {Bar} from 'react-chartjs-2';
 import {getSession} from 'next-auth/client';
 
+/**
+ * The suppliers' table header
+ * WHY IN ARRAY ? To be looped for each header and make it in one line
+ */
+
 const TABLE_SUPPLIERS_HEADERS = ["ID", "Name", "Name(AR)", "Eamil", "Phone", "CO", "CO(AR)", "VERIFIED"];
 
 const SuppliersDashboard = ({token, moderator}) => {
-  const [session, setSession] = useState();
+  const [session, setSession] = useState(); // To get the session values after login.
   const router = useRouter();
-  const suppliers = useSelector((state) => state.suppliersReducer);
+  const suppliers = useSelector((state) => state.suppliersReducer); //To fecth all the suppliers information from the store.
+  /**
+   * Why we made a copy of the suppliers information?
+   * In order to change the sort of the array and display the sorted values.
+   */
   const [suppliersOrder, setSupplierOrder] = useState([]);
-  const generalReducer = useSelector((state) => state.generalReducer);
-  const suppliersData = findStatisticsPerMonth(suppliers.suppliers);    
+  const generalReducer = useSelector((state) => state.generalReducer); //To get the general store values.
+  const suppliersData = findStatisticsPerMonth(suppliers.suppliers); // To get the statistics data of the suppliers
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false); // To show or close the modal
+
+  //to show the information by any property of filtering.
   const [filtering, setFiltering] = useState({
       order: false,
       verified: false,
       notVerified: false,
       susbended: false
   });
+
+  //To set the status of the sent request to the database.
   const [status, setStatus] = useState({
       sending: false,
       succeed:false,
@@ -42,26 +55,35 @@ const SuppliersDashboard = ({token, moderator}) => {
       text: "",
       show: false,
     });
+
+    //To add a single supplier information in order to update it
     const [editMood, setEditMood] = useState(null);
+
+    //The validation values is an array contains all validation/error messages if occured. 
     const [validation, setValidation] = useState({
         values: [],
     });
+
+    //To search a specific value of suppliers
     const [searchedValue, setsearchedValue] = useState({
         showSearchedValue: false,
         value: {}
     });
 
- useEffect(async()=>{
-   const session = await getSession();
-   setSession(session)
- },[]);
+    //To get the session value after the component was rendered.
+    useEffect(async()=>{
+      const session = await getSession();
+      setSession(session)
+    },[]);
 
- useEffect(()=>{
-    setSupplierOrder(suppliers.suppliers);
- },[suppliers.suppliers])
+    //To update the copy state with the suppliers data.
+    useEffect(()=>{
+        setSupplierOrder(suppliers.suppliers);
+    },[suppliers.suppliers])
 
 
- const switchToEditable = (supplierId) => {
+    //To switch between edit mood to update a supplier or not
+    const switchToEditable = (supplierId) => {
     const supplier = suppliers.suppliers.find(
       (supplier) => supplier.supplierId == supplierId
     );
@@ -70,139 +92,161 @@ const SuppliersDashboard = ({token, moderator}) => {
     }
     setEditMood(supplier);
     setShow(true);
-  };
+    };
 
-  const changeHandler = (e) => {
-    setEditMood((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-      accounts: {
-        ...editMood.accounts,
-        [e.target.name]: e.target.value,
-      },
-    }));
-  };
 
-  const changeValidationState = (value) => {
-    if(typeof(value) != "string"){
-        setValidation((prevState) => ({
-            ...prevState,
-              values: value
-          }));
-    }
-    setValidation((prevState) => ({
-      ...prevState,
-        values: prevState.values.concat(value)
-    }));
-  };
-
-  const emptyState = () => {
-    setValidation({
-        values: [],
-    });
-    setStatus(prevState=>({
+    //In order to change the actual supplier data with a new one to be updated
+    const changeHandler = (e) => {
+      setEditMood((prevState) => ({
         ...prevState,
-        sending: false,
-        succeed:false,
-        text:"",
-        show: false
-    }));
-  };
+        [e.target.name]: e.target.value,
+        accounts: {
+          ...editMood.accounts,
+          [e.target.name]: e.target.value,
+        },
+      }));
+    };
 
-  const submitHandler = async () => {
-    try {
-      emptyState();
+    // To add th validation error messages
+    const changeValidationState = (value) => {
+
+      //if the error message is not a single string such as an array, so we replace the validation values array with the new array without push or concat,..etc.
+      if(typeof(value) != "string"){
+          setValidation((prevState) => ({
+              ...prevState,
+                values: value
+            }));
+      }
+      setValidation((prevState) => ({
+        ...prevState,
+          values: prevState.values.concat(value)
+      }));
+    };
+
+    //To make the validation values and status state empty in the beginning of statring request and at the end of the request
+    const emptyState = () => {
+      setValidation({
+          values: [],
+      });
       setStatus(prevState=>({
           ...prevState,
-          sending:true,
-          text: "sending..."
-      }))
-      const validateEmailMessage = validateAccountsInput(editMood.accounts.email, false, false, true, false, false);
-      const validateNameMessage = validateAccountsInput(editMood.accounts.name,false,true,false,false,false);
-      const validateNameArabicMessage = validateAccountsInput(editMood.accounts.nameInArabic,true,false,false,false,false);
-      const validatePhoneMessage = validateAccountsInput(editMood.accounts.phone,false,false,false,true,false);
-      const validateCompanyMessage = validateAccountsInput(editMood.companyInEnglish,false,true,false,false, false, false);
-      const validateCopanyArabicMessage = validateAccountsInput(editMood.companyInArabic,true,false,false,false,false);
-      if (validateEmailMessage.length > 0) {
-        changeValidationState(validateEmailMessage);
-      }
-      if (validateNameMessage.length > 0) {
-        changeValidationState(validateNameMessage);
-      }
-      if (validateNameArabicMessage.length > 0) {
-        changeValidationState(validateNameArabicMessage);
-      }
-      if (validatePhoneMessage.length > 0) {
-        changeValidationState(validatePhoneMessage);
-      }
-      if (validateCompanyMessage.length > 0) {
-        changeValidationState(validateCompanyMessage);
-      }
-      if(validateCopanyArabicMessage.length > 0){
-          changeValidationState(validateCopanyArabicMessage);
-      }
-      if (
-        validateEmailMessage.length > 0 ||
-        validateNameMessage.length > 0 ||
-        validateNameArabicMessage.length > 0 ||
-        validatePhoneMessage.length > 0 ||
-        validateCompanyMessage.length > 0 ||
-        validateCopanyArabicMessage.length > 0
-      ) {
+          sending: false,
+          succeed:false,
+          text:"",
+          show: false
+      }));
+    };
+
+    //To submit the updated value of a supplier
+    const submitHandler = async () => {
+      try {
+        emptyState();
         setStatus(prevState=>({
             ...prevState,
-            sending: false,
-            text:"",
-            show: true
-        }));
-        return;
-      }
-      const data = await fetch(`${generalReducer.ENDPOINT}/moderator/update-supplier`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": token
-        },
-        body: JSON.stringify({
-          uid: session.user.name.id,
-          supplierId: editMood.supplierId,  
-          name: editMood.accounts.name,
-          nameInArabic: editMood.accounts.nameInArabic,
-          email: editMood.accounts.email,
-          phone: editMood.accounts.phone,
-          companyInEnglish: editMood.companyInEnglish,
-          companyInArabic: editMood.companyInArabic,
-        }),
-      });
-      const response = await data.json();
-      if(response.statusCode == 421 || response.statusCode == 404){
-        const error = new Error(response.message);
-        throw error;
-      }else if (response.statusCode !== 200 && response.statusCode !== 201) {
-        let fullResponse;
-        for(const keys in response){
-            if(keys=="message"){
-                for(const key in response[keys]){
-                    fullResponse= response[keys][key];
-                }
-            }
+            sending:true,
+            text: "sending..."
+        }))
+
+        //Validate the inputs field that will be sent
+        const validateEmailMessage = validateAccountsInput(editMood.accounts.email, false, false, true, false, false);
+        const validateNameMessage = validateAccountsInput(editMood.accounts.name,false,true,false,false,false);
+        const validateNameArabicMessage = validateAccountsInput(editMood.accounts.nameInArabic,true,false,false,false,false);
+        const validatePhoneMessage = validateAccountsInput(editMood.accounts.phone,false,false,false,true,false);
+        const validateCompanyMessage = validateAccountsInput(editMood.companyInEnglish,false,true,false,false, false, false);
+        const validateCopanyArabicMessage = validateAccountsInput(editMood.companyInArabic,true,false,false,false,false);
+
+        //Check the validation error if any we push it into the validation values.
+        if (validateEmailMessage.length > 0) {
+          changeValidationState(validateEmailMessage);
         }
-        const error = new Error(fullResponse);
-        throw error;
-      }
-      dispatch(suppliersActions.updateSupplier(editMood));
-      changeValidationState(response.message);
-      setStatus(prevState=>({
-        ...prevState,
-        show:true,
-        sending:false,
-        succeed:true,
-        text:"" 
-      }))
-      setTimeout(()=>{
-            emptyState();
-      }, 3000)
-    } catch (err) {
+        if (validateNameMessage.length > 0) {
+          changeValidationState(validateNameMessage);
+        }
+        if (validateNameArabicMessage.length > 0) {
+          changeValidationState(validateNameArabicMessage);
+        }
+        if (validatePhoneMessage.length > 0) {
+          changeValidationState(validatePhoneMessage);
+        }
+        if (validateCompanyMessage.length > 0) {
+          changeValidationState(validateCompanyMessage);
+        }
+        if(validateCopanyArabicMessage.length > 0){
+            changeValidationState(validateCopanyArabicMessage);
+        }
+
+        // If the validation values is not  empty, we terminate the function job and show the error messages
+        if (
+          validation.values.length > 0
+        ) {
+          setStatus(prevState=>({
+              ...prevState,
+              sending: false,
+              text:"",
+              show: true
+          }));
+          return;
+        }
+
+        //Here we send the request to the endpoint.
+        const data = await fetch(`${generalReducer.ENDPOINT}/moderator/update-supplier`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+          },
+          body: JSON.stringify({
+            uid: session.user.name.id,
+            supplierId: editMood.supplierId,  
+            name: editMood.accounts.name,
+            nameInArabic: editMood.accounts.nameInArabic,
+            email: editMood.accounts.email,
+            phone: editMood.accounts.phone,
+            companyInEnglish: editMood.companyInEnglish,
+            companyInArabic: editMood.companyInArabic,
+          }),
+        });
+        const response = await data.json();
+
+        //This if condition is for the authorization error.
+        if(response.statusCode == 421 || response.statusCode == 404){
+          const error = new Error(response.message);
+          throw error;
+        }else if (response.statusCode !== 200 && response.statusCode !== 201) {
+          /**
+           * If the validation error came from the backend, it will be in an array
+           * So, wi loop through the array values inside the response object and convert it into an array
+           */
+          let fullResponse;
+          for(const keys in response){
+              if(keys=="message"){
+                  for(const key in response[keys]){
+                      fullResponse= response[keys][key];
+                  }
+              }
+          }
+          const error = new Error(fullResponse);
+          throw error;
+        }
+        //We sent the updated supplier value into the store.
+        dispatch(suppliersActions.updateSupplier(editMood));
+        
+        //add the successful message to the validation values in order to be displayed inside the modal
+        changeValidationState(response.message);
+        setStatus(prevState=>({
+          ...prevState,
+          show:true,
+          sending:false,
+          succeed:true,
+          text:"" 
+        }))
+
+        //The valaidation values and the status will be empty after 3 seconds
+        setTimeout(()=>{
+              emptyState();
+        }, 3000)
+      } catch (err) {
+        //if there is any error that caught, the error message will be added to validation error and the function job will be terminated.
         changeValidationState(err.message)
         setStatus(prevState=>({
             ...prevState,
@@ -210,8 +254,8 @@ const SuppliersDashboard = ({token, moderator}) => {
             text:"",
             show: true,
         }));
-    }
-  };
+      }
+    };
 
 
   const cancelEditMood = () =>{
@@ -220,18 +264,21 @@ const SuppliersDashboard = ({token, moderator}) => {
   }
 
 
-const navigateToDetails = (supplierId) => {
-    if(moderator){
-      router.push(`/en/moderator/suppliers/${supplierId}`)
-      return;
-    }
-    router.push(`/en/admin/suppliers/${supplierId}`)
-}
+  //To navigate to the details page.
+  const navigateToDetails = (supplierId) => {
+      //If the user is a moderatior, the page will be /en/moderatror instead of the admin page.
+      if(moderator){
+        router.push(`/en/moderator/suppliers/${supplierId}`)
+        return;
+      }
+      router.push(`/en/admin/suppliers/${supplierId}`)
+  }
 
-
+  //To search a specific record by phone
   const searchRecord = (e) =>{
       const copy = [...suppliers.suppliers];
       const supplier = copy.find(supplier=>supplier.accounts.phone  == e.target.value);
+      //if the search input field is empty we don't do anything
       if(e.target.value.trim() == "" && e.target.value.length <= 1){
         setsearchedValue(prevState=>({
           ...prevState,
@@ -239,6 +286,7 @@ const navigateToDetails = (supplierId) => {
           value: {}
         }));
       }
+      // if there is no record we close the search mood
       if(!supplier){
         setsearchedValue(prevState=>({
           ...prevState,
@@ -254,140 +302,141 @@ const navigateToDetails = (supplierId) => {
   }
 
 
-const filterData = (e) => {
-  if(e.target.name == "sort"){
-    setFiltering(prevState=>({
-      ...prevState,
-      order: !prevState.order
-    }));
-    if(filtering.order){
-      setSupplierOrder(suppliersOrder.sort((id1, id2)=> id1.supplierId < id2.supplierId ? -1 : 1));
-    }else{
-      setSupplierOrder(suppliersOrder.sort((id1, id2)=> id1.supplierId > id2.supplierId ? -1 : 1));
-    }
-  }else if(e.target.name == "verified"){
-    setFiltering(prevState=>({
-      ...prevState,
-      verified: !prevState.verified,
-      notVerified: false,
-      susbended: false,
-    }));
-    if(!filtering.verified){
-      setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 1));
-    }else{
-      setSupplierOrder([...suppliers.suppliers]);
-    }
-  }else if(e.target.name == "notVerified"){
-    setFiltering(prevState=>({
-      ...prevState,
-      notVerified: !prevState.notVerified,
-      verified: false,
-      susbended: false,
-    }));
-    if(!filtering.notVerified){
-      setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 0));
-    }else{
-      setSupplierOrder([...suppliers.suppliers]);
-    }
-  }else if(e.target.name == "susbended"){
-    setFiltering(prevState=>({
-      ...prevState,
-      susbended: !prevState.susbended,
-      verified: false,
-      notVerified: false,
-    }));
-    if(!filtering.susbended){
-      setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 2));
-    }else{
-      setSupplierOrder([...suppliers.suppliers]);
+  //To filter data by any of specified property.
+  const filterData = (e) => {
+    if(e.target.name == "sort"){
+      setFiltering(prevState=>({
+        ...prevState,
+        order: !prevState.order
+      }));
+      if(filtering.order){
+        setSupplierOrder(suppliersOrder.sort((id1, id2)=> id1.supplierId < id2.supplierId ? -1 : 1));
+      }else{
+        setSupplierOrder(suppliersOrder.sort((id1, id2)=> id1.supplierId > id2.supplierId ? -1 : 1));
+      }
+    }else if(e.target.name == "verified"){
+      setFiltering(prevState=>({
+        ...prevState,
+        verified: !prevState.verified,
+        notVerified: false,
+        susbended: false,
+      }));
+      if(!filtering.verified){
+        setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 1));
+      }else{
+        setSupplierOrder([...suppliers.suppliers]);
+      }
+    }else if(e.target.name == "notVerified"){
+      setFiltering(prevState=>({
+        ...prevState,
+        notVerified: !prevState.notVerified,
+        verified: false,
+        susbended: false,
+      }));
+      if(!filtering.notVerified){
+        setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 0));
+      }else{
+        setSupplierOrder([...suppliers.suppliers]);
+      }
+    }else if(e.target.name == "susbended"){
+      setFiltering(prevState=>({
+        ...prevState,
+        susbended: !prevState.susbended,
+        verified: false,
+        notVerified: false,
+      }));
+      if(!filtering.susbended){
+        setSupplierOrder(suppliersOrder.filter(supplier=>supplier.verified == 2));
+      }else{
+        setSupplierOrder([...suppliers.suppliers]);
+      }
     }
   }
-}
+
+  //function that will send a request to update the supplier information
+  const manageSupplierProcess = async (supplierId,endpoint) => {
+      let response;
+      const data = await fetch(`${generalReducer.ENDPOINT}/moderator/${endpoint}`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body:JSON.stringify({
+          uid: session.user.name.id,
+          supplierId: supplierId
+        })
+      });
+
+      response = await data.json();
+      
+      return response;
+  }
 
 
-const manageSupplierProcess = async (supplierId,endpoint) => {
-    let response;
-    const data = await fetch(`${generalReducer.ENDPOINT}/moderator/${endpoint}`, {
-      method: "PATCH",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-      body:JSON.stringify({
-        uid: session.user.name.id,
-        supplierId: supplierId
-      })
-    });
-
-    response = await data.json();
-    
-    return response;
-}
-
-
-
-const manageSupplier = async (supplierId, verify, unverify, suspend) => {
-  try{
-    emptyState();
-    setStatus(prevState=>({
-      ...prevState,
-      manage: supplierId,
-      text: "progress..."
-    }))
-    let response;
-    if(verify){
-      response = await manageSupplierProcess(supplierId,"verify-supplier")
-      if(response.statusCode == 421 || response.statusCode == 404){
-        const error = new Error(response.message);
-        throw error;
-      }else if(response.statusCode != 200){
-        const error = new Error(response.message);
-        throw error;
-      }
-      dispatch(suppliersActions.verifySupplier(supplierId));
-    }else if(unverify){
-      response = await manageSupplierProcess(supplierId,"unverify-supplier");
-      if(response.statusCode == 421 || response.statusCode == 404){
-        const error = new Error(response.message);
-        throw error;
-      }else if(response.statusCode != 200){
-        const error = new Error(response.message);
-        throw error;
-      }
-      dispatch(suppliersActions.unverifySupplier(supplierId));
-    }else if(suspend){
-      response = await manageSupplierProcess(supplierId,"suspend-supplier");
-      if(response.statusCode == 421 || response.statusCode == 404){
-        const error = new Error(response.message);
-        throw error;
-      }else if(response.statusCode != 200){
-        const error = new Error(response.message);
-        throw error;
-      }
-      dispatch(suppliersActions.suspendSupplier(supplierId));
-    }
-
-    changeValidationState(response.message);
-    setStatus(prevState=>({
-      ...prevState,
-      show:true,
-      manage:null,
-      succeed:true,
-      text:"" 
-  }))
-  setTimeout(()=>{
-    emptyState();
-  }, 3000)
-  }catch(err){
-      changeValidationState(err.message)
+  //To update the verifcation status of the supplier by each selected manage type in the parameter
+  const manageSupplier = async (supplierId, verify, unverify, suspend) => {
+    try{
+      emptyState();
       setStatus(prevState=>({
-          ...prevState,
-          manage:null,
-          text:"",
-          show: true,
-      }));
-    }
-}
+        ...prevState,
+        manage: supplierId,
+        text: "progress..."
+      }))
+      let response;
+      if(verify){
+        response = await manageSupplierProcess(supplierId,"verify-supplier")
+        if(response.statusCode == 421 || response.statusCode == 404){
+          const error = new Error(response.message);
+          throw error;
+        }else if(response.statusCode != 200){
+          const error = new Error(response.message);
+          throw error;
+        }
+        dispatch(suppliersActions.verifySupplier(supplierId));
+      }else if(unverify){
+        response = await manageSupplierProcess(supplierId,"unverify-supplier");
+        if(response.statusCode == 421 || response.statusCode == 404){
+          const error = new Error(response.message);
+          throw error;
+        }else if(response.statusCode != 200){
+          const error = new Error(response.message);
+          throw error;
+        }
+        dispatch(suppliersActions.unverifySupplier(supplierId));
+      }else if(suspend){
+        response = await manageSupplierProcess(supplierId,"suspend-supplier");
+        if(response.statusCode == 421 || response.statusCode == 404){
+          const error = new Error(response.message);
+          throw error;
+        }else if(response.statusCode != 200){
+          const error = new Error(response.message);
+          throw error;
+        }
+        dispatch(suppliersActions.suspendSupplier(supplierId));
+      }
+
+      changeValidationState(response.message);
+      setStatus(prevState=>({
+        ...prevState,
+        show:true,
+        manage:null,
+        succeed:true,
+        text:"" 
+    }))
+    setTimeout(()=>{
+      emptyState();
+    }, 3000)
+    }catch(err){
+        changeValidationState(err.message)
+        setStatus(prevState=>({
+            ...prevState,
+            manage:null,
+            text:"",
+            show: true,
+        }));
+      }
+  }
 
 
 

@@ -6,7 +6,16 @@ import { getSession } from 'next-auth/client';
 import { useSelector } from 'react-redux';
 import {BsToggleOff, BsToggleOn} from 'react-icons/bs';
 import { validateAccountsInput } from '../../../helper/functions';
+
+
 const ProfileInformation = ({token, admin, moderator}) => {
+
+        /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
     const [isLoading, setIsLoading] = useState(true);
     const generalReducer=useSelector((state) => state.generalReducer);
     const [session, setSession] = useState();

@@ -10,6 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import clientsActions from "../../stores/actions/clientsActions";
 import {getSession} from 'next-auth/client';
 const ClientInformation = ({client, token}) => {
+
+        /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
     const [session, setSession] = useState();
     const [editMood, setEditMood] = useState(false);
     const [clientEditMood, setClientEditMood] = useState(client);

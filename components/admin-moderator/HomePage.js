@@ -26,12 +26,20 @@ const HEADERS_SET_ONE = ["ID", "Name", "Name(AR)"];
 const HEADERS_SET_TWO = ["ID", "From", "To City"];
 
 const HomePage = ({moderator}) => {
+
+      /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
   const router = useRouter();
   const generalReducer = useSelector((state) => state.generalReducer);
   const clients = useSelector((state) => state.clientsReducer);
   const suppliers = useSelector((state) => state.suppliersReducer);
   const requests = useSelector((state) => state.requestsReducer);
   const [isLoading, setIsLoading] = useState(true);
+
+  //To initiate last records state 
   const [lastRecords, setLastRecords] = useState({
     lastClients: null,
     lastApprovedSuppliers: null,
@@ -45,6 +53,7 @@ const HomePage = ({moderator}) => {
   const suppliersData = findStatisticsPerMonth(suppliers.suppliers);
   const clientsData = findStatisticsPerMonth(clients.clients);
 
+  //To fetch the last records function
   const fetchLastRecords = async () => {
     try {
       setIsLoading(true);
@@ -84,7 +93,9 @@ const HomePage = ({moderator}) => {
     }
   };
 
+  //To store the last records in the state after the component rendered
   useEffect(async () => {
+    //Check if the last records are empty, so we fetch their information
     if (
       lastRecords.lastClients == null &&
       lastRecords.lastApprovedSuppliers == null &&

@@ -18,6 +18,13 @@ import {getSession} from 'next-auth/client';
 const TABLE_MODERATORS_HEADERS = ["ID", "Name", "Name(AR)", "Eamil", "Phone"];
 
 const ModeratorsDashboard = ({token}) => {
+
+    /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
   const [session, setSession] = useState();
   const moderators = useSelector((state) => state.moderatorReducer);
   const [moderatorsOrder, setModeratorOrder] = useState([]);

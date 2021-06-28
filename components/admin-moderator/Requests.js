@@ -14,6 +14,13 @@ import Td from "../reusable/Table/Td";
 const TABLE_REQUESTS_HEADERS = ["ID", "Part NO", "Model No" ,"To", "Qty", "Field", "Status", "Price" ,"Owner"];
 
 const RequestsDashboard = ({token, moderator}) => {
+
+      /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
   const router = useRouter();
   const requests = useSelector((state) => state.requestsReducer);
   const [requestsOrder, setRequestOrder] = useState([]);

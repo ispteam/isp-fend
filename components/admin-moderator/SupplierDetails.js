@@ -9,16 +9,26 @@ import { validateAccountsInput } from "../../helper/functions";
 import { useDispatch, useSelector } from "react-redux";
 import suppliersActions from "../../stores/actions/suppliersActions";
 import {getSession} from 'next-auth/client';
+
 const SupplierInformation = ({supplier, token}) => {
-    const [session, setSession] = useState()
-    const [editMood, setEditMood] = useState(false);
-    const [supplierEditMood, setSupplierEditMood] = useState(supplier);
+
+    /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
+    const [session, setSession] = useState() // To get the session values after login.
+    const [editMood, setEditMood] = useState(false); //To enter the edit mood in order to update.
+    const [supplierEditMood, setSupplierEditMood] = useState(supplier); //store the supplier in a state.
     const generalReducer = useSelector((state)=>state.generalReducer);
     const dispatch = useDispatch();
+    //To toggle between edit mood or close it.
     const switchToEdit = () => {
         setEditMood(!editMood);
         setSupplierEditMood(supplier);
     }
+
     const [status, setStatus] = useState({
         sending: false,
         succeed:false,
@@ -26,6 +36,7 @@ const SupplierInformation = ({supplier, token}) => {
         text: "",
         show: false,
     });
+
     const [validation, setValidation] = useState({
         values: [],
     });
@@ -35,12 +46,14 @@ const SupplierInformation = ({supplier, token}) => {
         setSession(session);
     },[])
 
+    //Show the spinner if supplier is not defined
     if(!supplier){
         return <GridLayout>
             <Spinner/>
         </GridLayout>
     }
 
+    //To convert the created_at value into human readable format
     const createdAt = new Date(supplier.created_at).toLocaleDateString('en-US', {
         year:'numeric',
         month: 'short',

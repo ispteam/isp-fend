@@ -18,6 +18,13 @@ import { getSession } from "next-auth/client";
 const TABLE_BRANDS_HEADERS = ["ID", "Brand Name", "Brand Name(AR)"];
 
 const BrandsDashboard = ({token}) => {
+
+      /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
   const brands = useSelector((state) => state.brandsReducer);
   const [brandsOrder, setBrandsOrder] = useState([]);
   const [session, setSession] = useState();

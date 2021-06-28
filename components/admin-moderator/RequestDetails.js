@@ -5,6 +5,12 @@ import {Table} from 'semantic-ui-react';
 
 const RequestInformation = ({request, token}) => {
 
+    /**
+     * ======================
+     * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
+     * ======================
+     */
+
     if(!request){
         return <GridLayout>
             <Spinner/>
