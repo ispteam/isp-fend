@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+}
+
+input{
+    font-size: 16px;
+}
+
+textarea{
+    font-size: 16px;
+}
+
+button{
+    padding: 0.5rem;
+    font-family: var(--font-family-arabic);
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+
+.add-request-container{
+    margin: auto;
+}
+
+
+.inner-form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    margin-bottom: 2rem;
+}
+
+.brand-year-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    width: 40%;
+    padding: 0.4rem;
+    font-family: var(--font-family-arabic);
+    font-size: 16px;
+    background-color: white !important;
+    border-color: var(--font-color);
+}
+
+select:focus{
+    outline: none;
+}
+
+input {
+    border: 1px solid black;
+    outline: none;
+    /* margin-left: 0.15rem; */
+    width: 60%;
+    margin: 0.5rem auto 0.5rem auto;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    color: var(--font-color);
+    font-family: var(--font-family-arabic);
+    text-align: right;
+}
+
+input::placeholder{
+    font-size: 14px;
+    font-family: var(--font-family-arabic);
+    text-align: center;
+}
+
+textarea{
+    margin: auto;
+    width: 80%;
+    resize: none;
+    border-radius: 0.2rem;
+    color: var(--font-color);
+    font-family: var(--font-family-arabic);
+    outline: none;
+    text-align: right;
+}
+
+.btns-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
+.btn-add{
+    background-color: var(--font-color);
+    color: white;
+    border: 1px solid var(--font-color);
+}
+
+.btn-remove{
+    background-color: var(--background);
+    color: white;
+    border: 1px solid var(--background);
+}
+
+.btn-next-container{
+    margin-left: 7.4rem;
+    margin-top: 1.5rem;
+}
+
+.btn-next-container-english{
+    margin-left: 5.5rem;
+    margin-top: 1.5rem;
+}
+
+.btn-next {
+    background-color: #f7e175;
+    color: var(--font-color);
+    border: 1px solid #f7e175;
+}
+
+.address-info-container{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.address-info-container select {
+    margin: auto auto 1rem auto ;
+}
+
+
+.btn-submit-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    margin-top: 1.5rem;
+}
+
+.btn-submit{
+    background-color: #00BDAA;
+    color: white;
+    border: 1px solid #00BDAA;
+    width: 85%;
+    margin-left: 2rem;
+    font-size: 20px;
+}
+
+
+.english input, textarea {
+    text-align: left !important;
+}
+
+@media only screen and (min-width:735px) {
+    .inner-form-container{
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        gap: 30px;   
+    }
+    .brand-year-container{
+        width: 115%;
+    }
+    select{
+        width: 100%;
+        margin-right: 2rem;
+    }
+    input{
+        width: 100%;
+        margin-right: 1rem;
+    }
+    textarea{
+        grid-column: 2/4;
+        margin-left: 2rem;
+    }
+    
+    .btn-add{
+        margin-right: -20rem;
+    }
+
+    .btn-next-container-english{
+        margin-left: 41rem;
+    }
+
+    .btn-next-container{
+        margin-left: 43rem;
+    }
+
+    .address-info-container{
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        gap: 30px;
+    }
+
+    .address-info-container select{
+        margin: 0;
+    }
+    .btn-submit{
+        width: 20%;
+        margin: auto;
+        font-size: 14;
+    }
+}
+
+/* @media only screen and (min-width: 768px) {
+    .btn-next-container{
+        margin-left: 19.5rem;
+    }
+    .btn-submit{
+        margin: auto;
+    }
+} */
+

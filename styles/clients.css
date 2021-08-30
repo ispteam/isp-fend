@@ -1,0 +1,46 @@
+.sort-option-container{
+    text-align: center;
+}
+
+
+.sort-option-container input[type=checkbox]{
+    width: 30px;
+}
+
+.sort-option-container-supplier{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    justify-items: center;
+    margin-bottom: 1rem;
+}
+
+.sort-option-container-supplier input[type=checkbox]{
+    width: 30px;
+}
+
+.search-input{
+    display: flex;
+    align-self: center;
+}
+
+.show-table-btn{
+    background-color:  #eff8ff8d;
+    border: 1px solid  #eff8ff8d;
+}
+
+.cert-link-text{
+    text-decoration: none;
+    color: darkgreen;
+}
+
+@media only screen and (min-width:735px) {
+    .grid-data-details-container{
+        width: 50%;
+        margin: auto;
+    }
+    .search-input{
+        width: 30%;
+        margin: auto;
+    }
+}

@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+}
+
+
+.profile-title{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+    font-size: 17px;
+    border-left: 4px solid var(--background);
+    width: 80%;
+    margin: 4rem auto auto auto;
+    padding: 0.15rem;
+    border-radius: 0rem;
+    background-color: #fe346d21;
+}
+
+.form-inner-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.form-inner-container input{
+    border: none;
+    border-right: 3px solid var(--background);
+    border-radius: 0;
+}
+
+.user-type{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 17px;
+    color: #856f00;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.update-btn-container{
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    margin-left: 6rem;
+}
+
+.update-btn-container-ar{
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    margin-left: 8rem;
+}
+
+.update-btn-container span{
+    font-family: var(--font-family-arabic);
+    margin-right: 0.5rem;
+}
+
+.update-btn-container-ar span{
+    font-family: var(--font-family-arabic);
+    margin-right: 0.5rem;
+}
+
+.update-btn{
+    background-color: #4eb84e;
+    color: white;
+    border: 1px solid #4eb84e;
+    width: 60%;
+    font-family: var(--font-family-arabic);
+    margin: 0 0 1.2rem 5rem;
+}
+
+.cars-brands-container-profile{
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px;
+    place-items: center;
+    width: 100%;
+}
+
+.cars-brands-container-profile input[type=checkbox]{
+    display: block;
+}
+
+.cars-pref-container{
+    margin-top: 2rem;
+}
+
+.cars-pref-container p {
+    text-align: center;
+    font-size: 14px;
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+}
+
+.cars-pref-container div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.cars-pref-container > div > p {
+    border: 1px solid var(--background);
+    padding: 0.3rem;
+    border-top-right-radius: 1rem;
+    /* border-bottom-right-radius: 10rem; */
+}
+
+.cars-pref-container > div > p {
+    border: 1px dotted var(--background);
+    padding: 0.5rem;
+    border-top-right-radius: 0.3rem;
+    color: var(--font-color);
+}
+
+@media only screen and (min-width:735px) {
+    .profile-title{
+        width: 35%;
+    }
+    .form-inner-container{
+        width: 50%;
+        margin: auto;
+        margin-top: 2rem;
+    }
+    .update-btn-container{
+        margin-left: 45rem;
+    }
+    .update-btn{
+        width: 20%;
+        margin: 0 0 1.2rem 40rem;
+    }
+    .update-btn-container-ar{
+        margin-left: 45rem;
+    }
+}

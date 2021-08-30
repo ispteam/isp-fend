@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+}
+
+
+input[type= radio]{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    width: 40%;
+    /* height: 80%; */
+    border-radius: 4rem;
+    display: block;
+}
+
+input[type=radio]:checked{
+    background-color: var(--font-color);
+}
+
+#all{
+    width: 60%;
+}
+
+.modal-container{
+    position: absolute;
+    background-color: white;
+    top: -400%;
+    width: 90%;
+    left: 7%;
+    border-radius: 1rem;
+    transition: all 0.2s;
+    z-index: 100000000;
+    overflow: auto;
+}
+
+.show{
+    top: 30%;
+}
+
+.modal-container hr{
+    width: 70%;
+}
+
+.header-modal-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-items: center;
+    position: relative;
+}
+
+
+.login-title{
+    font-family: var(--font-family-arabic);
+    font-weight: 400;
+    color: var(--background);
+}
+
+.form-auth-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-auth-container button{
+    width: 50%;
+    background-color: transparent;
+    color: var(--background);
+    border: 1px solid var(--font-color);
+    margin: auto;
+    margin: 1.5rem auto;
+}
+
+.register-text{
+    margin-left: 9.5rem;
+    font-size: 11px;
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+.close-icon{
+    margin-top: 1.3rem;
+    cursor: pointer;
+}
+
+
+.user-type-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    justify-items: center;
+    cursor: pointer;
+}
+
+.user-type-container p{
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+}
+
+.field-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 2px;
+    place-items: center;
+}
+
+.field-title{
+    text-align: center;
+    font-size: 14px;
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+}
+
+.cars-brands-container{
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px;
+    place-items: center;
+    width: 100%;
+}
+
+.cars-brands-container input[type=checkbox]{
+    display: block;
+    width: 25%;
+}
+
+.upload-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    border: 1px solid var(--font-color);
+    padding: 1rem;
+    width: 50%;
+    margin: auto;
+    margin-top: 2rem;
+    border-radius: 0.7rem;
+}
+
+.upload-container span{
+    margin-top: 1rem;
+    display: block;
+    font-family: var(--font-family-english);
+    font-size: 12px;
+    color: var(--font-color);
+}
+
+
+@media only screen and (min-width: 735px) {
+
+    .modal-container{
+        width: 30%;
+        left: 38%;
+    }
+
+    .register-text{
+        margin-left: 13rem;
+    }
+
+    .form-auth-container{
+       width: 50%;
+       margin: auto;
+    }
+    .upload-container{
+        width: 80%;
+    }
+    .cars-brands-container input[type=checkbox]{
+        display: block;
+        width: 90%;
+    }
+}

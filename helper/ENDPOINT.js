@@ -1,0 +1,1 @@
+export default "https://isp-bend.herokuapp.com/api";

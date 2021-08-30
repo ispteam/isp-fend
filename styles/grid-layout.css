@@ -1,0 +1,66 @@
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+    --third-color: #fceef580;
+}
+
+.grid-layout-container{
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.grid-data-container{
+    background-color: var(--third-color);
+    margin-bottom: 1rem;
+    border: 1px solid var(--third-color);
+    border-radius: 0.5rem;
+    width: 90%;
+    margin: 1rem auto;
+}
+
+.grid-data-icon-title-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-items: center;
+}
+
+.grid-data-icon{
+    border: 1px solid var(--font-color);
+    background-color: var(--font-color);
+    padding: 1rem;
+    border-radius: 35px;
+    margin-top: 1rem;
+}
+
+.grid-title-container{
+    margin-top: 2rem;
+}
+
+.grid-data-title{
+    text-decoration: none;
+    font-family: var(--font-family-english);
+    color: var(--background);
+    font-weight: 600;
+}
+
+.children-grid-data-style{
+    text-align: center;
+    font-size: 20px;
+    font-family: var(--font-family-english);
+    color: var(--font-color);
+    padding: 2rem;
+}
+
+@media only screen and (min-width:735px) {
+    .grid-layout-container{
+        grid-template-columns: auto auto auto;
+        width: 100%;
+    }
+}

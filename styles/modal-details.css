@@ -1,0 +1,31 @@
+.action-btns-container{
+   margin-left: -2rem;
+}
+
+.action-btns-container button{
+    background-color: transparent;
+    width: 40%;
+}
+
+.update{
+    border: 1px double var(--font-color) !important;
+    color: var(--background) !important;
+}
+
+.remove{
+    border: 1px double var(--background) !important;
+    color: var(--font-color) !important;
+}
+
+.close{
+    background-color: #ff5370 !important;
+    border: 1px double #ff5370 !important;
+    color: white !important;
+}
+
+
+@media only screen and (min-width:735px){
+    .action-btns-container{
+        margin-left: 2rem;
+     }
+}

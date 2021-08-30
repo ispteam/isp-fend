@@ -1,0 +1,28 @@
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+}
+
+.chart-title{
+    color: var(--font-color);
+    font-family: var(--font-family-english);
+    font-size: 20px;
+    text-align: center;
+}
+
+.chart-container{
+    margin-top: 2rem;
+}
+
+@media only screen and (min-width:735px) {
+    .chart-container{
+        width: 70%;
+        margin: auto;
+    }   
+}

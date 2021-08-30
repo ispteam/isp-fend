@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --bg-header: #f1f1f1;
+    --text-active: black;
+    --nav-link-container-color: #e6e6e6;
+    --radius-ratio: 3rem;
+    --font-color: #400082;
+    --background: #FE346E;
+    --font-family-arabic: 'El Messiri', sans-serif;
+    --font-family-english: 'Urbanist', sans-serif;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input{
+    font-size: 16px;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.all-requests-container{
+    display: grid;
+    grid-template-columns: auto;
+    place-items: center;
+    padding: 2.5rem;
+}
+
+.all-requests-inner-container{
+    border: 1px dashed var(--font-color);
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    transition: all 0.3s;
+}
+
+.request-status{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: var(--font-family-arabic);
+}
+
+.date-text{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 14px;
+    color: #856f00;
+}
+
+.request-number{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 14px;
+    color: #150485;
+}
+
+.client-text{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-weight: 400;
+    color: var(--font-color);
+    font-style: oblique;
+}
+
+.more-details-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.more-details-container p{
+    font-family: var(--font-family-arabic);
+    font-size: 14px;
+}
+
+.description-text{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 13.5px;
+    color: var(--background);
+    font-weight: 600;
+}
+
+.details-text{
+    position: relative;
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 17px;
+    color: #856f00;
+}
+
+.offer{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-size: 13px;
+    color: #850000;
+}
+
+.toggle-details{
+    border: none;
+    background-color: transparent;
+    font-family: var(--font-family-arabic);
+    font-size: 11px;
+    margin-left: 8rem;
+}
+
+.arrow{
+    position: absolute;
+    left: 11rem;
+    top: -0.2rem
+}
+
+.arrow-arabic{
+    position: absolute;
+    left: 5rem;
+    top: 0rem
+}
+
+.submit-offer-btn{
+    background-color: #4eb84e;
+    color: white;
+    border: 1px solid #4eb84e;
+    width: 60%;
+}
+
+.label-text {
+    font-family: var(--font-family-arabic);
+}
+
+.shipment-option-container input{
+    width: 10%;
+}
+
+.shipment-option-container-ar input{
+    width: 10%;
+}
+
+/* .shipment-option-container-ar label{
+    margin-left: -20rem;
+} */
+
+.pages-btns-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    justify-items: center;
+}
+
+.prev-btn{
+    background-color: transparent;
+    border: 1px solid var(--background);
+    font-family: var(--font-family-arabic);
+}
+
+.next-btn{
+    background-color: transparent;
+    border: 1px solid var(--font-color);
+    font-family: var(--font-family-arabic);
+}
+
+.no-request-text-container{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    margin-top: 15rem;
+    margin-bottom: 50rem;
+}
+
+.no-request-text-container p {
+    font-family: var(--font-family-arabic);
+}
+
+.shipping-name-container p {
+    margin: auto;
+    text-align: center;
+    font-family: var(--font-family-arabic);
+    font-style: oblique;
+    color: var(--font-color);
+    font-size: 14px;
+}
+
+.request-action-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    place-items: center;
+    gap: 2px;
+}
+
+.shipping-btn{
+    background-color: var(--font-color);
+    border: 1px solid var(--font-color);
+    font-family: var(--font-family-arabic);
+    color: white;
+}
+
+.shipping-cancel-btn{
+    background-color: transparent;
+    border: 1px solid var(--background);
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+    width: 80%;
+}
+
+.amount{
+    text-align: center;
+    font-family: var(--font-family-arabic);
+}
+
+.canel-request-btn-container{
+    margin-left: 7.4rem;
+}
+
+.canel-request-btn-container button {
+    background-color: var(--background);
+    border: 2px dotted var(--background);
+    color: white;
+}
+
+.offers-container{
+    display: grid;
+    grid-template-columns: auto;
+    place-items: center;
+    gap: 2px;
+    margin-top: 2rem;
+}
+
+.main-offer-container{
+    border: 1px solid var(--font-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.main-offer-info-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 2px;
+    place-items: center;
+}
+
+.accept-btn{
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--font-color);
+    margin-top: 2rem;
+    font-family: var(--font-family-arabic);
+    color: var(--background);
+}
+
+.reject-btn{
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--background);
+    margin-top: 2rem;
+    font-family: var(--font-family-arabic);
+    color: var(--font-color);
+}
+
+@media only screen and (min-width:735px) {
+    .all-requests-container{
+        grid-template-columns: auto auto auto;
+    }
+    .all-requests-inner-container{
+        width: 80%;
+    }
+    .arrow{
+        top: -0.2rem;
+        left: 14rem;
+    }
+    .arrow-arabic{
+        left: 7rem;
+    }
+    .shipment-option-container-ar input{
+        width: 10%;
+    }
+    .offers-container{
+        grid-template-columns: auto auto auto;
+    }
+    .canel-request-btn-container{
+        margin-left: 43rem;
+    }
+}
+
+@media only screen and (min-height:1024px) {
+    .all-requests-container{
+        grid-template-columns: auto auto;
+    }
+    .all-requests-inner-container{
+        width: 80%;
+    }
+    .arrow{
+        top: -0.2rem;
+        left: 10rem;
+    }
+    .arrow-arabic{
+        left: 4rem;
+    }
+}
+
+@media only screen and (min-height:1366px) {
+    .all-requests-container{
+        grid-template-columns: auto auto;
+    }
+    .all-requests-inner-container{
+        width: 80%;
+    }
+    .arrow{
+        top: -0.2rem;
+        left: 10rem;
+    }
+    .arrow-arabic{
+        left: 7rem;
+    }
+}
