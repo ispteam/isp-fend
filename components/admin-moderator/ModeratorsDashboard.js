@@ -9,7 +9,7 @@ import {getSession} from 'next-auth/client';
 import Td from "../../components/reusable/Td";
 import Button from "../../components/reusable/Button";
 import ModalDetails from "./ModalDetails";
-import generalActions from "stores/actions/generalActions";
+import generalActions from "../../stores/actions/generalActions";
 import Feedback from "../../components/reusable/Feedback";
 import moderatorsActions from "../../stores/actions/moderatorActions";
 
