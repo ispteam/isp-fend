@@ -1,4 +1,4 @@
-import MainNavbar from "../Navbar/MainNavbar";
+import MainNavbar from "../navbar/MainNavbar";
 import Footer from "./Footer";
 import {BsChevronLeft } from "react-icons/bs";
 import {useRouter} from 'next/router';
