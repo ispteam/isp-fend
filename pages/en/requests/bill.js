@@ -20,7 +20,7 @@ export async function getServerSideProps(context){
     const session = await getSession({req: context.req});
     const cookies = parseCookie(context.req);
     const status = context.query.status;
-    const token = cookies['next-auth.session-token'];
+    const token = cookies['__Secure-next-auth.session-token'];
     if(!session){
         return {
             props: "/en"

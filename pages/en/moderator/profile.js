@@ -20,7 +20,7 @@ const Profile = (props) => {
 export async function getServerSideProps({req}){
     const session = await getSession({req:req});
     const cookies = parseCookie(req);
-    const token = cookies['next-auth.session-token'];
+    const token = cookies['__Secure-next-auth.session-token'];
     if(!session){
         return {
             redirect: {

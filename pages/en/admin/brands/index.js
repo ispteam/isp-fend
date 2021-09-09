@@ -37,7 +37,7 @@ const Brands = (props) => {
 export async function getServerSideProps({req}){
   const cookies = parseCookie(req);
   const session = await getSession({req: req});
-  const token = cookies['next-auth.session-token'];
+  const token = cookies['__Secure-next-auth.session-token'];
   if(!session){
     return {
       redirect:{
