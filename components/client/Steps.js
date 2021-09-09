@@ -19,7 +19,7 @@ const Steps = ({arabic}) => {
             </div>
             <hr className="hr-landing-steps" />
             <div className="step-left">
-                <p className={!arabic ? "step-title english" : "step-title" }>{!arabic? 'Confirm' : 'اختر'}</p>
+                <p className={!arabic ? "step-title english" : "step-title" }>{!arabic? 'Confirm' : 'تأكيد'}</p>
                 <img src={"/imgs/confirm.svg"} alt="form" className="step-icon-left animate__jackInTheBox" />
             </div>
             <hr className="hr-landing-steps" />
