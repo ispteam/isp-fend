@@ -4,8 +4,10 @@ import Head from 'next/head';
 import AddRequest from "../../components/client/AddRequest";
 import { getSession } from "next-auth/client";
 import { addToken, parseCookie } from "../../helper/functions";
+import {useSelector} from 'react-redux'; 
 
 const Vehicles = (props) => {
+    const generalReducer = useSelector(state=>state.generalReducer);
     return <SharedNavLayout navList={generalReducer.clientNavArabic} session={props.session} logoLink={"/"} arabic={true} footerInnerValue={<InnerFooter arabic={true}/>}>
             <Head>
             <title>مركبات</title>
