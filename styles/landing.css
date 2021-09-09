@@ -45,7 +45,7 @@
 }
 
 .header-container{
-    background-image: url("public/imgs/bg.jpg");
+    background-image: url("..//public/imgs/bg.jpg");
     /* background-repeat: no-repeat; */
     background-attachment: fixed;
     height: 60vh;
@@ -312,7 +312,7 @@
         cursor: pointer;
     }
     .header-container{
-        background-image: url("public/imgs/bg-big.jpg");
+        background-image: url("../public/imgs/bg-big.jpg");
     }
     .option-container h3{
         font-size: 20px;
