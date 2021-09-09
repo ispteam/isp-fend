@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import generalActions from "stores/actions/generalActions";
+import generalActions from "../../stores/actions/generalActions";
 
 const Feedback = ({arabic}) => {
     const generalReducer = useSelector((state)=>state.generalReducer);
