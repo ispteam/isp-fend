@@ -101,7 +101,7 @@ const PaymentInformation = ({arabic, status}) => {
 
     return requestData ? <div className="payment-container">
             <form className="form-payment-container" acceptCharset="UTF-8" action="https://api.moyasar.com/v1/payments.html" method="POST" onSubmit={submitHandler}>
-                <input type="hidden" name="callback_url" value={!arabic ? "http://localhost:3000/en/requests/bill" : "http://localhost:3000/requests/bill"}/>
+                <input type="hidden" name="callback_url" value={!arabic ? "https://isp-spare.herokuapp.com/en/requests/bill" : "https://isp-spare.herokuapp.com/requests/bill"}/>
                 <input type="hidden" name="publishable_api_key" value="pk_test_s6wLrTQTjSqeThAgeko7546cJaVypsLicDScrt7P" />
                 <input type="hidden" name="source[type]" value="creditcard" />
                 <input type="hidden" name="amount" value={parseInt(requestData.finalAmount + 1000)} />
