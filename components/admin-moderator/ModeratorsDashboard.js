@@ -11,7 +11,7 @@ import Button from "../../components/reusable/Button";
 import ModalDetails from "./ModalDetails";
 import generalActions from "stores/actions/generalActions";
 import Feedback from "../../components/reusable/Feedback";
-import moderatorsActions from "stores/actions/moderatorActions";
+import moderatorsActions from "../../stores/actions/moderatorActions";
 
 const TABLE_MODERATORS_HEADERS = ["Name", "Eamil", "Phone", "Details"];
 
