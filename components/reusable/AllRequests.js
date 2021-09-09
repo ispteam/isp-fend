@@ -111,6 +111,7 @@ const AllRequests = ({arabic, supplier, token, view, session}) => {
 
     const submitAmount = async (requestId, clientEmail, requestNum, idx) => {
         try{
+            console.log(session);
             dispatch(generalActions.emptyState());
             dispatch(generalActions.sendRequest(!arabic ? 'Submitting..' : '..تقديم'));
             dispatch(generalActions.changeMood("profile"));
