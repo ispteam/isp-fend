@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import Spinner from '../reusable/Spinner/Spinner';
 import countries from '../../helper/countries.json';
-import {getSession} from 'next-auth/client';
 import generalActions from "../../stores/actions/generalActions";
 import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from "../../helper/functions";
 // import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from 'helper/functions';

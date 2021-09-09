@@ -5,7 +5,7 @@ import {v4 as uuid4} from 'uuid';
 import Link from 'next/link';
 import Feedback from "../reusable/Feedback";
 import { useDispatch } from "react-redux";
-import generalActions from "stores/actions/generalActions";
+import generalActions from "../../stores/actions/generalActions";
 import Footer from "../reusable/Footer";
 
 const ForgetPasswordForm = ({arabic, client, supplier, moderator, admin}) => {
