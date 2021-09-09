@@ -252,7 +252,8 @@ const AllRequests = ({arabic, supplier, token, view, session}) => {
     const complete = async (requestId, clientEmail, requestNum, trackingNumber)=>{
         try{
             dispatch(generalActions.emptyState());
-            dispatch(generalActions.sendRequest(!arabic ? 'Delevering..' : '..توصيل'))
+            dispatch(generalActions.sendRequest(!arabic ? 'Delevering..' : '..توصيل'));
+            dispatch(generalActions.changeMood("profile"));
             const data = await fetch(`${generalReducer.ENDPOINT}/request/complete-request`, {
                 method:'PATCH',
                 headers:{

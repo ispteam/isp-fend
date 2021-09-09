@@ -14,6 +14,7 @@ const sendEmail = async (req, res) => {
 
         let transporter = nodemailer.createTransport({
             service:'gmail',
+            port: 465,
             auth:{
                 user:'isp.spare.isp@gmail.com',
                 pass:'ISPisp123456789'
