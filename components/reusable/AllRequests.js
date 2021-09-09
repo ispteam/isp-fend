@@ -8,7 +8,7 @@ import requestsActions from "../../stores/actions/requestsActions";
 import generalActions from "../../stores/actions/generalActions";
 import Feedback from "./Feedback";
 import Modal from "./Modal";
-import OffersModal from "components/client/OffersModal";
+import OffersModal from "../client/OffersModal";
 
 let OFFSET = 0;
 let PREVIOUS_OFFSET = 0;
