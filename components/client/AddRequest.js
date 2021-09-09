@@ -225,6 +225,10 @@ const AddRequest = ({bigVehicle, token, arabic, session}) => {
 
     const submitHandler = async () => {
         try{
+        window.scrollTo({
+            behavior:'smooth',
+            top:300
+        })
         dispatch(generalActions.emptyState());
         dispatch(generalActions.sendRequest(!arabic ? 'Adding..' : '..ارسال'));
         dispatch(generalActions.changeMood("addRequest"));
