@@ -7,7 +7,6 @@ import { getSession } from "next-auth/client";
 import ENDPOINT from "../../../../helper/ENDPOINT";
 import SuppliersDashboard from "../../../../components/admin-moderator/SuppliersDashboard";
 import Head from "next/head";
-import generalActions from "stores/actions/generalActions";
 
 const Suppliers = (props) => {
   const dispatch= useDispatch();
