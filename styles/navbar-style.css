@@ -47,7 +47,7 @@
 
 .menu-icon {
     animation-name: iconAnimation;
-    animation-duration: 10s;
+    animation-duration: 4s;
     animation-iteration-count: infinite;
     cursor: pointer;
     overflow: hidden;
