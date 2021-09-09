@@ -1,18 +1,16 @@
 import InnerFooter from "components/client/InnerFooter";
 import SharedNavLayout from "components/reusable/SharedLayout";
-import { useSelector } from "react-redux";
 import Head from 'next/head';
 import AddRequest from "components/client/AddRequest";
 import { getSession } from "next-auth/client";
 import { addToken, parseCookie } from "helper/functions";
 
-const vehicles = (props) => {
-    const generalReducer = useSelector(state=>state.generalReducer);
-    return <SharedNavLayout navList={generalReducer.clientNavArabic} disable={true} logoLink={"/"} arabic={true} footerInnerValue={<InnerFooter/>}>
+const Vehicles = (props) => {
+    return <SharedNavLayout navList={generalReducer.clientNavArabic} session={props.session} logoLink={"/"} arabic={true} footerInnerValue={<InnerFooter arabic={true}/>}>
             <Head>
             <title>مركبات</title>
         </Head>
-        <AddRequest bigVehicle={true} arabic={true} token={props.token} />
+        <AddRequest bigVehicle={true} arabic={true} token={props.token} session={props.session} />
     </SharedNavLayout>
 }
 
@@ -57,9 +55,10 @@ export async function getServerSideProps(context){
 
     return {
         props:{
-          token: token
+          token: token,
+          session: session
         }
     }
 }
 
-export default vehicles;
+export default Vehicles;

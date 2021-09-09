@@ -8,13 +8,12 @@ import Head from 'next/head';
 const Profile = (props) => {
   const generalReducer = useSelector((state) => state.generalReducer);
 
-//   token={props.token}
 
-    return <SharedNavLayout navList={generalReducer.clientNavArabic} client={true} arabic={true} logoLink={"/"} footerInnerValue={<InnerFooter arabic={true}/>}>
+    return <SharedNavLayout navList={generalReducer.clientNavArabic} session={props.session} client={true} arabic={true} logoLink={"/"} footerInnerValue={<InnerFooter arabic={true}/>}>
             <Head>
                 <title>معلوماتي</title>
             </Head>
-            <ProfileInformation arabic={true} client={true} token={props.token}/>
+            <ProfileInformation arabic={true} client={true} token={props.token} session={props.session}/>
         </SharedNavLayout>
 }
 

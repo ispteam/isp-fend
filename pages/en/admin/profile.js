@@ -11,11 +11,11 @@ const Profile = (props) => {
   const generalReducer = useSelector((state) => state.generalReducer);
 
 
-    return <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    return <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
                 <Head>
                     <title>Profile</title>
                 </Head>
-                <ProfileInformation  token={props.token} admin={true} admin={true}/>
+                <ProfileInformation session={props.session}  token={props.token} admin={true}/>
         </SharedNavLayout>
 }
 

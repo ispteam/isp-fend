@@ -58,7 +58,7 @@ export const findStatisticsPerMonth = (records) => {
 }
 
 
-export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPhone, country, city, isPassword, isMix, isYear, isImage, isNumber, isShipper, isTracking, field, carsPref, enteryId) => {
+export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPhone, country, city, isPassword, isMix, isYear, isImage, isNumber, isShipper, isTracking, field, carsPref, enteryId, mixName) => {
      let error = "";
     if(isEmail){
        if(!value || value.trim() == "" || !value.includes('@')){
@@ -117,8 +117,8 @@ export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPho
     }else if(isMix){
         if(!value || value.trim()==""){
             error = "Model Name/PartNo/Description can not be ignored or empty!";
-        }else if(value.length < 2 || value.length > 20){
-            error = "Model NamePartNo/Description must be between 3 characters and 20 characters" ;
+        }else if(value.length < 2 || value.length > 100){
+            error = "Model NamePartNo/Description must be between 3 characters and 100 characters" ;
         }else if(!value.match("[A-Za-z0-9]+$")){
              error = "Model NamePartNo/Description must contain only english characters and numbers"
         }
@@ -153,10 +153,10 @@ export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPho
     }else if(isTracking){
         if(!value || value.trim()==""){
             error = "Tracking Number can not be ignored or empty!";
-        }else if(value.length < 10 || value.length > 12){
-            error = "Tracking Number length is between 10 and 12 characters" ;
-        }else if(!value.match("[0-9]+$")){
-             error = "Tracking Number must contain only numeric characters"
+        }else if(value.length < 10 || value.length > 16){
+            error = "Tracking Number length is between 10 and 16 characters" ;
+        }else if(!value.match("[a-zA-z0-9]+$")){
+             error = "Tracking Number must contain only alpha characters"
         }
     }else if(field){
         if(!value || value.trim()==""){
@@ -174,11 +174,19 @@ export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPho
         }else if(!value.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*[0-9])(?=.*).{9,9}$")){
             error = "Entery Id must contains upper case, lower case, symbol and numeric characters";
         }
+    }else if(mixName){
+        if(!value || value.trim()==""){
+            error = "Name field can not be ignored or empty!";
+        }else if(value.length < 2 || value.length > 20){
+            error = "Name field must be between 2 characters and 20 characters" ;
+        }else if(!value.match("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]*$")){
+            error = "Name field must contain only arabic or english characters"
+       }
     }
     return error.trim();    
 }
 
-export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail, isPhone, country, city, isPassword, isMix, isYear, isImage, isNumber, isShipper, isTracking, field, carsPref) => {
+export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail, isPhone, country, city, isPassword, isMix, isYear, isImage, isNumber, isShipper, isTracking, field, carsPref, enteryId, mixName) => {
     let error = "";
    if(isEmail){
       if(!value || value.trim() == "" || !value.includes('@')){
@@ -237,8 +245,8 @@ export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail,
    }else if(isMix){
        if(!value || value.trim()==""){
            error = "الموديل/القطعة/الوصف ضروري";
-       }else if(value.length < 2 || value.length > 20){
-           error = "الموديل/القطعة/الوصف بين 3 كلمات الى 20 كلمة" ;
+       }else if(value.length < 2 || value.length > 100){
+           error = "الموديل/القطعة/الوصف بين 3 كلمات الى 100 كلمة" ;
        }else if(!value.match("[A-Za-z0-9\u0600-\u06FF]+$")){
             error = "الموديل/القطعة/الوصف يجب ان تحتوي على حروف وارقام فقط"
        }
@@ -273,10 +281,10 @@ export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail,
     }else if(isTracking){
         if(!value || value.trim()==""){
             error = "رقم التتبع ضروري";
-        }else if(value.length < 10 || value.length > 12){
-            error = "رقم التتبع يجب ان يكون بين 10 الى 12 رقم" ;
-        }else if(!value.match("[0-9]+$")){
-             error = "رقم التتبع يجب ان تحتوي على ارقام فقط"
+        }else if(value.length < 10 || value.length > 16){
+            error = "رقم التتبع يجب ان يكون بين 10 الى 16 رقم" ;
+        }else if(!value.match("[a-zA-z0-9]+$")){
+             error = "رقم التتبع يجب ان تحتوي على  حروف و ارقام فقط"
         }
     }else if(field){
         if(!value || value.trim()==""){
@@ -286,6 +294,14 @@ export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail,
         if(!value || value <= 0){
             error = "تفضيلات السيارات ضرورية";
         }
+    }else if(mixName){
+        if(!value || value.trim()==""){
+            error = "خانة الاسم ضرورية";
+        }else if(value.length < 2 || value.length > 20){
+            error = "خانة الاسم يجب ان تكون بين حرفين و 20 حرف" ;
+        }else if(!value.match("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]*$")){
+            error = "خانة الاسم يجب ان تحتوي على حروف عربية او انجليزية"
+       }
     }
    return error.trim();    
 }

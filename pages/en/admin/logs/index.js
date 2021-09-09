@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/client";
 import Head from "next/head";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import LogsDashboard from "components/admin-moderator/LogsDashboard";
 import SharedNavLayout from 'components/reusable/SharedLayout';
 import ENDPOINT from "helper/ENDPOINT";
@@ -10,11 +10,11 @@ import generalActions from "stores/actions/generalActions";
 const Logs = (props) => {
     const generalReducer = useSelector((state)=>state.generalReducer);
 
-    return <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    return <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
             <Head>
               <title>Logs</title>
             </Head>
-            <LogsDashboard logs={props.logs} token={props.token}/> 
+            <LogsDashboard session={props.session} logs={props.logs} token={props.token}/> 
         </SharedNavLayout>
 }
 
@@ -69,7 +69,8 @@ export async function getServerSideProps({req}){
     return {
       props: {
         logs: response.logs,
-        token: token
+        token: token,
+        session: session
       },
     };
   }

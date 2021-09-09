@@ -72,11 +72,6 @@ const initState = {
     ],
     clientNav: [
         {
-            title: "My Info",
-            link: "/en/profile",
-            icon: <AiOutlineInfoCircle color={'white'} size={25} className="icon" />
-        },
-        {
             title: "Cars",
             link: "/en/requests/cars",
             icon: <img src={"/imgs/cars.svg"} width="25" height="25" className="icon" />
@@ -92,17 +87,17 @@ const initState = {
             icon: <IoCheckmarkDone color={'white'} size={25} className="icon" />
         },    
         {
+            title: "My Info",
+            link: "/en/profile",
+            icon: <AiOutlineInfoCircle color={'white'} size={25} className="icon" />
+        },
+        {
             title: "Arabic",
             link: "/",
             icon: <img src={"/imgs/arabic.svg"} width="25" height="25" className="icon" />
         },  
     ],
     clientNavArabic: [
-        {
-            title: "معلوماتي",
-            link: "/profile",
-            icon: <AiOutlineInfoCircle color={'white'} size={25} className="icon" />
-        },
         {
             title: "سيارات",
             link: "/requests/cars",
@@ -118,6 +113,11 @@ const initState = {
             link: "/requests/my-requests",
             icon: <IoCheckmarkDone color={'white'} size={25} className="icon" />
         },    
+        {
+            title: "معلوماتي",
+            link: "/profile",
+            icon: <AiOutlineInfoCircle color={'white'} size={25} className="icon" />
+        },
         {
             title: "انجليزي",
             link: "/",
@@ -170,6 +170,7 @@ const initState = {
         "rgba(153, 102, 255, 0.3)",
         "rgba(201, 203, 207, 0.3)",
     ],
+    // ENDPOINT: "http://127.0.0.1:8000/api",
     ENDPOINT: "https://isp-bend.herokuapp.com/api",
     showModalLogin: false,
     validation: [],
@@ -177,7 +178,8 @@ const initState = {
         sending: false,
         succeed: false,
         show:false,
-        text:''
+        text:'',
+        mood:''
     },
     toggleModal: false,
     toggleNavMenu: false,
@@ -199,7 +201,8 @@ const generalReducer = (state=initState, action) => {
                 status: {
                     sending: false,
                     succeed: false,
-                    show:false
+                    show:false,
+                    mood:''
                 }
             }
         case "CHANGE_VALIDATION":
@@ -217,6 +220,7 @@ const generalReducer = (state=initState, action) => {
             return{
                 ...state,
                 status:{
+                    ...state.status,
                     sending: false,
                     show: true
                 }
@@ -228,6 +232,14 @@ const generalReducer = (state=initState, action) => {
                     ...state.status,
                     sending: true,
                     text: action.value
+                }
+            }
+        case 'CHANGE_MOOD':
+            return {
+                ...state,
+                status:{
+                    ...state.status,
+                    mood: action.value
                 }
             }
         case 'TOGGLE_MODAL':

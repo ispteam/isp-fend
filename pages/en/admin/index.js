@@ -1,15 +1,13 @@
 import HomePage from "components/admin-moderator/HomePage";
 import SharedNavLayout from "components/reusable/SharedLayout";
 import ENDPOINT from "helper/ENDPOINT";
-import { addToken, formatRecordsAddress, parseCookie } from "helper/functions";
+import { addToken, parseCookie } from "helper/functions";
 import { getSession } from "next-auth/client";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import brandsActions from "stores/actions/brandsActions";
 import clientsActions from "stores/actions/clientsActions";
 import generalActions from "stores/actions/generalActions";
-import moderatorsActions from "stores/actions/moderatorActions";
 import requestsActions from "stores/actions/requestsActions";
 import suppliersActions from "stores/actions/suppliersActions";
 
@@ -39,7 +37,7 @@ const Home = (props) => {
     }, []);
 
 
-   return <SharedNavLayout navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>} admin={true}>
+   return <SharedNavLayout session={props.session} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>} admin={true}>
           <Head>
             <title>Dashboard</title>
           </Head>
@@ -100,7 +98,8 @@ export async function getServerSideProps({req}){
       props: {
         clients:response.clients,
         suppliers:response.suppliers,
-        requests: response.requests
+        requests: response.requests,
+        session: session
       },
     };
   }

@@ -1,80 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-:root {
-    --bg-header: #f1f1f1;
-    --text-active: black;
-    --nav-link-container-color: #e6e6e6;
-    --radius-ratio: 3rem;
-    --font-color: #400082;
-    --background: #FE346E;
-    --font-family-arabic: 'El Messiri', sans-serif;
-    --font-family-english: 'Urbanist', sans-serif;
-}
-
-.footer-container{
-    background-color: var(--bg-header)
-}
-
-.footer-text{
-    padding: 2rem;
-    text-align: center;
-    color: var(--font-color);
-    font-family: var(--font-family-arabic);
-    font-size: 16px;
-    font-weight: 700;
-    font-style: italic;
-}
-
-.inner-footer-container{
+.footer-nav-container{
     display: grid;
     grid-template-columns: auto auto;
+    place-items: center;
     list-style: none;
-    gap: 10px;
 }
 
-.inner-footer-container li{
-    color: var(--font-color);
-    font-family: var(--font-family-arabic);
-    font-size: 18px;
-    padding: 1.5rem;
+.footer-nav-container li{
+    margin: 2rem;
+    font-family: var(--font-arabic);
 }
 
-.inner-footer-container li a{
-    text-decoration: none;
-    color: var(--font-color);
+.footer-nav-container li > a {
+    padding-left: 3rem;
+    color: var(--third-color);
 }
 
-.contanct-container{
+.contact-footer-container{
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    /* padding-left: 0.5rem; */
 }
 
-.contanct-container a{
-    color: var(--background);
-    font-family: var(--font-family-english);
-    font-size: 2rem;
-    font-weight: bold;
+.contact-footer-container a {
+    color: var(--secondary-color);
+    font-family: var(--font-english);
+    font-weight: 700;
     font-style: italic;
-    margin-bottom: 1.5rem;
-}
-
-.english-footer{
-    font-family: var(--font-family-english) !important;
+    font-size: 21px;
+    margin-top: 0.5rem;
+    width: 50%;
+    padding-left: 2rem;
 }
 
 .footer-inner-text{
     text-align: center;
-    font-family: var(--font-family-english);
-    font-size: 20px;
-    color: var(--font-color);
-    padding-top: 1rem;
+    font-family: var(--font-arabic);
+    font-size: 17px;
+    color: var(--third-color);
+    padding: 2rem 0;
 }
 
 @media only screen and (min-width:735px) {
-    .inner-footer-container{
+    .footer-nav-container{
         grid-template-columns: auto auto auto;
-        place-items: center;
+    }
+    .footer-nav-container li > a{
+        padding-left: 10rem;
+    }
+
+    .contact-footer-container a {
+        padding-left: 10rem;
     }
 }

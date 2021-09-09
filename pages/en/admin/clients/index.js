@@ -7,7 +7,6 @@ import clientsActions from "stores/actions/clientsActions";
 import { getSession } from "next-auth/client";
 import ENDPOINT from "helper/ENDPOINT";
 import Head from "next/head";
-import generalActions from "stores/actions/generalActions";
 
 const Clients = (props) => {
   const dispatch= useDispatch();
@@ -22,11 +21,11 @@ const Clients = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
         <Head>
           <title>Clients</title>
         </Head>
-        <ClientsDashboard token={props.token}/>
+        <ClientsDashboard token={props.token} session={props.session}/>
     </SharedNavLayout>
   );
 };
@@ -84,6 +83,7 @@ export async function getServerSideProps({req}){
     props: {
       token: token,
       clients:response.clients,
+      session: session
     },
   };
 }

@@ -8,6 +8,7 @@ import requestsActions from "stores/actions/requestsActions";
 import generalActions from "stores/actions/generalActions";
 import Feedback from "./Feedback";
 import Modal from "./Modal";
+import OffersModal from "components/client/OffersModal";
 
 let OFFSET = 0;
 let PREVIOUS_OFFSET = 0;
@@ -20,12 +21,18 @@ const SUPPLIERS_CANCEL_REASONS = [
     ]
 
 
-const AllRequests = ({arabic, supplier, token, view}) => {
-    const [session, setSession] = useState();
+const AllRequests = ({arabic, supplier, token, view, session}) => {
+
     const requests = useSelector((state)=>state.requestsReducer);
     const generalReducer = useSelector((state)=>state.generalReducer);
     const [amount, setAmount] = useState('');
     const router = useRouter();
+    const  [offersInfo, setOffersInfo] = useState({
+        request:{},
+        showOffers: false,
+        showReasons:false,
+        idx: null
+    });
     const [toggleDetails, setToggleDetails] = useState({
         idx:'',
         show:false
@@ -64,10 +71,6 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         trackingNumber:''
     })
 
-    useEffect(async()=>{
-        const session = await getSession();
-        setSession(session)
-      },[]);
 
     const onChangeHandler = (e) => {
         setAmount(e.target.value);
@@ -92,6 +95,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         }
     }
 
+
     const changePrice = (e, idx) => {
         if(e.target.name == "shipmentFees"){
             const copyShipmentFees = [...requestPriceOptions.shipmentFees];
@@ -103,39 +107,17 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         }
     }
 
-    // To add th validation error messages
-    const changeValidationState = (value) => {
-        //if the error message is not a single string such as an array, so we replace the validation values array with the new array without push or concat,..etc.
-        if(typeof(value) != "string"){
-            setValidation((prevState) => ({
-                ...prevState,
-                    values: value
-                }));
-        }
-        setValidation((prevState) => ({
-            ...prevState,
-            values: prevState.values.concat(value)
-        }));
-    };
-
-    const emptyState = () => {
-        setValidation({
-            values: [],
-        });
-        setStatus(prevState=>({
-            ...prevState,
-            sending: false,
-            succeed:false,
-            text:"",
-            show: false
-        }));
-      };
 
 
     const submitAmount = async (requestId, clientEmail, requestNum, idx) => {
         try{
             dispatch(generalActions.emptyState());
-            dispatch(generalActions.sendRequest(!arabic ? 'Submitting..' : '..تقديم'))
+            dispatch(generalActions.sendRequest(!arabic ? 'Submitting..' : '..تقديم'));
+            dispatch(generalActions.changeMood("profile"));
+            window.scrollTo({
+                behavior:'smooth',
+                top: 5
+            })
             let validateAmountMessage = validateAccountsInput(amount, false, false,false,false,false,false,false,false,false,false, true);
             if(arabic){
                 validateAmountMessage = validateAccountsInputArabic(amount, false, false,false,false,false,false,false,false,false,false, true);
@@ -189,18 +171,20 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         }
     }
 
-    const navigateToDetails = (requestId) => {
-        if(!arabic){
-            router.push(`/en/requests/my-requests/${requestId}`);
-        }else{
-            router.push(`/ar/requests/my-requests/${requestId}`);
-        }
+    const navigateToDetails = (request, idx) => {
+        setOffersInfo(prevState=>({
+            ...prevState,
+            request: request,
+            showOffers: !prevState.showOffers,
+            idx:idx
+        }))
     }
 
     const moveToShipping = async (requestId, clientEmail, requestNum) => {
         try{
             dispatch(generalActions.emptyState());
-            dispatch(generalActions.sendRequest(!arabic? 'Shipping..' : '..شحن'))
+            dispatch(generalActions.sendRequest(!arabic? 'Shipping..' : '..شحن'));
+            dispatch(generalActions.changeMood("profile"))
             let validateShipperNameMessage = validateAccountsInput(shipperDetails.shipperName, false, false, false, false, false, false, false, false, false, false, false, true);
             let validateTrackingNumberMessage = validateAccountsInput(shipperDetails.trackingNumber, false, false, false, false, false, false, false, false, false, false, false, false, true);
             if(arabic){
@@ -301,8 +285,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         try{
             dispatch(generalActions.emptyState());
             dispatch(generalActions.sendRequest(!arabic ? 'Canceling..' : '..الغاء'));
-            // await sendEmail(clientEmail, "cancelSupplier", "client", false, false, requestNum, null, null,reason);
-            // await sendEmail(clientEmail, "cancelSupplier", "client", true, false, requestNum,null,null, reason);
+            dispatch(generalActions.changeMood("profile"));
             const data = await fetch(`${generalReducer.ENDPOINT}/request/cancel-request-supplier`, {
                 method:'PATCH',
                 headers:{
@@ -322,6 +305,8 @@ const AllRequests = ({arabic, supplier, token, view}) => {
             setTimeout(() => {
                 dispatch(generalActions.emptyState());
             }, 3000);
+            await sendEmail(clientEmail, "cancelSupplier", "client", false, false, requestNum, null, null,reason);
+            await sendEmail(clientEmail, "cancelSupplier", "client", true, false, requestNum,null,null, reason);
             window.location.reload();
         }catch(err){
             dispatch(generalActions.changeValidation(err.message));
@@ -443,35 +428,97 @@ const AllRequests = ({arabic, supplier, token, view}) => {
         dispatch(generalActions.toggleModal())
     }
 
+    const cancelRequest = async (request) => {
+        const confirm = window.confirm(!arabic ? "Are you sure to cancel?" : "هل تريد تأكيد الالغاء");
+        try{
+            if(confirm){
+                window.scrollTo({
+                    behavior:'smooth',
+                    top:5
+                })
+                dispatch(generalActions.emptyState());
+                dispatch(generalActions.sendRequest(!arabic ? "Canceling.." : "..الغاء"));
+                dispatch(generalActions.changeMood("profile"));
+                const data = await fetch(`${generalReducer.ENDPOINT}/request/cancel-request`, {
+                method: "PATCH",
+                headers:{
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                },
+                body: JSON.stringify({
+                    uid: session.user.name.id,
+                    requestId: request.requestId
+                })
+                });
+                const response = await data.json();
+                if (response.statusCode !== 200 && response.statusCode !== 201) {
+                const error = new Error(response.message);
+                throw error;
+                }
+                dispatch(generalActions.sendRequest(!arabic ? response.message : response.messageInArabic ));
+    
+                if(request.suppliers != null){
+                    await sendEmail(request.suppliers.email, "cancelShipping", "supplier", false, false, request.requestNum);
+                }
+    
+                setTimeout(()=>{
+                    dispatch(generalActions.emptyState());
+                    window.location.reload();
+                }, 3000)
+            }
+        } catch (err) {
+            dispatch(generalActions.changeValidation(err.message));
+            dispatch(generalActions.showValidationMessages());
+        }
+    }
 
+    const closeOfferModal = () => {
+        setOffersInfo({
+            idx:null,
+            offers: [],
+            showOffers: false,
+            showReasons: false
+        })
+    }
+
+
+    const showCancelReasons = (request, idx) => {
+        setOffersInfo(prevState=>({
+            ...prevState,
+            request: request,
+            idx: idx,
+            showReasons: true
+        }))
+    }
 
 
     
 
 
     return requests.requests.length > 0 ?
-            <Fragment>
-            <Modal 
+            <div className="all-requests-outer-container">
+            {/* <Modal 
             close={()=>toggleCancelModal()} 
             arabic={arabic} 
             reasons={SUPPLIERS_CANCEL_REASONS} 
             confirmCancel={cancelRequestSupplier} 
             title={!arabic ? 'Confirm cancelation' : 'تأكيد االغاء الطلب'}
             data={data}                
-            />
+            /> */}
             <div className="pages-btns-container">
             {PREVIOUS_OFFSET >= 1 ?
-            <button className={!arabic ? "prev-btn english" : "prev-btn"}  style={{fontSize:!arabic && '14px'}} children={!arabic ? "Previous Page" : "الصفحة السابقة"} onClick={previousPage} />
-            : requests.remaining > requests.length ? <button className={!arabic ? "prev-btn english" : "prev-btn"}  style={{fontSize:!arabic && '14px'}} children={!arabic ? "Previous Page" :"الصفحة السابقة"} onClick={previousPage}/>
+            <button className={!arabic ? "prev-btn english" : "prev-btn"}  style={{fontSize:!arabic && '14px'}}  onClick={previousPage} >{!arabic ? "Previous Page" : "الصفحة السابقة"}</button>
+            : requests.remaining > requests.length ? <button className={!arabic ? "prev-btn english" : "prev-btn"}  style={{fontSize:!arabic && '14px'}} onClick={previousPage}>{!arabic ? "Previous Page" :"الصفحة السابقة"}</button>
             :null}
             {requests.remaining >= 1 ?
-            <button className={!arabic ? "next-btn english" : "next-btn"} style={{fontSize:!arabic && '14px'}} children={!arabic ? "Next Page" : "الصفحة التالية"} onClick={nextPage}/>
+            <button className={!arabic ? "next-btn english" : "next-btn"} style={{fontSize:!arabic && '14px'}} onClick={nextPage}> {!arabic ? "Next Page" : "الصفحة التالية"} </button>
             : null
             }
         </div>
             <section className="all-requests-container" id="section"> 
             {requests.requests.map((request, idx)=>(
                 <div className="all-requests-inner-container" key={request.requestNum}>
+                    {idx == offersInfo.idx ? <OffersModal data={offersInfo.request} confirmCancelation={cancelRequestSupplier} showReasons={offersInfo.showReasons} reasons={SUPPLIERS_CANCEL_REASONS} arabic={arabic} request={offersInfo.request} show={offersInfo.showOffers} close={closeOfferModal} />: null }
                     <div className="request-status">
                     <p className={!arabic ? "english" : ''} style={{color: '#856f00'}}>{request.model.modelNo}</p>
                     {!arabic ? 
@@ -481,7 +528,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                     : request.requestStatus == "1" ? "#297CA0" 
                     : request.requestStatus == "2" ? "#43AB92" 
                     : request.requestStatus == "3" ? "#730068" 
-                    : request.requestStatus == "4" ? "#22EACA" 
+                    : request.requestStatus == "4" ? "#ff274b" 
                     : null}}
                     >{request.requestStatus == "0" ? "PENDING" 
                     : request.requestStatus == "1" ? "PAID" : request.requestStatus == "2" ? "SHIPPING" : request.requestStatus == "3" ? "COMPLETED" : request.requestStatus == "4" ? "CANCELED" : request.requestStatus == "5" ? "DELIVERY" :null}
@@ -490,14 +537,13 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                     : request.requestStatus == "1" ? "#297CA0"
                     : request.requestStatus == "2" ? "#43AB92" 
                     : request.requestStatus == "3" ? "#730068" 
-                    : request.requestStatus == "4" ? "#22EACA"
+                    : request.requestStatus == "4" ? "#ff274b"
                     : null}}
                     >{request.requestStatus == "0" ? "انتظار" 
                     : request.requestStatus == "1" ? "مدفوعة" : request.requestStatus == "2" ? "في الشحن" : request.requestStatus == "3" ? "مكتمل" : request.requestStatus == "4" ? "ملغية" : null}
                     </p> }
                     </div>
-                    {supplier && !view &&
-                        <div>
+                    <hr className="hr" />
                         {!arabic ? 
                         <Fragment>
                         <div className="more-details-container">
@@ -520,8 +566,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                         </div>
                         </Fragment>
                         }
-                        </div>
-                    }
+                        <hr className="hr" />
                     <Fragment>
                         <p className={!arabic ? "date-text english" : "date-text"}>
                             {!arabic ? 
@@ -538,7 +583,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                         :<p className="request-number" style={{color:'#856f00'}}> {request.trackingNumber} رقم التتبع</p> 
                         : null}
                     </Fragment>
-                        
+                    <hr className="hr" />
                     {!arabic ?  
                         <Fragment>
                             {supplier && 
@@ -554,7 +599,8 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                     To City: <span>{request.address.city}</span>
                                 </p>
                             </div>
-                            <div className="more-details-container english">
+                            <hr className="hr" />
+                            <div className="more-details-container english" style={{marginBottom:'1rem'}}>
                                 <p className="english" style={{color:'#400082'}}>
                                     Brand: <span>{request.brands.brandName}</span>
                                 </p>
@@ -565,6 +611,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                             <p className="description-text english">
                                     Description: <span >{request.description}</span>
                             </p>
+                            <hr className="hr" />
                             {supplier && view && <p className="amount english" style={{color:'#400082'}}>
                                 Amount: <span>{request.finalAmount != 0 ? `SR ${request.finalAmount}` : "Not Assigned"}</span>
                             </p> }
@@ -573,19 +620,17 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                     req.supplierId == session.user.name.id &&
                                         <Fragment>
                                         <div className="more-details-container" key={request.requestNum}>
-                                            <p className="english" style={{color:'#E25822'}}>
-                                                My Offer 
-                                                <span> SR</span><span>{req.amount}</span>
+                                            <p className="english" style={{color:'#E25822', fontSize:'14px'}}>
+                                                My Offer {req.amount}SR
                                             </p>
-                                            <p className="english" style={{color:'#400082'}}>
-                                                Shipment Fees 
-                                                <span> SR</span><span>{req.shipmentFees}</span>
+                                            <p className="english" style={{color:'#400082', fontSize:'14px'}}>
+                                                Shipment Fees {req.shipmentFees}SR
                                             </p>
-                                            <p className="english" style={{color:'#856f00'}}>
-                                                <strong>Total</strong><span> SR</span><span>{(parseFloat(req.amount) + parseFloat(req.shipmentFees)).toFixed(2)}</span>
+                                            <p className="english" style={{color:'#856f00', fontSize:'14px'}}>
+                                                <strong>Total</strong>{(parseFloat(req.amount) + parseFloat(req.shipmentFees)).toFixed(2)}SR
                                             </p>
                                     </div>
-                                    <Feedback />
+                                    <hr className="hr" />
                                     </Fragment>
                                 ))}
                                 </Fragment>
@@ -594,7 +639,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                         : <Fragment>
                             {supplier && 
                             <p className="client-text">
-                             العميل : <span>{request.clients.nameInArabic}</span> 
+                             العميل : <span>{request.clients.name}</span> 
                             </p>
                             }
                             <div className="more-details-container">
@@ -605,6 +650,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                  الى مدينة :<span>{request.address.city}</span> 
                                 </p>
                             </div>
+                            <hr className="hr" />
                             <div className="more-details-container">
                                 <p style={{color:'#400082'}}>
                                 <span>الشركة:</span> 
@@ -617,6 +663,7 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                             <p className="description-text">
                                 الوصف : <span >{request.description}</span>
                             </p>
+                            <hr className="hr" />
                             {supplier && view && <p className="amount" style={{color:'#400082'}}>
                                 السعر: <span>{request.finalAmount != 0 ? `ريال ${request.finalAmount}` : "لم يتم اختيار السعر"}</span> 
                             </p>}
@@ -625,21 +672,18 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                     req.supplierId == session.user.name.id &&
                                     <Fragment>
                                         <div className="more-details-container" key={request.requestNum}>
-                                            <p style={{color:'#856f00'}}>
+                                            <p style={{color:'#856f00', fontSize:"13px"}}>
                                                 <strong>المجموع</strong> <span>{(parseFloat(req.amount) + parseFloat(req.shipmentFees)).toFixed(2)}</span> <span>ر.س</span>
                                             </p>
-                                            <p style={{color:'#400082'}}>
-                                                <span> SR</span><span>{req.shipmentFees}</span>
-                                                سعر الشحن 
+                                            <p style={{color:'#400082', fontSize:"13px"}}>
+                                            سعر الشحن  {req.shipmentFees} ر.س
                                             </p>
-                                            <p style={{color:'#E25822'}}>
-                                                <span> SR</span><span>{req.amount}</span>
-                                                عرضي
+                                            <p style={{color:'#E25822', fontSize:"13px"}}>
+                                            عرضي {req.amount}  ر.س
                                             </p>
                                     </div>
-                                    <Feedback arabic={arabic} />
+                                    <hr className="hr" />
                                     </Fragment>
-                                    
                                 ))}
                                 </Fragment>
                             }
@@ -652,32 +696,35 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                 <label className="english" htmlFor={idx}>Shipment Fees Not Included</label>
                             </div>
                         </div>
-                        <input name="price" placeholder="Offer Ex:SR100" type="number" step="0.1" onChange = {onChangeHandler}/>
+                        <input className="supplier-add-offer english-input" name="price" placeholder="Offer Ex:SR100" type="number" step="0.1" onChange = {onChangeHandler}/>
                         <div>
-                            {requestPriceOptions.shipmentIncluded[idx] && <input name="shipmentFees" placeholder="Shipment fees Ex:SR100" type="number" step="0.1" onChange={(e)=>changePrice(e, idx)} />  }
+                            {requestPriceOptions.shipmentIncluded[idx] && <input className="supplier-add-offer english-input" name="shipmentFees" placeholder="Shipment fees Ex:SR100" type="number" step="0.1" onChange={(e)=>changePrice(e, idx)} />  }
                         </div>
                         <button
                         disabled={generalReducer.status.sending ? true : false}
                         style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}} 
                         className="submit-offer-btn english"
-                        children={"Submit Offer"} 
-                        onClick={()=>submitAmount(request.requestId, request.clients.email, request.requestNum, idx)}/>
+                        onClick={()=>submitAmount(request.requestId, request.clients.email, request.requestNum, idx)}
+                        >
+                        Submit Offer
+                        </button>
                 </div>
                 : supplier && !view && arabic && <div>
-                            <div className="shipment-option-container-ar">
-                                <input type="checkbox" id={idx} checked={requestPriceOptions.shipmentIncluded[idx] ? true : false} value="shipmentIncluded" name="shipment" onChange={(e)=>changePriceOptions(e, idx)} /> 
+                            <div className="shipment-option-container">
+                                <input  type="checkbox" id={idx} checked={requestPriceOptions.shipmentIncluded[idx] ? true : false} value="shipmentIncluded" name="shipment" onChange={(e)=>changePriceOptions(e, idx)} /> 
                                 <label className="label-text" htmlFor={idx}>رسوم الشحن غير متضمنة</label>
                             </div>
-                            <input name="price" placeholder="العرض: 100 ريال" type="number" step="0.1" onChange = {onChangeHandler}/>
+                            <input className="supplier-add-offer" inputMode="decimal" name="price" placeholder="العرض: 100 ريال" type="number" step="0.1" onChange = {onChangeHandler}/>
                             <div >
-                                {requestPriceOptions.shipmentIncluded[idx] && <input name="shipmentFees" placeholder="رسوم الشحن 100 ريال" type="number" step="0.1" onChange={(e)=>changePrice(e, idx)} />  }
+                                {requestPriceOptions.shipmentIncluded[idx] && <input className="supplier-add-offer" inputMode="decimal" name="shipmentFees" placeholder="رسوم الشحن 100 ريال" type="number" step="0.1" onChange={(e)=>changePrice(e, idx)} />  }
                             </div>
                             <button 
                             disabled={generalReducer.status.sending ? true : false}
                             style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
                             className="submit-offer-btn"
-                            children={"تقديم"} 
-                            onClick={()=>submitAmount(request.requestId, request.clients.email, request.requestNum, idx)}/>
+                            onClick={()=>submitAmount(request.requestId, request.clients.email, request.requestNum, idx)}>
+                            تقديم
+                            </button>
                         </div>
                     }
                     {supplier && view && <div className="shipping-name-container">
@@ -686,33 +733,34 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                     }
                     {request.requestStatus == "1" && 
                     <Fragment>
-                        <Feedback arabic={arabic}/>
-                        <div className="request-action-container">
-                        <button
-                        disabled={generalReducer.status.sending ? true : false}
-                        style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
-                        className={!arabic ? "shipping-btn english" : "shipping-btn" } 
-                        children={shippers.showShippers ? !arabic ? 'Hide Shippers' : 'اخفاء' : !arabic ? "To Shipping?" : "الانتقال للشحن"} 
-                        onClick={()=>toggleShippersList(request.requestId)}/> 
-                        <button
-                        disabled={generalReducer.status.sending ? true : false}
-                        style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
-                        className={!arabic ? "shipping-cancel-btn english" : "shipping-cancel-btn" }
-                        children={status.sending? status.text : !arabic ? "Cancel Order" : "الغي الطلب"} 
-                        onClick={()=>toggleCancelModal(request.requestId, request.clients.email, request.requestNum)}/> 
-                        </div>
+                        <div className="details-btn-container" style={{marginTop:'2rem', marginBottom:'2rem'}}>
+                            <button
+                            disabled={generalReducer.status.sending ? true : false}
+                            style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
+                            className={!arabic ? "details-text english" : "details-text" } 
+                            onClick={()=>toggleShippersList(request.requestId)}> 
+                            {shippers.showShippers ? !arabic ? 'Hide Shippers' : 'اخفاء' : !arabic ? "To Shipping?" : "الانتقال للشحن"} 
+                            </button> 
+                            <button
+                            disabled={generalReducer.status.sending ? true : false}
+                            style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
+                            className={!arabic ? "cancel-request-btn english" : "cancel-request-btn" }
+                            onClick={()=>showCancelReasons(request, idx)}>
+                            {!arabic ? "Cancel Order" : "الغي الطلب"} 
+                            </button> 
+                            </div>
                     </Fragment>
                     }
                     <div >
                         {request.requestStatus == "2" &&
                             <Fragment>
-                                <Feedback arabic={arabic} /> 
                                 <button
                                 disabled={generalReducer.status.sending ? true : false}
-                                style={{marginLeft:'3.5rem', marginTop:'1rem', backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
+                                style={{marginLeft:'5rem', marginTop:'1rem', backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
                                 className={!arabic ? "submit-offer-btn english" : "submit-offer-btn" }
-                                children={!arabic ? "Delivered?" :  "تم التوصيل؟"} 
-                                onClick={()=>complete(request.requestId, request.clients.email, request.requestNum, request.trackingNumber)}/> 
+                                onClick={()=>complete(request.requestId, request.clients.email, request.requestNum, request.trackingNumber)}>
+                                {!arabic ? "Delivered?" :  "تم التوصيل؟"}
+                                </button> 
                             </Fragment>
                         }
                     </div>
@@ -720,10 +768,10 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                     {shippers.showShippers && shippers.requestId == request.requestId && 
                     <div>
                         <div>
-                            <input name="shipperName" placeholder={!arabic ? "Shipper Name" : "شركة الشحن" } type="text" onChange={changeShipperInfo} />
+                            <input className="supplier-add-offer english-input" name="shipperName" placeholder={!arabic ? "Shipper Name" : "شركة الشحن" } type="text" onChange={changeShipperInfo} />
                         </div>
                         <div>
-                            <input name="trackingNumber" placeholder={!arabic ? "Tracking Number" : "رقم التتبع"} type="number" onChange={changeShipperInfo}/>
+                            <input className="supplier-add-offer english-input" name="trackingNumber" placeholder={!arabic ? "Tracking Number" : "رقم التتبع"} type="text" onChange={changeShipperInfo}/>
                         </div>
                     </div>
                     }
@@ -732,8 +780,9 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                         disabled={generalReducer.status.sending ? true : false}
                         style={{backgroundColor: generalReducer.status.sending ? '#ccc' : ''}}
                         className={!arabic ? "submit-offer-btn english" : "submit-offer-btn" }
-                        children={!arabic ? "Ship Now" : "اشحن"} 
-                        onClick={()=>moveToShipping(request.requestId, request.clients.email, request.requestNum)}/>
+                        onClick={()=>moveToShipping(request.requestId, request.clients.email, request.requestNum)}>
+                        {!arabic ? "Ship Now" : "اشحن"} 
+                        </button>
                     }
                 </div>
                 </div> 
@@ -750,18 +799,22 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                         </p> 
                         }
                     </div>
-                    <Fragment>
-                        <p onClick={()=>navigateToDetails(request.requestId)} className="details-text english"> Details  <BsArrowRight className="arrow" size={30}/> </p> 
-                            {request.amounts != null &&  request.amounts.length > 0 && 
+                    <hr className="hr" />
+                    {request.amounts != null &&  request.amounts.length > 0 && 
                             <Fragment>
                                 <p className="offer english">*You have {request.amounts.length} offers</p>
                             </Fragment>
-                        }
-                    </Fragment>
+                    }
+                    {request.requestStatus != 4 && 
+                    <div className="details-btn-container">
+                        {request.amounts != null && request.amounts.length > 0 && !offersInfo.showOffers && <p onClick={()=>navigateToDetails(request, idx)} className="details-text english"> Offers </p> }
+                        <p onClick={()=>cancelRequest(request)} className="cancel-request-btn english">Cancel</p>
+                    </div>
+                    }
                 </Fragment>
                 : !supplier && arabic && <Fragment>
                     <div className="more-details-container">
-                        <p style={{color:'#400082'}}>
+                        <p  style={{color:'#400082'}}>
                             السعر: <span>{request.finalAmount != 0 ? `ريال ${request.finalAmount}` : "لم يتم اختيار السعر"}</span> 
                         </p>
                             {request.shipperName != null &&
@@ -770,33 +823,37 @@ const AllRequests = ({arabic, supplier, token, view}) => {
                                 </p> 
                             }
                         </div>
-                        <Fragment>
-                        <p onClick={()=>navigateToDetails(request.requestId)} className="details-text"> <BsArrowLeft size={30} className="arrow-arabic"/> التفاصيل</p>
-                            {request.amounts != null &&  request.amounts.length > 0 && 
+                        <hr className="hr" />
+                        {request.amounts != null &&  request.amounts.length > 0 && 
                                 <Fragment>
                                 <p className="offer">لديك {request.amounts.length} من العروض *</p>
                             </Fragment>
                         }
-                        </Fragment>
+                        {request.requestStatus != 4 &&
+                        <div className="details-btn-container">
+                            {request.amounts != null && request.amounts.length > 0 && !offersInfo.showOffers && <p onClick={()=>navigateToDetails(request, idx)} className="details-text">العروض</p> }
+                            <p onClick={()=>cancelRequest(request)} className="cancel-request-btn">الغاء</p>
+                        </div>
+                        }
                 </Fragment>
                 }
                 </div>
            ))} 
            </section>
-           </Fragment> : !supplier ? <div>
+           </div> : !supplier ? <div className="no-request-text-container">
                     {!arabic ?
                     <Fragment>
-                        <p>No Order Has Been Placed !</p>
+                        <p className="english">No Order Has Been Placed !</p>
                         <div>
-                            <button  children={"For Cars"} onClick={()=>router.push("/en/requests/cars")}/>
-                            <button children={"For Vehicles"} onClick={()=>router.push("/en/requests/vehicles")}/>
+                            <button className="no-order-btns-cars english"  onClick={()=>router.push("/en/requests/cars")}>For Cars</button>
+                            <button className="no-order-btns-vehicles english" onClick={()=>router.push("/en/requests/vehicles")}>For Vehicles</button>
                         </div>
                     </Fragment>:
                     <Fragment>
                         <p>لا يوجد طلبات مسجلة لديك</p>
                         <div>
-                            <button  children={"للسيارات"} onClick={()=>router.push("/requests/cars")}/>
-                            <button children={"للمركبات الكبيرة"} onClick={()=>router.push("/requests/vehicles")}/>
+                            <button className="no-order-btns-cars" onClick={()=>router.push("/requests/cars")}>للسيارات</button>
+                            <button className="no-order-btns-vehicles"  onClick={()=>router.push("/requests/vehicles")}>للمركبات الكبيرة</button>
                         </div>
                     </Fragment>
                     }

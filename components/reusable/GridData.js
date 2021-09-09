@@ -1,5 +1,5 @@
 import Link from 'next/link';
-const GridData = ({icon, title, children, link}) => {
+const GridData = ({icon, title, children, link, data}) => {
     return <div className="grid-data-container">
         <div className="grid-data-icon-title-container">
             <div className="grid-data-icon">
@@ -11,11 +11,13 @@ const GridData = ({icon, title, children, link}) => {
                 </Link>
             </div>
         </div>
-        <hr/>
         <div className="children-grid-data-style">
             {children}
+            <div className="data-text-container">
+                <p className="data-text">{data}</p>
+            </div>
         </div>
     </div>
 }
 
-export default GridData;
+export default GridData; 

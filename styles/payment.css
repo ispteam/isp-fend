@@ -1,0 +1,105 @@
+.payment-container{
+    margin-top: 8rem;
+    overflow: hidden;
+}
+
+.form-payment-container input{
+    background-color: white;
+    border: 1px solid var(--main-color);
+}
+
+.form-payment-container button{
+    width: 65%;
+    padding: 0.3rem;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--secondary-color);
+    font-family: var(--font-arabic);
+    border-radius: 0.2rem;
+    margin: 2rem 4rem;
+    font-size: 16px;
+    
+}
+
+.validation-payment-container{
+    width: 60%;
+    margin: auto;
+}
+
+.validation-text{
+    background-color: #ff274b;
+    border: 1px solid #ff274b;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    margin: 1.3rem auto;
+    font-family: var(--font-arabic);
+    font-size: 13px;
+    border-radius: 0.23rem;
+}
+
+.bill-container{
+    margin-top: 8rem;
+}
+
+.bill-inner-container{
+    width: 70%;
+    margin:2rem auto
+}
+
+.succeed-payment{
+    text-align: center;
+    padding: 0.3rem;
+    background-color: #059669;
+    color: white;
+    font-family: var(--font-arabic);
+    border: 1px solid #059669;
+}
+
+.invalid-payment{
+    text-align: center;
+    padding: 0.3rem;
+    background-color: #ff274b;
+    color: white;
+    font-family: var(--font-arabic);
+    border: 1px solid #ff274b;
+}
+
+.icon-bill{
+    margin: auto;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    overflow: hidden;
+}
+
+.back-site-btn{
+    margin: 2rem 3.5rem;
+    width: 70%;
+    padding: 0.3rem;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--third-color);
+    font-family: var(--font-arabic);
+}
+
+@media only screen and (min-width:735px) {
+    .bill-container{
+        margin: 10rem auto;
+    }
+    .form-payment-container{
+        width: 30%;
+        margin: auto;
+    }
+    .form-payment-container button{
+        margin: 2rem 5rem;
+    }
+    .succeed-payment, .invalid-payment{
+        width: 70%;
+        margin: auto;
+    }
+
+    .back-site-btn{
+        width: 20%;
+        margin: 15rem 37.5rem;
+    }
+}

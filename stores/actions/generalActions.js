@@ -45,6 +45,12 @@ const generalActions = {
         return {
             type: 'CLOSE_NAV_MENU'
         }
+    },
+    changeMood: (value)=> {
+        return {
+            type: 'CHANGE_MOOD',
+            value
+        }
     }
 }
 

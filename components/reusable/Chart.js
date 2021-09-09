@@ -7,9 +7,9 @@ const MyChart = ({label, title, Component, data, bgColor, brdrColor, hoverColor}
             label: label,
             fill: false,
             lineTension: 0.1,
-            backgroundColor: bgColor || 'rgb(254, 52, 109)',
-            borderColor: brdrColor || 'rgb(254, 52, 109)',
-            hoverBackgroundColor: hoverColor || 'rgb(254, 52, 109)',
+            backgroundColor: bgColor || 'rgb(29, 29, 29)',
+            borderColor: brdrColor || 'rgb(29, 29, 29)',
+            hoverBackgroundColor: hoverColor || 'rgb(29, 29, 29)',
             borderWidth: 1,
             data: data
           }
@@ -17,7 +17,7 @@ const MyChart = ({label, title, Component, data, bgColor, brdrColor, hoverColor}
       }
 
     return <div className="chart-container">
-            <h1 className="chart-title">{title}</h1>
+            <h3 className="chart-title">{title}</h3>
             <Component
                 data={state}
                 options= {{}}

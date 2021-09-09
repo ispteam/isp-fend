@@ -3,7 +3,7 @@ import SharedNavLayout from "components/reusable/SharedLayout";
 import { useEffect } from "react";
 import { addToken, parseCookie } from "helper/functions";
 import suppliersActions from "stores/actions/suppliersActions";
-import { getSession } from "next-auth/client";
+import { getSession, session } from "next-auth/client";
 import ENDPOINT from "helper/ENDPOINT";
 import SuppliersDashboard from "components/admin-moderator/SuppliersDashboard";
 import Head from "next/head";
@@ -18,11 +18,11 @@ const Suppliers = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
         <Head>
           <title>Suppliers</title>
         </Head>
-        <SuppliersDashboard token={props.token} />
+        <SuppliersDashboard token={props.token} session={props.session}/>
     </SharedNavLayout>
   );
 };
@@ -79,6 +79,7 @@ export async function getServerSideProps({req}){
     props: {
       token: token,
       suppliers:response.suppliers,
+      session: session
     },
   };
 }

@@ -4,15 +4,15 @@ import SharedNavLayout from "components/reusable/SharedLayout";
 import { useSelector } from "react-redux";
 import Head from 'next/head';
 import { getSession } from "next-auth/client";
-const Home = () => {
+const Home = (props) => {
     const generalReducer = useSelector(state=>state.generalReducer);
 
-    return <SharedNavLayout admin={false} navList={generalReducer.clientNav} logoLink={"/en"} client={true} footerInnerValue={<InnerFooter arabic={false}/>}>
+    return <SharedNavLayout admin={false} navList={generalReducer.clientNav} session={props.session} logoLink={"/en"} client={true} footerInnerValue={<InnerFooter arabic={false}/>}>
         <Head>
             <title>Home</title>
             <meta name="description" content="Spare parts is a website to order cars and vehicles spare parts anywhere around the world without taking care about the shipping and delivering." />
         </Head>
-        <Landing/>
+        <Landing session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -45,7 +45,9 @@ export async function getServerSideProps(context){
         }
 
         return {
-            props:{}
+            props:{
+                session: session
+            }
         }
 }
 

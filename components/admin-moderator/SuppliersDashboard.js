@@ -16,10 +16,9 @@ import ModalDetails from "./ModalDetails";
 import generalActions from "stores/actions/generalActions";
 import suppliersActions from "stores/actions/suppliersActions";
 
-const TABLE_SUPPLIERS_HEADERS = ["Name", "Name(AR)", "Eamil", "Phone", "CO", "CO(AR)", "Cert" ,"Verified", "Details"];
+const TABLE_SUPPLIERS_HEADERS = ["Eamil", "Phone", "CO", "CO(AR)", "Cert" ,"Verified", "Details"];
 
-const SuppliersDashboard = ({token}) =>{
-    const [session, setSession] = useState(); // To get the session values after login.
+const SuppliersDashboard = ({token, session}) =>{
     const router = useRouter();
     const suppliers = useSelector((state) => state.suppliersReducer); //To fecth all the suppliers information from the store.
     /**
@@ -51,12 +50,6 @@ const SuppliersDashboard = ({token}) =>{
           idx:''
       });
   
-      //To get the session value after the component was rendered.
-      useEffect(async()=>{
-        const session = await getSession();
-        setSession(session);
-        dispatch(generalActions.closeNavMenu());
-      },[]);
   
       //To update the copy state with the suppliers data.
       useEffect(()=>{
@@ -66,14 +59,12 @@ const SuppliersDashboard = ({token}) =>{
 
   
       //To submit the updated value of a supplier
-      const submitHandler = async (datas) => {
+      const submitHandler = async (ignore, ignore2, datas) => {
         try {
          dispatch(generalActions.emptyState());
          dispatch(generalActions.sendRequest("Updating.."))
           //Validate the inputs field that will be sent
           const validateEmailMessage = validateAccountsInput(datas.account.email, false, false, true, false, false);
-          const validateNameMessage = validateAccountsInput(datas.account.name,false,true,false,false,false);
-          const validateNameArabicMessage = validateAccountsInput(datas.account.nameInArabic,true,false,false,false,false);
           const validatePhoneMessage = validateAccountsInput(datas.account.phone,false,false,false,true,false);
           const validateCompanyMessage = validateAccountsInput(datas.companyInEnglish,false,true,false,false, false, false);
           const validateCopanyArabicMessage = validateAccountsInput(datas.companyInArabic,true,false,false,false,false);
@@ -81,12 +72,6 @@ const SuppliersDashboard = ({token}) =>{
           //Check the validation error if any we push it into the validation values.
           if (validateEmailMessage.length > 0) {
             dispatch(generalActions.changeValidation(validateEmailMessage));
-          }
-          if (validateNameMessage.length > 0) {
-            dispatch(generalActions.changeValidation(validateNameMessage));
-          }
-          if (validateNameArabicMessage.length > 0) {
-            dispatch(generalActions.changeValidation(validateNameArabicMessage));
           }
           if (validatePhoneMessage.length > 0) {
             dispatch(generalActions.changeValidation(validatePhoneMessage));
@@ -101,8 +86,6 @@ const SuppliersDashboard = ({token}) =>{
           // If the validation values is not  empty, we terminate the function job and show the error messages
           if (
             validateEmailMessage.length > 0 ||
-            validateNameMessage.length > 0 ||
-            validateNameArabicMessage.length > 0||
             validatePhoneMessage.length > 0 ||
             validateCompanyMessage.length > 0 ||
             validateCopanyArabicMessage.length > 0
@@ -121,8 +104,6 @@ const SuppliersDashboard = ({token}) =>{
             body: JSON.stringify({
               uid: session.user.name.id,
               supplierId: datas.supplierId,  
-              name: datas.account.name,
-              nameInArabic: datas.account.nameInArabic,
               email: datas.account.email,
               phone: datas.account.phone,
               companyInEnglish: datas.companyInEnglish,
@@ -330,14 +311,88 @@ const SuppliersDashboard = ({token}) =>{
           }
       }
 
+    const acceptUpdateProfile = async (datas) => {
+      try{
+        dispatch(generalActions.emptyState());
+        dispatch(generalActions.sendRequest("Accepting.."));
+        const data = await fetch(`${generalReducer.ENDPOINT}/supplier/accept-update`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+          },
+          body: JSON.stringify({
+            uid: session.user.name.id,
+            supplierId: datas.supplierId,  
+          }),
+        });
+        const response = await data.json();
+        if(response.statusCode == 421 || response.statusCode == 404 || response.statusCode != 200){
+          const error = new Error(response.message);
+          throw error;
+        }
+          //add the successful message to the validation values in order to be displayed inside the modal
+          dispatch(generalActions.sendRequest(response.message));
+
+          await sendEmail(datas.account.email, "acceptUpdate", "supplier");
+  
+          //The valaidation values and the status will be empty after 3 seconds
+          setTimeout(()=>{
+                dispatch(generalActions.emptyState());
+                window.location.reload()
+          }, 3000)
+
+      }catch(err){
+          dispatch(generalActions.changeValidation(err.message));
+          dispatch(generalActions.showValidationMessages())
+      }
+    }
+
+    const rejectUpdateProfile = async (datas) => {
+      try{
+        dispatch(generalActions.emptyState());
+        dispatch(generalActions.sendRequest("Rejecting.."));
+        const data = await fetch(`${generalReducer.ENDPOINT}/supplier/reject-update`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+          },
+          body: JSON.stringify({
+            uid: session.user.name.id,
+            supplierId: datas.supplierId,  
+          }),
+        });
+        const response = await data.json();
+        if(response.statusCode == 421 || response.statusCode == 404){
+          const error = new Error(response.message);
+          throw error;
+        }
+          //add the successful message to the validation values in order to be displayed inside the modal
+          dispatch(generalActions.sendRequest(response.message));
+
+          await sendEmail(datas.account.email, "rejectUpdate", "supplier");
+  
+          //The valaidation values and the status will be empty after 3 seconds
+          setTimeout(()=>{
+                dispatch(generalActions.emptyState());
+                window.location.reload()
+          }, 3000)
+
+      }catch(err){
+          dispatch(generalActions.changeValidation(err.message));
+          dispatch(generalActions.showValidationMessages())
+      }
+    }
+
     return  <Fragment>
 
-    <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+    <div className="grid-data-details-container">
         <GridData
         icon={<BsHash size={25} color="white" />}
         title="Total numbers of registered suppliers"
         link="/en/admin/suppliers"
-        children={suppliers.suppliers.length}
+        data={suppliers.suppliers.length}
         />
     </div>
 
@@ -355,7 +410,7 @@ const SuppliersDashboard = ({token}) =>{
     <br/> <br />
 
     <div>
-        <div className="sort-option-container-supplier">
+        <div className="sort-option-container">
            <div>
             <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
             <label htmlFor="sort">DESC</label>
@@ -373,14 +428,14 @@ const SuppliersDashboard = ({token}) =>{
             <label htmlFor="susbended">Susbended</label>
           </div>
         </div>
-        <div className="search-input english">
-            <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel'/>
+        <div className="search-input">
+            <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel' className="english-input"/>
         </div>
       </div>
 
       <br /> <br /> <br />
 
-      {data !== null &&  <ModalDetails supplier={true} info={data}  title={"Manage Supplier"} update={submitHandler} manageSupplier={manageSupplier}/> }
+      {data !== null &&  <ModalDetails setDatas={setData} acceptUpdate={acceptUpdateProfile} rejectUpdate={rejectUpdateProfile} supplier={true} info={data}  title={"Manage Supplier"} update={submitHandler} manageSupplier={manageSupplier}/> }
     <Table
         headers={TABLE_SUPPLIERS_HEADERS.map((header) => (
           <th key={header}>{header}</th>
@@ -389,15 +444,13 @@ const SuppliersDashboard = ({token}) =>{
       >
         {!searchedValue.showSearchedValue ? suppliersOrder.length > 0 && suppliersOrder[0].account != null && suppliersOrder.sort().map((supplier, idx) => {
           return (
-            <Fragment>
+            <Fragment key={supplier.supplierId}>
               <tr key={supplier.supplierId}>
-                <Td key={supplier.account.name} value={supplier.account.name}/>
-                <Td key={supplier.account.nameInArabic} value={supplier.account.nameInArabic} className={"font-arabic"}/>
                 <Td key={supplier.account.email} value={supplier.account.email}/>
                 <Td key={supplier.account.phone} value={supplier.account.phone}/>
                 <Td key={supplier.companyInEnglish} value={supplier.companyInEnglish}/>
                 <Td key={supplier.companyInArabic} value={supplier.companyInArabic}/>
-                <Td key={supplier.companyCertificate} value={<a className="cert-link-text" href={`https://isp-bend.herokuapp.com/certificates/${supplier.companyCertificate}`} target="_blank">{supplier.account.name}</a>}/>
+                <Td key={supplier.companyCertificate} value={<a className="cert-link" href={`https://isp-bend.herokuapp.com/certificates/${supplier.companyCertificate}`} target="_blank" rel="noreferrer">{supplier.companyCertificate}</a>}/>
                 <Td key={supplier.verified} 
                 value={supplier.verified == 0 ? "N" : supplier.verified == 1 ? "V" : supplier.verified == 2 ? "S" : null }
                 className={supplier.verified == 0 ? "not-v" : supplier.verified == 1 ? 'ver' : 'sus'}/>
@@ -407,13 +460,11 @@ const SuppliersDashboard = ({token}) =>{
           );
         }) : searchedValue.value && <Fragment>
         <tr key={searchedValue.value.supplierId}>
-                <Td key={searchedValue.value.account.name} value={searchedValue.value.account.name}/>
-                <Td key={searchedValue.value.account.nameInArabic} value={searchedValue.value.account.nameInArabic} className={"font-arabic"}/>
                 <Td key={searchedValue.value.account.email} value={searchedValue.value.account.email}/>
                 <Td key={searchedValue.value.account.phone} value={searchedValue.value.account.phone}/>
                 <Td key={searchedValue.value.companyInEnglish} value={searchedValue.value.companyInEnglish}/>
                 <Td key={searchedValue.value.companyInArabic} value={searchedValue.value.companyInArabic}/>
-                <Td key={searchedValue.value.companyCertificate} value={<a href={`https://isp-bend.herokuapp.com/certificates/${searchedValue.value.companyCertificate}`} target="_blank">{searchedValue.value.account.name}</a>}/>
+                <Td key={searchedValue.value.companyCertificate} value={<a className="cert-link" href={`https://isp-bend.herokuapp.com/certificates/${searchedValue.value.companyCertificate}`} target="_blank" rel="noreferrer">{searchedValue.value.account.name}</a>}/>
                 <Td key={searchedValue.value.verified} 
                 value={searchedValue.value.verified == 0 ? "N" : searchedValue.value.verified == 1 ? "V" : searchedValue.value.verified == 2 ? "S" : null }
                 className={searchedValue.value.verified == 0 ? "not-v" : searchedValue.value.verified == 1 ? 'ver' : 'sus'}/>

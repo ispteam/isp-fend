@@ -1,183 +1,199 @@
-@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-:root {
-    --bg-header: #f1f1f1;
-    --text-active: black;
-    --nav-link-container-color: #e6e6e6;
-    --radius-ratio: 3rem;
-    --font-color: #400082;
-    --background: #FE346E;
-    --font-family-arabic: 'El Messiri', sans-serif;
-    --font-family-english: 'Urbanist', sans-serif;
-}
-
-
-input[type= radio]{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    outline: none;
-    width: 40%;
-    /* height: 80%; */
-    border-radius: 4rem;
-    display: block;
-}
-
-input[type=radio]:checked{
-    background-color: var(--font-color);
-}
-
-#all{
-    width: 60%;
-}
-
 .modal-container{
     position: absolute;
-    background-color: white;
-    top: -400%;
-    width: 90%;
-    left: 7%;
-    border-radius: 1rem;
-    transition: all 0.2s;
-    z-index: 100000000;
-    overflow: auto;
+    /* display: none; */
+    width: 95%;
+    background-color: var(--main-color);
+    z-index: 1000;
+    top: -200%;
+    left: 2.7%;
+    border-radius: 0.5rem;   
 }
 
-.show{
-    top: 30%;
+.show-login{
+    top: 40%;
+    animation-duration: 1s;
 }
 
-.modal-container hr{
-    width: 70%;
-}
 
-.header-modal-container{
+.header-modal-login-container{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    justify-items: center;
-    position: relative;
+    align-items: center;
+    margin-top: 2rem;
+    margin-left: 1.5rem;
 }
-
 
 .login-title{
-    font-family: var(--font-family-arabic);
-    font-weight: 400;
-    color: var(--background);
+    color: var(--secondary-color);
+    font-family: var(--font-arabic);
 }
-
-.form-auth-container{
-    display: flex;
-    flex-direction: column;
-}
-
-.form-auth-container button{
-    width: 50%;
-    background-color: transparent;
-    color: var(--background);
-    border: 1px solid var(--font-color);
-    margin: auto;
-    margin: 1.5rem auto;
-}
-
-.register-text{
-    margin-left: 9.5rem;
-    font-size: 11px;
-    font-family: var(--font-family-arabic);
-    color: var(--font-color);
-    cursor: pointer;
-}
-
-.close-icon{
-    margin-top: 1.3rem;
-    cursor: pointer;
-}
-
 
 .user-type-container{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    justify-items: center;
+    /* justify-content: space-evenly; */
+    align-items: center;
     cursor: pointer;
 }
 
 .user-type-container p{
-    font-family: var(--font-family-arabic);
-    color: var(--font-color);
+    color: var(--third-color);
+    font-family: var(--font-arabic);
+    /* width: 50%; */
+    margin: 2rem 4rem;
+    text-align: center;
+}
+
+.register-text{
+    text-align: center;
+    font-family: var(--font-arabic);
+    color: var(--third-color);
+    margin: 2rem auto;
+    cursor: pointer;
+}
+
+.form-auth-container{
+    width: 80%;
+    margin: 3rem auto;
+}
+
+.form-auth-container input{
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    text-align: right;
+    font-family: var(--font-arabic);
+}
+
+::placeholder{
+    font-family: var(--font-arabic);
+}
+
+.form-auth-container button {
+    width: 40%;
+    margin: 0.7rem 5.2rem;
+    background-color: var(--secondary-color);
+    color: var(--main-color);
+    border-color: var(--main-color);;
+    font-family: var(--font-arabic);
+    border-radius: 0.2rem;
+    padding: 0.5rem;
 }
 
 .field-container{
     display: grid;
     grid-template-columns: auto auto auto;
-    gap: 2px;
-    place-items: center;
+    place-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
 }
 
 .field-title{
     text-align: center;
-    font-size: 14px;
-    font-family: var(--font-family-arabic);
-    color: var(--font-color);
+    font-family: var(--font-arabic);
+    color: var(--secondary-color);
+    margin-top: 1rem;
+}
+
+.field-container label {
+    color: var(--third-color);
+    font-family: var(--font-arabic);
 }
 
 .cars-brands-container{
-    margin-top: 2rem;
     display: grid;
     grid-template-columns: auto auto;
-    gap: 2px;
-    place-items: center;
-    width: 100%;
+    margin-top: 2rem;
 }
 
-.cars-brands-container input[type=checkbox]{
-    display: block;
-    width: 25%;
+.cars-brands-container label {
+    color: var(--secondary-color);
+    font-family: var(--font-arabic);
+    font-size: 15px;
 }
 
 .upload-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-items: center;
-    border: 1px solid var(--font-color);
-    padding: 1rem;
-    width: 50%;
-    margin: auto;
-    margin-top: 2rem;
-    border-radius: 0.7rem;
+    border: 1px solid var(--third-color);
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    margin: 2rem auto;
 }
 
-.upload-container span{
-    margin-top: 1rem;
+.upload-container label{
+    text-align: center;
+    color: var(--secondary-color);
     display: block;
-    font-family: var(--font-family-english);
-    font-size: 12px;
-    color: var(--font-color);
+    font-family: var(--font-arabic);
+}
+
+.forget-pass-text{
+    text-align: center;
+    font-family: var(--font-arabic);
+    font-size: 13px;
+    font-weight: 200;
+    padding-bottom: 1rem;
 }
 
 
-@media only screen and (min-width: 735px) {
+.forget-pass-text a {
+    color: var(--secondary-color);
+}
 
+.forget-password-container{
+    margin: 10rem auto 25rem auto;
+}
+.to-website-link{
+    margin: 2rem auto;
+    background-color: var(--main-color);
+    border: 1px solid var(--third-color);
+    width: 40%;
+    text-align: center;
+}
+
+.to-website-link a {
+    color: var(--third-color);
+    padding: 0.5rem;
+    font-family: var(--font-arabic);
+    text-align: center;
+}
+
+
+
+.send-email input {
+    font-family: var(--font-english);
+}
+
+.send-email button {
+    width: 70% !important;
+    font-family: var(--font-arabic) !important;
+    padding: 0.3rem !important;
+    margin-left: 3rem !important;
+}
+
+@media only screen and (min-width:735px) {
     .modal-container{
         width: 30%;
-        left: 38%;
+        left: 35%;
+    }
+    .show-login{
+        top: 20%;
+    }
+    .form-auth-container button{
+        margin-left: 7rem;
+        cursor: pointer;
+    }
+    .cars-brands-container{
+        grid-template-columns: auto auto auto;
+        place-content: center;
+        gap: 7px;
     }
 
-    .register-text{
-        margin-left: 13rem;
+    .to-website-link {
+        width: 15%;
     }
 
-    .form-auth-container{
-       width: 50%;
-       margin: auto;
-    }
-    .upload-container{
-        width: 80%;
-    }
-    .cars-brands-container input[type=checkbox]{
-        display: block;
-        width: 90%;
+    .send-email button{
+        width: 42% !important;
+        margin-left: 10rem !important;
     }
 }

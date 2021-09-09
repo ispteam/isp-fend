@@ -1,31 +1,62 @@
+.modal-container-info{
+    width: 80%;
+    margin: auto 3rem;
+    position: absolute;
+    background-color: white;
+    z-index: 10000;
+    top: -100%;
+}
+
+.show-in-table{
+    top: 80%;
+    animation-duration: 2s;
+}
+
+.form-modal-details{
+    width: 80%;
+    margin: auto;
+}
+
+.header-modal-container{
+    background-color: var(--main-color);
+}
+
+.login-title{
+    text-align: center;
+    padding: 1rem 0 1rem 0;
+}
+
 .action-btns-container{
-   margin-left: -2rem;
+    width: 80%;
+    margin: 1rem auto;
 }
 
 .action-btns-container button{
-    background-color: transparent;
-    width: 40%;
+    padding: 0.5rem;
+    margin: 0.2rem auto;
 }
 
 .update{
-    border: 1px double var(--font-color) !important;
-    color: var(--background) !important;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--third-color);
 }
 
 .remove{
-    border: 1px double var(--background) !important;
-    color: var(--font-color) !important;
+    background-color: #9d0000;
+    border: 1px solid #9d0000;
+    color: var(--third-color);
 }
 
 .close{
-    background-color: #ff5370 !important;
-    border: 1px double #ff5370 !important;
-    color: white !important;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--secondary-color);
 }
 
-
-@media only screen and (min-width:735px){
-    .action-btns-container{
-        margin-left: 2rem;
-     }
+@media only screen and (min-width:735px) {
+    .modal-container-info{
+        width: 40%;
+        left: 25%;
+    }
 }

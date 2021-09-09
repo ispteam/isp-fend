@@ -21,7 +21,7 @@ const Requests = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
         <Head>
           <title>Requests</title>
         </Head>
@@ -83,6 +83,7 @@ export async function getServerSideProps({req}){
     props: {
       token: token,
       requests: response.requests,
+      session: session
     },
   };
 }

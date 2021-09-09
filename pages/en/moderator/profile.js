@@ -10,11 +10,11 @@ import generalActions from "stores/actions/generalActions";
 const Profile = (props) => {
   const generalReducer = useSelector((state) => state.generalReducer);
 
-    return <SharedNavLayout admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
+    return <SharedNavLayout session={props.session} admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
                 <Head>
                     <title>Profile</title>
                 </Head>
-                <ProfileInformation  token={props.token} moderator={true}/>
+                <ProfileInformation session={props.session} token={props.token} moderator={true}/>
         </SharedNavLayout>
 }
 

@@ -1,324 +1,228 @@
-@import url('https://fonts.googleapis.com/css2?family=Glory:ital,wght@0,500;1,400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-:root {
-    --bg-header: #f1f1f1;
-    --text-active: black;
-    --nav-link-container-color: #e6e6e6;
-    --radius-ratio: 3rem;
-    --font-color: #400082;
-    --background: #FE346E;
-    --font-family-arabic: 'El Messiri', sans-serif;
-    --font-family-english: 'Urbanist', sans-serif;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input{
-    font-size: 16px;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.all-requests-outer-container{
+    margin-top: 10rem;
 }
 
 .all-requests-container{
-    display: grid;
-    grid-template-columns: auto;
-    place-items: center;
-    padding: 2.5rem;
+    margin: 2rem auto;
+    width: 80%;    
 }
 
 .all-requests-inner-container{
-    border: 1px dashed var(--font-color);
-    padding: 1.5rem;
+    border: 1px solid var(--main-color);
+    border-radius: 0.2rem;
+    padding: 0.5rem;
+    margin-top: 1.5rem;
     background-color: white;
-    border-radius: 0.5rem;
-    width: 100%;
-    margin-bottom: 2rem;
-    transition: all 0.3s;
+    box-shadow: 0px 1px 5px var(--main-color);
+    position: relative;
 }
 
 .request-status{
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    font-family: var(--font-family-arabic);
+    
 }
 
-.date-text{
+.request-status p {
+    font-family: var(--font-arabic);
     text-align: center;
-    font-family: var(--font-family-arabic);
-    font-size: 14px;
-    color: #856f00;
 }
 
-.request-number{
-    text-align: center;
-    font-family: var(--font-family-arabic);
-    font-size: 14px;
-    color: #150485;
-}
-
-.client-text{
-    text-align: center;
-    font-family: var(--font-family-arabic);
-    font-weight: 400;
-    color: var(--font-color);
-    font-style: oblique;
+.hr {
+    margin: 1rem auto;
 }
 
 .more-details-container{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    align-items: center;
+    text-align: center;
 }
 
 .more-details-container p{
-    font-family: var(--font-family-arabic);
-    font-size: 14px;
+    font-family: var(--font-arabic);
 }
 
 .description-text{
+    font-family: var(--font-arabic);
     text-align: center;
-    font-family: var(--font-family-arabic);
-    font-size: 13.5px;
-    color: var(--background);
+}
+
+.date-text{
+    text-align: center;
+    font-family: var(--font-arabic);
+    font-weight: 400;
+    color: #ff274b;
+    margin-bottom: 0.2rem;
+}
+
+.request-number{
+    text-align: center;
+    font-family: var(--font-arabic);
     font-weight: 600;
+    color: #003e54;
+}
+
+
+
+.details-btn-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+    place-items: center;
 }
 
 .details-text{
-    position: relative;
-    text-align: center;
-    font-family: var(--font-family-arabic);
-    font-size: 17px;
-    color: #856f00;
+    border-right: 2px solid var(--main-color);
+    font-family: var(--font-arabic);
+    font-size: 13px;
+    font-weight: 600;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    width: 70%;
+    border-radius: 0.1rem;
 }
 
 .offer{
+    color: #ff274b;
+    font-family: var(--font-arabic);
+    font-weight: 600;
     text-align: center;
-    font-family: var(--font-family-arabic);
+    margin: 0.5rem auto;
+}
+
+.cancel-request-btn{
+    font-family: var(--font-arabic);
     font-size: 13px;
-    color: #850000;
+    font-weight: 600;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: 1px solid #c90021;
+    background-color: #c90021;
+    color: var(--third-color);
+    cursor: pointer;
+    width: 70%;
+    border-radius: 0.1rem;
 }
 
-.toggle-details{
-    border: none;
-    background-color: transparent;
-    font-family: var(--font-family-arabic);
-    font-size: 11px;
-    margin-left: 8rem;
+.client-text{
+    text-align: center;
+    font-family: var(--font-arabic);
+    color: #3e003b;
+    font-weight: 500;
+    font-size: 15px;
 }
 
-.arrow{
-    position: absolute;
-    left: 11rem;
-    top: -0.2rem
+
+.shipment-option-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.arrow-arabic{
-    position: absolute;
-    left: 5rem;
-    top: 0rem
-}
-
-.submit-offer-btn{
-    background-color: #4eb84e;
-    color: white;
-    border: 1px solid #4eb84e;
-    width: 60%;
-}
-
-.label-text {
-    font-family: var(--font-family-arabic);
+.shipment-option-container label{
+    font-family: var(--font-arabic);
+    color: var(--main-color);
 }
 
 .shipment-option-container input{
-    width: 10%;
+    width: 25px;
 }
 
-.shipment-option-container-ar input{
-    width: 10%;
+.supplier-add-offer{
+    text-align: right;
+    font-family: var(--font-arabic);
+    border-radius: 0.3rem;
+    border: 1px solid var(--main-color);
+    padding: 0.2rem;
+    width: 95%;
+    margin: 0.3rem auto;
 }
 
-/* .shipment-option-container-ar label{
-    margin-left: -20rem;
-} */
-
-.pages-btns-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    justify-items: center;
-}
-
-.prev-btn{
-    background-color: transparent;
-    border: 1px solid var(--background);
-    font-family: var(--font-family-arabic);
-}
-
-.next-btn{
-    background-color: transparent;
-    border: 1px solid var(--font-color);
-    font-family: var(--font-family-arabic);
+.submit-offer-btn{
+    padding: 0.2rem;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--secondary-color);
+    font-family: var(--font-arabic);
+    width: 50%;
+    margin: 0.2rem 5rem;
 }
 
 .no-request-text-container{
+    margin: 10rem auto 25rem auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    justify-items: center;
-    margin-top: 15rem;
-    margin-bottom: 50rem;
+    align-items: center;
 }
 
-.no-request-text-container p {
-    font-family: var(--font-family-arabic);
-}
-
-.shipping-name-container p {
-    margin: auto;
+.no-request-text-container p{
     text-align: center;
-    font-family: var(--font-family-arabic);
-    font-style: oblique;
-    color: var(--font-color);
-    font-size: 14px;
+    font-family: var(--font-arabic);
+    font-weight: bold;
+    font-size: 18px;
 }
 
-.request-action-container{
-    display: grid;
-    grid-template-columns: auto auto;
-    place-items: center;
-    gap: 2px;
+.no-order-btns-cars{
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--secondary-color);
+    padding: 0.3rem;
+    font-family: var(--font-arabic);
+    width: 70%;
+    margin: 2rem 3.5rem;
 }
 
-.shipping-btn{
-    background-color: var(--font-color);
-    border: 1px solid var(--font-color);
-    font-family: var(--font-family-arabic);
-    color: white;
-}
-
-.shipping-cancel-btn{
-    background-color: transparent;
-    border: 1px solid var(--background);
-    font-family: var(--font-family-arabic);
-    color: var(--font-color);
-    width: 80%;
+.no-order-btns-vehicles{
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--third-color);
+    padding: 0.3rem;
+    font-family: var(--font-arabic);
+    width: 70%;
+    margin: 2rem 3.5rem;
 }
 
 .amount{
     text-align: center;
-    font-family: var(--font-family-arabic);
+    font-family: var(--font-arabic);
+    font-weight: 200;
 }
 
-.canel-request-btn-container{
-    margin-left: 7.4rem;
+
+.shipping-name-container p{
+    text-align: center;
+    font-family: var(--font-arabic);
 }
 
-.canel-request-btn-container button {
-    background-color: var(--background);
-    border: 2px dotted var(--background);
-    color: white;
-}
 
-.offers-container{
-    display: grid;
-    grid-template-columns: auto;
-    place-items: center;
-    gap: 2px;
-    margin-top: 2rem;
-}
-
-.main-offer-container{
-    border: 1px solid var(--font-color);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-}
-
-.main-offer-info-container{
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 2px;
-    place-items: center;
-}
-
-.accept-btn{
-    width: 100%;
-    background-color: transparent;
-    border: 1px solid var(--font-color);
-    margin-top: 2rem;
-    font-family: var(--font-family-arabic);
-    color: var(--background);
-}
-
-.reject-btn{
-    width: 100%;
-    background-color: transparent;
-    border: 1px solid var(--background);
-    margin-top: 2rem;
-    font-family: var(--font-family-arabic);
-    color: var(--font-color);
-}
 
 @media only screen and (min-width:735px) {
     .all-requests-container{
-        grid-template-columns: auto auto auto;
-    }
-    .all-requests-inner-container{
-        width: 80%;
-    }
-    .arrow{
-        top: -0.2rem;
-        left: 14rem;
-    }
-    .arrow-arabic{
-        left: 7rem;
-    }
-    .shipment-option-container-ar input{
-        width: 10%;
-    }
-    .offers-container{
-        grid-template-columns: auto auto auto;
-    }
-    .canel-request-btn-container{
-        margin-left: 43rem;
-    }
-}
-
-@media only screen and (min-height:1024px) {
-    .all-requests-container{
+        display: grid;
         grid-template-columns: auto auto;
+        place-content: center;
+        gap: 7rem;
     }
-    .all-requests-inner-container{
-        width: 80%;
+    .description-text{
+        text-align: center;
+        font-weight: 600;
+        color: #003e54;
     }
-    .arrow{
-        top: -0.2rem;
-        left: 10rem;
-    }
-    .arrow-arabic{
-        left: 4rem;
-    }
-}
 
-@media only screen and (min-height:1366px) {
-    .all-requests-container{
-        grid-template-columns: auto auto;
+    .no-request-text-container{
+        margin-bottom: 35rem;
     }
-    .all-requests-inner-container{
-        width: 80%;
-    }
-    .arrow{
-        top: -0.2rem;
-        left: 10rem;
-    }
-    .arrow-arabic{
-        left: 7rem;
+
+    .no-order-btns-cars, .no-order-btns-vehicles{
+        display: block;
+        width: 30%;
+        margin: 2rem 33rem;
     }
 }

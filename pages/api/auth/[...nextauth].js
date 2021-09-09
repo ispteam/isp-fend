@@ -16,10 +16,10 @@ export default NextAuth({
         Provider.Credentials({
             async authorize(credentials, req){  
                 const client = await createConnection({
-                    user: "gK0PZY7s9a",
-                    database: "gK0PZY7s9a",
-                    host: "remotemysql.com",
-                    password: "dwXKDVGrza",
+                    user: "sql6435325",
+                    database: "sql6435325",
+                    host: "sql6.freesqldatabase.com",
+                    password: "fseN4kDkzB",
                 });
                 if(credentials.admin){
                     const [rows, fields] = await client.execute("SELECT uid, name, email, userType FROM users_info INNER JOIN admins ON users_info.uid = admins.adminId WHERE enterId = ? AND userType = 0;", [credentials.enteryId]);

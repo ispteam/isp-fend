@@ -17,9 +17,9 @@ import ModalDetails from "./ModalDetails";
 import generalActions from "stores/actions/generalActions";
 
 
-const TABLE_CLIENTS_HEADERS = ["Name", "Name(AR)", "Eamil", "Details"];
+const TABLE_CLIENTS_HEADERS = ["Name", "Eamil", "Details"];
 
-const ClientsDashboard = ({token, moderator}) => {
+const ClientsDashboard = ({token, moderator, sesson}) => {
 
       /**
      * ======================
@@ -27,7 +27,6 @@ const ClientsDashboard = ({token, moderator}) => {
      * ======================
      */
 
-  const [session, setSession] = useState();
   const router = useRouter();
   const clients = useSelector((state) => state.clientsReducer);
   const [clientsOrder, setClientsOrder] = useState([]);
@@ -45,11 +44,6 @@ const ClientsDashboard = ({token, moderator}) => {
     idx: ''
   });
 
-  useEffect(async()=>{
-    const session = await getSession();
-    setSession(session);
-    dispatch(generalActions.closeNavMenu());
-  }, [])
 
   useEffect(()=>{
     setClientsOrder(clients.clients);
@@ -60,10 +54,9 @@ const ClientsDashboard = ({token, moderator}) => {
   const submitHandler = async (ignored, ignored2, datas) => {
     try {
       dispatch(generalActions.emptyState());
-      dispatch(generalActions.sendRequest("Updating.."))
+      dispatch(generalActions.sendRequest("Updating.."));
       const validateEmailMessage = validateAccountsInput(datas.account.email, false, false, true, false, false);
-      const validateNameMessage = validateAccountsInput(datas.account.name,false,true,false,false,false);
-      const validateNameArabicMessage = validateAccountsInput(datas.account.nameInArabic,true,false,false,false,false);
+      const validateNameMessage = validateAccountsInput(datas.account.name,false,false,false,false,false, false, false, false, false, false, false, false, false, false, false, false, true);
       const validatePhoneMessage = validateAccountsInput(datas.account.phone,false,false,false,true,false);
       if (validateEmailMessage.length > 0) {
         dispatch(generalActions.changeValidation(validateEmailMessage));
@@ -71,16 +64,12 @@ const ClientsDashboard = ({token, moderator}) => {
       if (validateNameMessage.length > 0) {
         dispatch(generalActions.changeValidation(validateNameMessage));
       }
-      if (validateNameArabicMessage.length > 0) {
-        dispatch(generalActions.changeValidation(validateNameArabicMessage));
-      }
       if (validatePhoneMessage.length > 0) {
         dispatch(generalActions.changeValidation(validatePhoneMessage));
       }
       if (
         validateEmailMessage.length > 0 ||
         validateNameMessage.length > 0 ||
-        validateNameArabicMessage.length > 0 ||
         validatePhoneMessage.length > 0
       ) {
         dispatch(generalActions.showValidationMessages());
@@ -96,7 +85,6 @@ const ClientsDashboard = ({token, moderator}) => {
           uid: session.user.name.id,
           clientId: datas.clientId,  
           name: datas.account.name,
-          nameInArabic: datas.account.nameInArabic,
           email: datas.account.email,
           phone: datas.account.phone,
         }),
@@ -226,12 +214,12 @@ const ClientsDashboard = ({token, moderator}) => {
 
   return <Fragment>
 
-        <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+        <div className="grid-data-details-container">
             <GridData
             icon={<BsHash size={25} color="white" />}
             title="Total numbers of registered clients"
             link="/en/admin/clients"
-            children={clients.clients.length}
+            data={clients.clients.length}
             />
         </div>
 
@@ -251,12 +239,12 @@ const ClientsDashboard = ({token, moderator}) => {
             <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
             <label htmlFor="sort">DESC</label>
           </div>
-          <div className="search-input english">
-            <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel'/>
+          <div className="search-input">
+            <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel' className="english-input"/>
           </div>
 
           
-        {data !== null &&  <ModalDetails client={true} info={data} remove={removeHandler} title={"Manage Client"} update={submitHandler}/> }
+        {data !== null &&  <ModalDetails setDatas={setData} client={true} info={data} remove={removeHandler} title={"Manage Client"} update={submitHandler}/> }
     
     <Table
         headers={TABLE_CLIENTS_HEADERS.map((header) => (
@@ -266,19 +254,17 @@ const ClientsDashboard = ({token, moderator}) => {
       >
         {!searchedValue.showSearchedValue ? clientsOrder.length > 0 && clientsOrder[0].account != null && clientsOrder.sort().map((client, idx) => {
           return (
-            <Fragment>
+            <Fragment key={client.clientId}>
               <tr key={client.clientId}>
                 <Td key={client.account.name} value={client.account.name}/>
-                <Td key={client.account.nameInArabic} value={client.account.nameInArabic} className={"font-arabic"}/>
                 <Td key={client.account.email} value={client.account.email}/>
-                <Td value= {<Button disabled={generalReducer.toggleModalDetails ? true : false} onClick={()=>toggleModalDetails(idx)}>Show</Button>} />
+                <Td value= {<Button className="btn-details-admin" disabled={generalReducer.toggleModalDetails ? true : false} onClick={()=>toggleModalDetails(idx)}>Show</Button>} />
               </tr>
             </Fragment>
           );
         }) : searchedValue.value && <Fragment>
         <tr key={searchedValue.value.clientId}>
         <Td key={searchedValue.value.account.name} value={searchedValue.value.account.name}/>
-        <Td key={searchedValue.value.account.nameInArabic} value={searchedValue.value.account.nameInArabic}/>
         <Td key={searchedValue.value.account.email} value={searchedValue.value.account.email}/>
         <Td value= {<Button disabled={generalReducer.toggleModalDetails ? true : false} onClick={()=>toggleModalDetails(searchedValue.idx)}>Show</Button>} />
       </tr>

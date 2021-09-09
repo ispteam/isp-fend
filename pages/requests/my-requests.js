@@ -16,11 +16,11 @@ const MyRequests = (props) => {
           const formattedRequests = formatRecordsAddress(props.requests);
           dispatch(requestsActions.addAllRequests(formattedRequests, props.length, ( props.length - props.requests.length )));
     }, []);
-    return <SharedNavLayout navList={generalReducer.clientNavArabic} logoLink={"/"} footerInnerValue={<InnerFooter arabic={true}/>} client={true} arabic={true}> 
+    return <SharedNavLayout navList={generalReducer.clientNavArabic} session={props.session} logoLink={"/"} footerInnerValue={<InnerFooter arabic={true}/>} client={true} arabic={true}> 
       <Head>
         <title>طلباتي</title>
       </Head>
-      <AllRequests arabic={true}/>
+      <AllRequests arabic={true} token={props.token} session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -73,10 +73,14 @@ export async function getServerSideProps(context){
         }
     }
 
+   
+
     return {
         props:{
             requests: response.requests,
-            length: response.length
+            length: response.length,
+            session: session,
+            token: token
         }
     }
 }

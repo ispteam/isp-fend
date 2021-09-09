@@ -13,28 +13,25 @@ import generalActions from "stores/actions/generalActions";
 import Feedback from "components/reusable/Feedback";
 import moderatorsActions from "stores/actions/moderatorActions";
 
-const TABLE_MODERATORS_HEADERS = ["Name", "Name(AR)", "Eamil", "Phone", "Details"];
+const TABLE_MODERATORS_HEADERS = ["Name", "Eamil", "Phone", "Details"];
 
-const ModeratorsDashboard = ({token}) => {
+const ModeratorsDashboard = ({token, session}) => {
     /**
      * ======================
      * NOTE: IF THERE IS NO COMMENT IN ANY FUNCTION, OR ANY THING RELATED THAT IS MEAN IT WAS EXPLAINED IN THE SUPPLIERS COMPONENT
      * ======================
      */
 
-     const [session, setSession] = useState();
      const moderators = useSelector((state) => state.moderatorReducer);
      const [moderatorsOrder, setModeratorOrder] = useState([]);
      const generalReducer = useSelector((state) => state.generalReducer);
      const dispatch = useDispatch();
      const [data, setData] = useState(null);
-     const [isBigDevice, setIsBigDevice]= useState(false);
      const [filtering, setFiltering] = useState({
        order: false,
      });
      const [newModeratorInfo, setNewModeratorInfo] = useState({
          name: '',
-         nameInArabic: '',
          email: '',
          password:'',
          phone: ''
@@ -48,16 +45,6 @@ const ModeratorsDashboard = ({token}) => {
    
    
    
-     useEffect(async()=>{
-       const session = await getSession();
-       setSession(session);
-       dispatch(generalActions.closeNavMenu());
-       const media = matchMedia('(min-width:735px)')
-       if(media.matches){
-           setIsBigDevice(true);
-       }
-   },[])
-
    
    useEffect(()=>{
      setModeratorOrder(moderators.moderators);
@@ -82,13 +69,12 @@ const ModeratorsDashboard = ({token}) => {
          let data;
          let validateEmailMessage;
          let validateNameMessage;
-         let validateNameArabicMessage;
          let validatePhoneMessage;
          let validatePasswordMessage;
          if(newModerator){
+           dispatch(generalActions.changeMood("profile"));
            validateEmailMessage = validateAccountsInput(newModeratorInfo.email, false, false, true, false, false);
-           validateNameMessage = validateAccountsInput(newModeratorInfo.name,false,true,false,false,false);
-           validateNameArabicMessage = validateAccountsInput(newModeratorInfo.nameInArabic,true,false,false,false,false);
+           validateNameMessage = validateAccountsInput(newModeratorInfo.name,false,false,false,false,false, false, false, false, false, false, false, false, false, false, false, false, true);
            validatePhoneMessage = validateAccountsInput(newModeratorInfo.phone,false,false,false,true,false);
            validatePasswordMessage = validateAccountsInput(newModeratorInfo.password,false,false,false,false,false, false, true);
            if (validatePasswordMessage.length > 0) {
@@ -96,8 +82,7 @@ const ModeratorsDashboard = ({token}) => {
            }
          }else{
            validateEmailMessage = validateAccountsInput(datas.account.email, false, false, true, false, false);
-           validateNameMessage = validateAccountsInput(datas.account.name,false,true,false,false,false);
-           validateNameArabicMessage = validateAccountsInput(datas.account.nameInArabic,true,false,false,false,false);
+           validateNameMessage = validateAccountsInput(datas.account.name,false,false,false,false,false, false, false, false, false, false, false, false, false, false, false, false, true);
            validatePhoneMessage = validateAccountsInput(datas.account.phone,false,false,false,true,false);
          }
          if (validateEmailMessage.length > 0) {
@@ -106,9 +91,6 @@ const ModeratorsDashboard = ({token}) => {
          if (validateNameMessage.length > 0) {
            dispatch(generalActions.changeValidation(validateNameMessage));
          }
-         if (validateNameArabicMessage.length > 0) {
-           dispatch(generalActions.changeValidation(validateNameArabicMessage));
-         }
          if (validatePhoneMessage.length > 0) {
            dispatch(generalActions.changeValidation(validatePhoneMessage));
          }
@@ -116,7 +98,6 @@ const ModeratorsDashboard = ({token}) => {
            validatePasswordMessage != null && validatePasswordMessage.length > 0 ||
            validateEmailMessage.length > 0 ||
            validateNameMessage.length > 0 ||
-           validateNameArabicMessage.length > 0 ||
            validatePhoneMessage.length > 0
          ) {
            dispatch(generalActions.showValidationMessages());
@@ -132,7 +113,6 @@ const ModeratorsDashboard = ({token}) => {
            body: JSON.stringify({
                uid: session.user.name.id,
                name: newModeratorInfo.name,
-               nameInArabic: newModeratorInfo.nameInArabic,
                email: newModeratorInfo.email,
                password: newModeratorInfo.password,
                phone: newModeratorInfo.phone,
@@ -149,7 +129,6 @@ const ModeratorsDashboard = ({token}) => {
              uid: session.user.name.id,
              moderatorId: datas.moderatorId,  
              name: datas.account.name,
-             nameInArabic: datas.account.nameInArabic,
              email: datas.account.email,
              phone: datas.account.phone,
            }),
@@ -180,7 +159,6 @@ const ModeratorsDashboard = ({token}) => {
            }));
            setNewModeratorInfo({
              name: '',
-             nameInArabic: '',
              password: '',
              email: '',
              phone: ''
@@ -297,35 +275,33 @@ const ModeratorsDashboard = ({token}) => {
 
      return <Fragment>
 
-    <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+    <div className="grid-data-details-container">
         <GridData
         icon={<BsHash size={25} color="white" />}
         title="Total numbers of moderators"
         link="/en/admin/moderators"
-        children={moderators.moderators.length}
+        data={moderators.moderators.length}
         />
     </div>
     <br/> <br />
 
-    <form className= "form-auth-container english" style={{width: isBigDevice ? '20%' : ''}}>
-            <input type="text" name="name"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="Name"/>
-            <input type="text" name="nameInArabic"   onChange={(e)=>changeNewModeratorHandler(e)} placeholder="Name Arabic"/>
-            <input type="email" name="email"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="email"/>
-            <input type="password" name="password"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="password"/>
-            <input type="phone" inputMode="tel" name="phone"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="Phone 966.." minLength="10" maxLength="13"/>
+    <form className= "form-add-brand-container">
+            <input type="text" name="name" className="english-input"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="Name"/>
+            <input type="email" name="email" className="english-input"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="email"/>
+            <input type="password" name="password" className="english-input"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="password"/>
+            <input type="phone" inputMode="tel" className="english-input" name="phone"  onChange={(e)=>changeNewModeratorHandler(e)} placeholder="Phone 966xxx" minLength="10" maxLength="13"/>
             <button onClick={(e)=>submitHandler(true, e)}>Register Moderator</button>
-            <Feedback />
     </form>
 
     <div className="sort-option-container">
             <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
             <label htmlFor="sort">DESC</label>
           </div>
-          <div className="search-input english">
-        <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel'/>
-    </div>
+          <div className="search-input">
+            <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Phone..+966" inputMode='tel' className="english-input"/>
+      </div>
       <br /> <br />
-    {data !== null &&  <ModalDetails client={true} info={data} remove={removeHandler} title={"Manage Client"} update={submitHandler}/> }
+    {data !== null &&  <ModalDetails setDatas={setData} client={true} info={data} remove={removeHandler} title={"Manage Moderators"} update={submitHandler}/> }
 
     <Table
         headers={TABLE_MODERATORS_HEADERS.map((header) => (
@@ -335,10 +311,9 @@ const ModeratorsDashboard = ({token}) => {
       >
         {!searchedValue.showSearchedValue ? moderatorsOrder.length > 0 && moderatorsOrder[0].account != null && moderatorsOrder.sort().map((moderator, idx) => {
           return (
-            <Fragment>
+            <Fragment key={moderator.moderatorId}>
               <tr key={moderator.moderatorId}>
                 <Td key={moderator.account.name} value={moderator.account.name}/>
-                <Td key={moderator.account.nameInArabic} value={moderator.account.nameInArabic} className={"font-arabic"}/>
                 <Td key={moderator.account.email} value={moderator.account.email}/>
                 <Td key={moderator.account.phone} value={moderator.account.phone}/>
                 <Td value= {<Button disabled={generalReducer.toggleModalDetails ? true : false} onClick={()=>toggleModalDetails(idx)}>Show</Button>} />
@@ -348,7 +323,6 @@ const ModeratorsDashboard = ({token}) => {
         }) : searchedValue.value && <Fragment>
         <tr key={searchedValue.value.moderatorId}>
         <Td key={searchedValue.value.account.name} value={searchedValue.value.account.name}/>
-        <Td key={searchedValue.value.account.nameInArabic} value={searchedValue.value.account.nameInArabic}/>
         <Td key={searchedValue.value.account.email} value={searchedValue.value.account.email}/>
         <Td key={searchedValue.value.account.phone} value={searchedValue.value.account.phone}/>
         <Td value= {<Button disabled={generalReducer.toggleModalDetails ? true : false} onClick={()=>toggleModalDetails(searchedValue.idx)}>Show</Button>} />

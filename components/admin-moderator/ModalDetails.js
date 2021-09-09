@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import generalActions from "stores/actions/generalActions";
 import generalReducer from "stores/reducers/generalReducer";
 
-const ModalDetails = ({client ,supplier, brands, request ,info, title, update, remove, manageSupplier}) => {
+const ModalDetails = ({client ,supplier, brands, request ,info, title, update, remove, manageSupplier, acceptUpdate, rejectUpdate, setDatas}) => {
     const generalReducer = useSelector(state=>state.generalReducer);
     const [data, setData] = useState(info);
     const dispatch= useDispatch();
@@ -35,13 +35,14 @@ const ModalDetails = ({client ,supplier, brands, request ,info, title, update, r
         dispatch(generalActions.toggleModalDetails());
         dispatch(generalActions.emptyState());
         tableContainer.style.opacity = '1';
+        setDatas(null)
     }
 
-    return <div className={generalReducer.toggleModalDetails ? "modal-container-info show-in-table" : "modal-container-info"}>
+    return <div className={generalReducer.toggleModalDetails ? "modal-container-info show-in-table animate__bounceInDown" : "modal-container-info"}>
         <div className="header-modal-container">
             <h3 className="login-title english" style={{fontSize:'18px'}}>{title}</h3>
         </div>
-        <form>
+        <form className="form-modal-details">
             {brands ?
                 <Fragment>
                   <div className={"form-inner-container english"}>
@@ -69,15 +70,42 @@ const ModalDetails = ({client ,supplier, brands, request ,info, title, update, r
                         <input type="text" name="name" value={data.account.name} onChange={(e)=>changeHandler(e)}/>
                     </div>
                     <div className={"form-inner-container english"}>
-                        <label className={"english"} style={{fontSize:'15px'}}>Name(AR)</label>
-                        <input type="text" name="nameInArabic" value={data.account.nameInArabic} onChange={(e)=>changeHandler(e)}/>
-                    </div>
-                    <div className={"form-inner-container english"}>
                         <label className={"english" } style={{fontSize:'15px'}}>Phone</label>
                         <input type="text" name="phone" value={data.account.phone} onChange={(e)=>changeHandler(e)} inputMode='tel'/>
                     </div>
                 </Fragment>
-                : <Fragment>
+                : supplier ? 
+                    <Fragment>
+                        <div className={"form-inner-container english"}>
+                            <label className={"english"} style={{fontSize:'15px'}}>Email</label>
+                            <input type="email" name="email" value={data.account.email} onChange={(e)=>changeHandler(e)}/>
+                        </div>
+                        <div className={"form-inner-container english"}>
+                            <label className={"english"} style={{fontSize:'15px'}}>Name</label>
+                            <input type="text" name="name" value={data.account.name} onChange={(e)=>changeHandler(e)}/>
+                        </div>
+                        <div className={"form-inner-container english"}>
+                            <label className={"english" } style={{fontSize:'15px'}}>Phone</label>
+                            <input type="text" name="phone" value={data.account.phone} onChange={(e)=>changeHandler(e)} inputMode='tel'/>
+                        </div>
+                        <div className={"form-inner-container english" }>
+                            <label className="english"  style={{fontSize:'15px'}}>Company/Shop Name In English</label>
+                            <input type="text" name="companyInEnglish" value={data.companyInEnglish} onChange={(e)=>changeHandler(e)}/>
+                        </div>
+                        <div className="form-inner-container english" >
+                            <label className="english" style={{fontSize:'15px'}}>Comapny/Shop Name In Arabic</label>
+                            <input type="text" name="companyInArabic" value={data.companyInArabic} onChange={(e)=>changeHandler(e)}/>
+                        </div>
+                        {/* <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+                            <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Requests completed time' : 'عدد الطلبات المكتلمة'}</label>
+                            <input type="text" name="completedRequests" disabled={true} value={data.cancelTimes} onChange={(e)=>changeHandler(e)}/>
+                        </div> */}
+                        <div className="form-inner-container english" >
+                            <label className="english" style={{fontSize:'15px'}}>Requests cancelations time</label>
+                            <input type="text" name="cancelationsTime" disabled={true} value={data.cancelTimes} onChange={(e)=>changeHandler(e)}/>
+                        </div>
+                    </Fragment>
+                :<Fragment>
                 <div>
                 <h2 className="english" style={{color:data.requestStatus == "0" ? "#dc268a" 
                 : data.requestStatus == "1" ? "#2563eb" 
@@ -166,26 +194,6 @@ const ModalDetails = ({client ,supplier, brands, request ,info, title, update, r
                 </form>
                 </Fragment>
             }
-            {supplier && 
-                <Fragment>
-                    <div className={"form-inner-container english" }>
-                        <label className="english"  style={{fontSize:'15px'}}>Company/Shop Name In English</label>
-                        <input type="text" name="companyInEnglish" value={data.companyInEnglish} onChange={(e)=>changeHandler(e)}/>
-                    </div>
-                    <div className="form-inner-container english" >
-                        <label className="english" style={{fontSize:'15px'}}>Comapny/Shop Name In Arabic</label>
-                        <input type="text" name="companyInArabic" value={data.companyInArabic} onChange={(e)=>changeHandler(e)}/>
-                    </div>
-                    {/* <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
-                        <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Requests completed time' : 'عدد الطلبات المكتلمة'}</label>
-                        <input type="text" name="completedRequests" disabled={true} value={data.cancelTimes} onChange={(e)=>changeHandler(e)}/>
-                    </div> */}
-                    <div className="form-inner-container english" >
-                        <label className="english" style={{fontSize:'15px'}}>Requests cancelations time</label>
-                        <input type="text" name="cancelationsTime" disabled={true} value={data.cancelTimes} onChange={(e)=>changeHandler(e)}/>
-                    </div>
-                </Fragment>
-            }
         </form>
             <div className="action-btns-container">
                 {!request && 
@@ -195,11 +203,18 @@ const ModalDetails = ({client ,supplier, brands, request ,info, title, update, r
                     <button className="remove english" onClick={()=>remove(data)}>Remove</button>
                 : supplier ? 
                     <Fragment>
+                        {
+                            data.updateRequest == 1 && 
+                            <Fragment>
+                            <button className="update english" onClick={()=>acceptUpdate(data)}>Accept Update</button>
+                            <button className="remove english" onClick={()=>rejectUpdate(data)}>Reject Update</button>
+                            </Fragment>
+                        }
                         {data.verified == 1 ? 
                             <button className="remove english" onClick={()=>manageSupplier(data.supplierId, false, true, data.account.email)}>Suspend</button>
                         : data.verified == 2 ? 
                             <button className="update english" onClick={()=>manageSupplier(data.supplierId, true, false, data.account.email)}>Verify</button>
-                        : null
+                        : null 
                         }
                     </Fragment>
                 : null
@@ -207,7 +222,6 @@ const ModalDetails = ({client ,supplier, brands, request ,info, title, update, r
 
                 <button className="close english" onClick={closeModal}>Close</button>
             </div>
-            <Feedback />
     </div>
 }
 

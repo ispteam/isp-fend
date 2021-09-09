@@ -1,103 +1,104 @@
-import { useEffect, useState } from "react";
-import Link from 'next/link'
-const Landing = ({arabic}) => {
-    const [headerIcon, setHeaderIcon] = useState([
-            {
-                imgPath: '/imgs/wheel.svg',
-                imgDesc: 'كفرات',
-                imgDescEn: 'Wheels'
-            },
-            {
-                imgPath: '/imgs/battery.svg',
-                imgDesc: 'بطاريات',
-                imgDescEn: 'Batteries'
-            },
-            {
-                imgPath:'/imgs/shock.svg',
-                imgDesc:'ممتص صدمات',
-                imgDescEn: 'Shocks Absorber'
-            },
-            {
-                imgPath:'/imgs/fender.svg',
-                imgDesc:'رفرف',
-                imgDescEn:'Fenders'
-            },
-            {
-                imgPath:'/imgs/engine.svg',
-                imgDesc:'محركات',
-                imgDescEn:'Engines'
-            },
-            {
-                imgPath:'/imgs/spark.svg',
-                imgDesc:'بواجي',
-                imgDescEn: 'Spark Plug'
+import {useState } from "react";
+import { useSelector } from "react-redux";
+import LandingAddRequestForm from "./LandingForm";
+import Steps from "./Steps";
+import {useRouter} from 'next/router';
+const Landing = ({arabic, session}) => {
+        const generalReducer = useSelector(state=>state.generalReducer);
+        const router = useRouter();
+
+        const [option, setOption] = useState(null);
+        const [brands, setBrands] = useState([]);
+        const [yearsList, setYearsList] = useState([]);
+        const [suppliersEmails, setSuppliersEmail] = useState([]);
+
+        const chooseOption = async (opt) => {
+            try{  
+                const headerContainer = document.querySelector(".header-container");
+                const formContainer = document.querySelector(".form-landing-container");
+                const nextStep = document.querySelector(".next-step-landing");
+                const addressForm = document.querySelector(".address-landing-container");
+                const nextStepButton = document.querySelector(".next-step-landing");
+                const submitBtn = document.querySelector(".submit-step-landing");
+                let registrationLandingForm= null;
+                if(!session){
+                    registrationLandingForm = document.querySelector('.registration-landing-form');
+                    registrationLandingForm.style.display = "none";
+                }
+                addressForm.style.display = "none";
+                nextStepButton.style.display = "none";
+                submitBtn.style.display = "none";
+                setOption(opt);
+                let data, response;
+                if(window.screen.width >= 735){
+                    if(!session){
+                        headerContainer.style.height = "220vh";
+                    }else{
+                        headerContainer.style.height = "145vh";
+                    }
+                }else{
+                    if(!session){
+                        headerContainer.style.height = "255vh";
+                    }else{
+                        headerContainer.style.height = "165vh";
+                    }
+                }
+                formContainer.style.display = "grid";
+                nextStep.style.display = "block";
+                if(opt == "cars"){
+                    const currentYear = new Date().getFullYear();
+                    if(yearsList.length < 1){
+                        for(let i= 1995; i<= currentYear; i++){
+                            yearsList.push(i);
+                        }
+                    }
+                    data = await fetch(`${generalReducer.ENDPOINT}/brand/brands-type/cars`);
+                    const allSuppliersEmails = await fetch(`${generalReducer.ENDPOINT}/supplier/suppliers-emails/all`);
+                    const responseEmails = await allSuppliersEmails.json();
+                    setSuppliersEmail(suppliersEmails.concat(responseEmails.emails));
+                }else{
+                    data = await fetch(`${generalReducer.ENDPOINT}/brand/brands-type/big vehicles`);
+                    const emailsData = await fetch(`${generalReducer.ENDPOINT}/supplier/suppliers-emails/vehicles`);
+                    const responseEmails = await emailsData.json();
+                    setSuppliersEmail(suppliersEmails.concat(responseEmails.emails));
+                }
+                response = await data.json();
+                setBrands(response.brands.map(br=>({
+                    key: br.brandId,
+                    value: br.brandId,
+                    text: br.brandName + "-" + br.brandNameInArabic
+                })));
+            }catch(err){
+                console.log(err.message);
             }
-        ]);
-        const [steps, setSteps] = useState([
-            {
-                step:'اكتب طلبك',
-                stepEn: 'Write your request',
-                icon: '/imgs/form.svg'
-            },
-            {
-                step:'راقب العروض',
-                stepEn: 'Observe offers',
-                icon: '/imgs/observe.svg'
-            },
-            {
-                step:'اختر العرض',
-                stepEn: 'Choose an offer',
-                icon: '/imgs/select.svg'
-            },
-            {
-                step:'تم التأكيد',
-                stepEn: 'Confirm an offer',
-                icon: '/imgs/check.svg'
-            },
-            {
-                step:'في الشحن',
-                stepEn: 'In shipping',
-                icon: '/imgs/shipment.svg'
-            },
-            {
-                step:'استلم طلبك',
-                stepEn: 'Take request',
-                icon: '/imgs/take.svg'
-            }
-        ])
-
-
-
-    return <section>
-        <header className="header">
-            {headerIcon.map(header=>(
-            <div key={header.imgPath}>
-                <div className="img-container">
-                    <img src={header.imgPath} alt={header.imgDesc} width="65" height="65"/>
-                </div>
-                {!arabic ? <h1 className="img-text english">{header.imgDescEn}</h1> : <h1 className="img-text">{header.imgDesc}</h1> }
-            </div>
-        )) 
         }
-        </header>
-        {!arabic ? <h3 className="title english" style={{fontSize: !arabic && '25px'}}>And many spare parts</h3> : <h3 className="title">والعديد من قطع الغيار</h3>}
+
+
+
         
-        <div className="step-title-container">
-            <span style={{borderRight:'2px solid black', margin:"1rem"}}></span>
-            <span className={!arabic ? "title english step-title-text" : "title step-title-text"}>{!arabic ? "What Are The Order Steps?" : "ماهي خطوات الطلب؟"}</span>
-            <span style={{borderLeft: '2px solid black', margin:"1rem"}}></span>
-        </div>
-        <hr style={{marginRight:"2rem", marginLeft:"2rem", marginTop:"6rem"}}/>
-        <section className="steps">
-            {steps.map(step=>(
-                <div key={step.stepEn}>
-                    <h3 className={!arabic ? "step-title english" : "step-title" }>{!arabic? step.stepEn : step.step}</h3>
-                    <div className="step-img-container">
-                        <img src={step.icon} width="100"/>
-                    </div>
+
+
+
+    return <section className="landing-section-container">
+            <header className="header-container">
+                <h1 className={!arabic ? ' animate__bounce english' : 'animate__bounce'}>{!arabic ? 'Order Now' : 'اطلب قطعتك الان' }</h1>
+                <LandingAddRequestForm arabic={arabic} option={option} brands={brands} yearsList= {yearsList} chooseOption={chooseOption} session={session} suppliersEmails={suppliersEmails}/>      
+            </header>
+        <div style={{backgroundColor:'#ebebeb'}}>
+            <div className="step-title-container animate__lightSpeedInLeft">
+                <span style={{borderRight:'2px solid black', margin:"1rem"}}></span>
+                <span className={!arabic ? "step-title-text-english" : "title step-title-text"}>{!arabic ? "What Are The Order Steps?" : "ماهي خطوات الطلب؟"}</span>
+                <span style={{borderLeft: '2px solid black', margin:"1rem"}}></span>
             </div>
-            ))}
-        </section>
+        </div>
+        <Steps arabic={arabic}/>
+        <div className="order-now-landing-container">
+            <h1 style={{color:'#1d1d1d'}} className={!arabic ? ' animate__bounce english' : 'animate__bounce'}>{!arabic ? 'Order Now' : 'اطلب قطعتك الان' }</h1>
+            <div className="btn-order-now-landing-container">
+                <button onClick={!arabic ? ()=> router.push("/en/requests/cars") : ()=> router.push("/requests/cars")} className={!arabic ? 'english' : ''}>{!arabic ? 'Cars' : 'سيارات'}</button>
+                <button onClick={!arabic ? ()=> router.push("/en/requests/vehicles") : ()=> router.push("/requests/vehicles")} className={!arabic ? 'english' : ''}>{!arabic ? 'Heavy vehicles' : 'مركبات ثقيلة'}</button>
+            </div>
+        </div>
     </section>
 }
 

@@ -1,8 +1,9 @@
 import ListItem from "./ListItem";
 import {RiMenu5Line} from 'react-icons/ri';
-import {AiOutlineArrowUp} from 'react-icons/ai';
+import {AiOutlineArrowUp, AiOutlineClose} from 'react-icons/ai';
+import {HiMenuAlt3} from 'react-icons/hi';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {useSession, signOut, getSession} from 'next-auth/client';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from "react-redux";
@@ -12,47 +13,19 @@ import generalActions from "stores/actions/generalActions";
 
 
 
-const MainNavbar = ({navList, logoLink, client, supplier, arabic, disable, admin}) => {
+const MainNavbar = ({navList, logoLink, client, supplier, arabic, admin, session}) => {
     const dispatch= useDispatch();
     //Just to open and close the menu [! ONLY FOR SMALL SCREEN !]
     const [show, setShow] = useState(false);
     //To specify the screen of the device whether a mobile or not [INITIALLY IS TRUE WHIC MEANS IT IS A DEVICE]
     const [isMobile, setIsMobile]= useState(true);
     //To check if there is a user or not 
-    const [session, setSession] = useState();
 
 
     const generalReducer = useSelector((state)=>state.generalReducer);
 
-    let REMAIINIG_TIME = 3600000;
+    const REMAIINIG_TIME = useRef(3600000);
 
-    useEffect(()=>{
-        const iconUp = document.querySelector(".up-icon");
-        addEventListener('scroll', ()=>{
-            if(window.scrollY >= 70){
-                iconUp.style.display = "block"
-            }else if(window.screenY < 70){
-                iconUp.style.display = "none";
-            }
-        })
-    }, []);
-
-    useEffect(async ()=>{
-        const session = await getSession();
-        setSession(session);
-    }, []);
-
-
-    //To check if the user enters the page after more than one hour after refresh the page
-    // useEffect(()=>{
-    //     if(session){
-    //         const hourTime = new Date().getTime() + 3600000;
-    //         const sessionTime = new Date(session.expires).getTime();
-    //         if(hourTime > sessionTime){
-    //             signOutHandler();
-    //         }
-    //     }
-    // },[session]);
 
 
     // To log the user out automatically after 1 hour
@@ -62,9 +35,9 @@ const MainNavbar = ({navList, logoLink, client, supplier, arabic, disable, admin
         }
         if(session){
         const timer = setInterval(()=>{
-            REMAIINIG_TIME =  localStorage.getItem("remainingTime") - 60000;
-            localStorage.setItem("remainingTime", REMAIINIG_TIME);
-            if(REMAIINIG_TIME < 1000){
+            REMAIINIG_TIME.current =  localStorage.getItem("remainingTime") - 60000;
+            localStorage.setItem("remainingTime", REMAIINIG_TIME.current);
+            if(REMAIINIG_TIME.current < 1000){
                 clearInterval(timer);
                 signOutHandler();
             }
@@ -95,58 +68,58 @@ const MainNavbar = ({navList, logoLink, client, supplier, arabic, disable, admin
         dispatch(generalActions.toggleLoginModal());
     }
 
-    const goUp = () =>{
-        window.scrollTo({
-            top:0,
-            behavior:'smooth',
-        })
-    }
+    // const goUp = () =>{
+    //     window.scrollTo({
+    //         top:0,
+    //         behavior:'smooth',
+    //     })
+    // }
 
     const toggleNavList = () => {
-        const listItems = document.querySelectorAll('.nav-link-container-admin');
-        const ulContainer = document.querySelector('.nav-ul-container-admin');
-        if(!generalReducer.toggleNavMenu){
-            for(let i=0; i < listItems.length; i++){
-                listItems[i].style.transition = "all 0.2s"
-                listItems[i].style.right = "0.5rem";
-            }
-            ulContainer.style.right = "0";
-            dispatch(generalActions.toggleNavMenu());
+        setShow(!show);
+        const outerContainer = document.querySelector(".nav-outer-container");
+        const itemsContainer = document.querySelector("#nav-container-mobile");
+        const items = document.querySelector(".ul-nav-container");
+        if(items.style.display == "grid"){
+            items.style.display = "none";
+            // items.classList.remove("animate__bounceInDown")
+            outerContainer.style.height = "7rem";
         }else{
-            for(let i=0; i < listItems.length; i++){
-                listItems[i].style.transition = "all 0.2s"
-                listItems[i].style.right = "-7rem";
-            }
-            ulContainer.style.right = "-20rem";
-            dispatch(generalActions.toggleNavMenu());
+            outerContainer.style.height = "15.5rem";
+            items.style.display = "grid";
+            items.classList.add("animate__bounceInDown")
+            itemsContainer.appendChild(items);
         }
     }
 
-    return <Fragment>
-            <Login arabic={arabic} disable={disable}/>
+    return <div className="nav-outer-container">
+            {/* <Login arabic={arabic} disable={disable}/> */}
             <nav className="nav-container">
-                <div style={{margin:"auto"}}>
+                <div >
                     <Link href={logoLink}>
-                        <a className="nav-links">ISP</a>
+                        <a className={!arabic ? "logo-link english" : "logo-link"} style={{fontWeight: !arabic && 'bold'}} >{!arabic ?  'ISP' : 'اي اس بي'}</a>
                     </Link>
                 </div>
                 {session ?
-                    <div className='auth-btn-container'>
-                        <button className={!arabic ? "btn-logout-style english" :  "btn-logout-style"} onClick={signOutHandler}>{!arabic ? "Logout" : "تسجيل خروج"}</button>
-                        {admin && window.screen.width < 735 && <button onClick={()=>toggleNavList()} className="toggle-nav-list-btn english">{generalReducer.toggleNavMenu ? 'Close Menu' : 'Show Menu'}</button> }
+                    <div className="auth-btn-container">
+                        <button className={!arabic ? 'english' : ''} onClick={signOutHandler}>{!arabic ? "Logout" : "تسجيل خروج"}</button>
                     </div>:
-                    <div className='auth-btn-container'>
-                        <button disabled={disable ? true : false} className={!arabic ? "btn-login-style english" :  "btn-login-style"} onClick={navigateToSignIn}>{!arabic ? "Login | Register" : "دخول | تسجيل"}</button>
+                    <div className="auth-btn-container">
+                        <button className={!arabic ? 'english' : ''}  onClick={navigateToSignIn}>{!arabic ? "Login | Register" : "دخول | تسجيل"}</button>
                     </div>
-                    }
-                <AiOutlineArrowUp size={27} className="up-icon" color={"black"} onClick={goUp}/>
-                <ul className={!admin ? "nav-ul-container" : "nav-ul-container-admin"}>
+                }
+                    
+                {/* <AiOutlineArrowUp size={27} className="up-icon" color={"black"} onClick={goUp}/> */}
+                <AiOutlineClose style={{display: show ? "block" : "none"}} size={28} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} /> 
+               <HiMenuAlt3 size={28} style={{display: show ? "none" : "block"}} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} />
+                <ul className="ul-nav-container">
                     {navList.map((list, idx)=>(
-                        <ListItem key={list.link} list={list} idx={idx} arabic={arabic} admin={admin}/>
+                        <ListItem key={list.link} list={list} idx={idx} arabic={arabic} admin={admin} session={session} />
                     ))}
                 </ul>
             </nav>
-        </Fragment>
+            <div id="nav-container-mobile"></div>
+        </div>
 }
 
 export default MainNavbar;

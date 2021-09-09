@@ -16,13 +16,11 @@ import brandsActions from "stores/actions/brandsActions";
 
 const TABLE_BRANDS_HEADERS = ["Brand Name", "Brand Name(AR)", "Field", "Details"];
 
-const BrandsDashboard = ({token}) => {
+const BrandsDashboard = ({token, session}) => {
     const brands = useSelector((state) => state.brandsReducer);
   const [brandsOrder, setBrandsOrder] = useState([]);
-  const [session, setSession] = useState();
   const generalReducer = useSelector((state) => state.generalReducer); 
   const dispatch = useDispatch();
-  const [isBigDevice, setIsBigDevice]= useState(false);
   const [data, setData] = useState(null);
   const [filtering, setFiltering] = useState({
       order: false,
@@ -40,15 +38,6 @@ const BrandsDashboard = ({token}) => {
     const brandNameArabicRef = useRef();
     const brandField = useRef();
 
-useEffect(async()=>{
-  const session = await getSession();
-  setSession(session);
-  dispatch(generalActions.closeNavMenu());
-  const media = matchMedia('(min-width:735px)')
-  if(media.matches){
-    setIsBigDevice(true);
-}
-},[])
 
  useEffect(()=>{
     setBrandsOrder(brands.brands);
@@ -58,7 +47,6 @@ useEffect(async()=>{
 
   const submitHandler = async (newBrand, e, datas) => {
     try {
-        console.log(datas);
       e && e.preventDefault();
       dispatch(generalActions.emptyState());
       dispatch(generalActions.sendRequest(newBrand ? 'Adding..' : 'Updating..'));
@@ -67,6 +55,7 @@ useEffect(async()=>{
       let validateBrandNameArabicMessage = null;
       let validateBrandFieldMessage = null;
       if(newBrand){
+        dispatch(generalActions.changeMood("profile"));
         validateBrandNameMessage = validateAccountsInput(brandNameRef.current.value,false,true,false,false,false);
         validateBrandNameArabicMessage = validateAccountsInput(brandNameArabicRef.current.value ,true,false,false,false,false);
         validateBrandFieldMessage = validateAccountsInput(brandField.current.value,false,true,false,false,false);
@@ -271,29 +260,28 @@ useEffect(async()=>{
  
     return <Fragment>
 
-<div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+<div className="grid-data-details-container">
         <GridData
         icon={<BsHash size={25} color="white" />}
         title="Total numbers of brands"
         link="/en/admin/moderators"
-        children={brands.brands.length}
+        data={brands.brands.length}
         />
     </div>
-    <form className= "form-auth-container english" style={{width: isBigDevice ? '20%' : ''}}>
-        <input type="text" name="brandName" placeholder="Brand Name" ref={brandNameRef}/>
-        <input type="text" name="brandNameInArabic"   placeholder="Brand Name Arabic" ref={brandNameArabicRef}/>
+    <form className= "form-add-brand-container">
+        <input type="text" name="brandName" placeholder="Brand Name" className="english-input" ref={brandNameRef}/>
+        <input type="text" name="brandNameInArabic" className="english-input"  placeholder="Brand Name Arabic" ref={brandNameArabicRef}/>
         <select name="field" placeholder="Select Field" ref={brandField} style={{display:'flex', alignSelf:'center'}}>
             <option selected disabled value=''>Select Field</option>
             <option value="cars">Cars</option>
             <option value="big vehicles">Big Vehicles</option>
         </select>
         <button onClick={(e)=>submitHandler(true, e)}>Add New Brand</button>
-        <Feedback />
     </form>
     <br/>
 
     <div>
-        <div className="sort-option-container-supplier">
+        <div className="sort-option-container">
            <div>
             <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
             <label htmlFor="sort">DESC</label>
@@ -308,13 +296,13 @@ useEffect(async()=>{
           </div>
         </div>
         <div className="search-input english">
-            <input type="text" onChange={(e)=>searchRecord(e)} placeholder="Search By Name.."/>
+            <input type="text" onChange={(e)=>searchRecord(e)} placeholder="Search By Name.." className="english-input"/>
         </div>
       </div>
 
 
     <br /> <br />
-    {data !== null &&  <ModalDetails brands={true} info={data} remove={removeHandler} title={"Manage Client"} update={submitHandler}/> }
+    {data !== null &&  <ModalDetails setDatas={setData} brands={true} info={data} remove={removeHandler} title={"Manage Brands"} update={submitHandler}/> }
     
     <Table
         headers={TABLE_BRANDS_HEADERS.map((header) => (
@@ -324,7 +312,7 @@ useEffect(async()=>{
       >
         {!searchedValue.showSearchedValue ? brandsOrder.length > 0 && brandsOrder.sort().map((brand, idx) => {
           return (
-            <Fragment>
+            <Fragment key={brand.brandId}>
               <tr key={brand.brandId}>
                 <Td key={brand.brandName} value={brand.brandName}/>
                 <Td key={brand.brandNameInArabic} value={brand.brandNameInArabic} className={"font-arabic"}/>

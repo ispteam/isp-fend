@@ -15,12 +15,12 @@ const MyRequests = (props) => {
           dispatch(requestsActions.emptyRequest());
           const formattedRequests = formatRecordsAddress(props.requests);
           dispatch(requestsActions.addAllRequests(formattedRequests, props.length, ( props.length - props.requests.length )));
-    }, []);
-    return <SharedNavLayout navList={generalReducer.clientNav} logoLink={"/en"} footerInnerValue={<InnerFooter/>} client={true}> 
+    }, [dispatch, props.length, props.requests]);
+    return <SharedNavLayout navList={generalReducer.clientNav} session={props.session} logoLink={"/en"} footerInnerValue={<InnerFooter/>} client={true}> 
       <Head>
         <title>My Requests</title>
       </Head>
-      <AllRequests supplier={false}/>
+      <AllRequests supplier={false} token={props.token} session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -65,7 +65,7 @@ export async function getServerSideProps(context){
           notFound: true
       }
     }
-    const data = await fetch(`${ENDPOINT}/request/request-operations/3`);
+    const data = await fetch(`${ENDPOINT}/request/request-operations/${session.user.name.id}`);
     const response = await data.json();
     if(response.statusCode != 200){
         return {
@@ -76,7 +76,9 @@ export async function getServerSideProps(context){
     return {
         props:{
             requests: response.requests,
-            length: response.length
+            length: response.length,
+            session: session,
+            token
         }
     }
 }

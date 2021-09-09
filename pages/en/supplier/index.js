@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client"; 
+import { getSession, session } from "next-auth/client"; 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ENDPOINT from "helper/ENDPOINT";
@@ -15,12 +15,12 @@ const PendingRequests = (props) => {
           dispatch(requestsActions.emptyRequest());
           const formattedRequests = formatRecordsAddress(props.requests);
           dispatch(requestsActions.addAllRequests(formattedRequests, props.length, ( props.length - props.requests.length )));
-    }, []);
-    return <SharedNavLayout navList={generalReducer.supplierNav} logoLink={"en/supplier"} arabic={true} supplier={true}> 
+    }, [dispatch, props.length, props.requests]);
+    return <SharedNavLayout navList={generalReducer.supplierNav} session={props.session} logoLink={"en/supplier"} arabic={true} supplier={true}> 
         <Head>
           <title>Home</title>
         </Head>
-       <AllRequests supplier={true} token={props.token}/>
+       <AllRequests supplier={true} token={props.token} session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -66,13 +66,6 @@ export async function getServerSideProps(context){
       }
     }
 
-    // let pref = cookies['pref'];
-    // let carsPref = cookies['carsPref'];
-
-    // if(!pref && !carsPref){
-    //   pref = session.user.name.pref;
-    //   carsPref = session.user.name.carsPref;
-    // }
 
     let data;
     if(session.user.name.pref == 'cars'){
@@ -106,7 +99,8 @@ export async function getServerSideProps(context){
         props:{
             requests: response.requests,
             length: response.length,
-            token
+            token: token,
+            session: session
         }
     }
 }

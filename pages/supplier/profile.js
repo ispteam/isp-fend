@@ -10,11 +10,11 @@ const Profile = (props) => {
 
 //   token={props.token}
 
-    return <SharedNavLayout navList={generalReducer.supplierArabicNav} client={true} arabic={true} logoLink={"/"} footerInnerValue={<InnerFooter arabic={true}/>}>
+    return <SharedNavLayout session={props.session} navList={generalReducer.supplierArabicNav} client={true} arabic={true} logoLink={"/"}>
             <Head>
                 <title>معلوماتي</title>
             </Head>
-            <ProfileInformation arabic={true} token={props.token} supplier={true}/>
+            <ProfileInformation arabic={true} token={props.token} session={props.session} supplier={true}/>
         </SharedNavLayout>
 }
 

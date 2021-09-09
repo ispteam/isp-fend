@@ -15,13 +15,13 @@ const sendEmail = async (req, res) => {
         let transporter = nodemailer.createTransport({
             service:'gmail',
             auth:{
-                user:'aabdulaziz.a10@gmail.com',
-                pass:'AZZOZz123456789'
+                user:'isp.spare.isp@gmail.com',
+                pass:'ISPisp123456789'
             }
         });
 
         let email;
-        const from = "aabdulaziz.a10@gmail.com"
+        const from = "isp.spare.isp@gmail.com"
 
         if(method == "registration" && user== "client" ){
             email = await transporter.sendMail({
@@ -188,7 +188,7 @@ const sendEmail = async (req, res) => {
                 html: `<div style='border:1px solid black; padding:5px'>
                         <h1 style='color=green; margin-bottom:10px'>You have requested to change your account password</h1>
                         <h2>please click on the link below to change your account password</h2> 
-                        <a href='http://localhost:3000/en/change-password/${rememberToken}'>Click here</a>
+                        <a href='http://localhost:3000/en/auth/change-password/${rememberToken}'>Click here</a>
                         <p>BEST REGARDS</p>
                         <p>ISP TEAM</p>
                     </div>`,
@@ -201,7 +201,7 @@ const sendEmail = async (req, res) => {
                 html: `<div style='border:1px solid black; padding:5px'>
                         <h1 style='color=green; margin-bottom:10px'>لقد طلبت تغيير كلمة المرور الخاصة بحسابك</h1>
                         <h2>من فضلك اضغط على الرابط في الاسفل لتغيير كلمة المرور</h2> 
-                        <a href='http://localhost:3000/ar/change-password/${rememberToken}'>اضغط هنا</a>
+                        <a href='http://localhost:3000/auth/change-password/${rememberToken}'>اضغط هنا</a>
                         <p>اطيب التحيات</p>
                         <p>ISP فريق</p>
                     </div>`,
@@ -348,7 +348,6 @@ const sendEmail = async (req, res) => {
                     </div>`,
             });
         }else if(method=="addRequest" && user=="supplier"){
-            console.log(recepient);
             email = await transporter.sendMail({
                 from:from,
                 to: recepient,
@@ -359,6 +358,11 @@ const sendEmail = async (req, res) => {
                         <h2>We hope you succeed</h2>
                         <p>BEST REGARDS</p>
                         <p>ISP TEAM</p>
+                        <h1>------------------</h1>
+                        <h1 style='color=green; margin-bottom:10px'>تم اضافة طلب جديد</h1>
+                        <h3>نأمل مراجعة العرض وتقديم السعر الافضل</h3>
+                        <p>اطيب التحايا</p>
+                        <p>ISP فريق</p>
                     </div>`,
             });
         }else if(method == "complete" && user== "client" && arabic){
@@ -397,6 +401,36 @@ const sendEmail = async (req, res) => {
                         <p>ISP TEAM</p>
                         <h1>------------------</h1>
                         <h1 style='color=green; margin-bottom:10px'> تم رفضه ${requestNum} نأسف لإخبارك، عرضك المقدم للطلب رقم</h1>
+                        <p>اطيب التحايا</p>
+                        <p>ISP فريق</p>
+                    </div>`,
+            });
+        }else if(method == "acceptUpdate" && user== "supplier" && !arabic){
+            email = await transporter.sendMail({
+                from:from,
+                to: recepient,
+                subject:"Update profile",
+                html: `<div style='border:1px solid black; padding:5px'>
+                        <h1 style='color=green; margin-bottom:10px'>Your request to update profile has been accepted</h1>
+                        <p>BEST REGARDS</p>
+                        <p>ISP TEAM</p>
+                        <h1>------------------</h1>
+                        <h1 style='color=green; margin-bottom:10px'>تم قبول طلبك لتحديث بياناتك</h1>
+                        <p>اطيب التحايا</p>
+                        <p>ISP فريق</p>
+                    </div>`,
+            });
+        }else if(method == "rejectUpdate" && user== "supplier" && !arabic){
+            email = await transporter.sendMail({
+                from:from,
+                to: recepient,
+                subject:"Update profile",
+                html: `<div style='border:1px solid black; padding:5px'>
+                        <h1 style='color=green; margin-bottom:10px'>Your request to update profile has been rejected</h1>
+                        <p>BEST REGARDS</p>
+                        <p>ISP TEAM</p>
+                        <h1>------------------</h1>
+                        <h1 style='color=green; margin-bottom:10px'>تم رفض طلبك لتحديث بياناتك</h1>
                         <p>اطيب التحايا</p>
                         <p>ISP فريق</p>
                     </div>`,

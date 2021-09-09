@@ -7,11 +7,11 @@ import { getSession } from "next-auth/client";
 import { addToken, parseCookie } from "helper/functions";
 const Cars = (props) => {
     const generalReducer = useSelector(state=>state.generalReducer);
-    return <SharedNavLayout navList={generalReducer.clientNavArabic} logoLink={"/"} disable={true} client={true} arabic={true} footerInnerValue={<InnerFooter arabic={true}/>}>
+    return <SharedNavLayout navList={generalReducer.clientNavArabic} session={props.session} logoLink={"/"} client={true} arabic={true} footerInnerValue={<InnerFooter arabic={true}/>}>
         <Head>
             <title>سيارات</title>
         </Head>
-        <AddRequest bigVehicle={false} arabic={true} token={props.token} />
+        <AddRequest bigVehicle={false} arabic={true} token={props.token} session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -58,6 +58,7 @@ export async function getServerSideProps(context){
     return {
         props:{
           token: token,
+          session: session
         }
     }
 }

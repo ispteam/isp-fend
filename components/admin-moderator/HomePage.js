@@ -22,7 +22,7 @@ import {
 import Spinner from "components/reusable/Spinner/Spinner";
 import generalActions from "stores/actions/generalActions";
 
-const HEADERS_SET_ONE = ["ID", "Name", "Name(AR)"];
+const HEADERS_SET_ONE = ["ID", "Name"];
 const HEADERS_SET_TWO = ["ID", "From", "To City"];
 
 const HomePage = ({moderator}) => {
@@ -95,7 +95,7 @@ const HomePage = ({moderator}) => {
   };
 
   //To store the last records in the state after the component rendered
-  useEffect(async () => {
+  useEffect(() => {
     //Check if the last records are empty, so we fetch their information
     dispatch(generalActions.closeNavMenu());
     if (
@@ -106,7 +106,7 @@ const HomePage = ({moderator}) => {
       lastRecords.lastCompletedRequests == null &&
       lastRecords.lastCanceledRequests == null
     ) {
-      await fetchLastRecords();
+      fetchLastRecords();
     }
   }, []);
 
@@ -123,7 +123,7 @@ const HomePage = ({moderator}) => {
       {isLoading ? (
           <Spinner />
       ) : (
-        <Fragment>
+        <div className="home-admin-container">
           {/** START THE CHART GRID */}
 
           <GridLayout chart={
@@ -141,7 +141,7 @@ const HomePage = ({moderator}) => {
           <GridLayout>
             {/** START THE FIRST LIST */}
             <GridData
-              icon={<AiOutlineUserAdd size={25} color="white" />}
+              icon={<AiOutlineUserAdd size={25} color="#ffd523" />}
               title="Last 5 Registered clients"
               link={moderator ? "/en/moderator/clients" : "/en/admin/clients"}
             >
@@ -157,7 +157,6 @@ const HomePage = ({moderator}) => {
                   >
                     <td>{list.clientId}</td>
                     <td>{list.account.name.split(" ")[0]}</td>
-                    <td className="font-arabic">{list.account.nameInArabic.split(" ")[0]}</td>
                   </tr>
                 ))}
               </Table>
@@ -166,7 +165,7 @@ const HomePage = ({moderator}) => {
 
             {/** START THE SECOND LIST */}
             <GridData
-              icon={<AiOutlineUserDelete size={25} color="white" />}
+              icon={<AiOutlineUserDelete size={25} color="#ffd523" />}
               title="Last 5 Registered suppliers"
               link={moderator ? "/en/moderator/suppliers" :"/en/admin/suppliers"}
             >
@@ -181,8 +180,7 @@ const HomePage = ({moderator}) => {
                     onClick={() => goToDetails(`suppliers/${list.supplierId}`)}
                   >
                     <td>{list.supplierId}</td>
-                    <td>{list.account.name.split(" ")[0]}</td>
-                    <td className="font-arabic">{list.account.nameInArabic.split(" ")[0]}</td>
+                    <td>{list.companyInEnglish.split(" ")[0]}</td>
                   </tr>
                 ))}
               </Table>
@@ -193,7 +191,7 @@ const HomePage = ({moderator}) => {
             {/** START THE THIRD LIST */}
 
             <GridData
-              icon={<FiUserX size={25} color="white" />}
+              icon={<FiUserX size={25} color="#ffd523" />}
               title="Last 5 Unapproved suppliers"
               link={moderator ? "/en/moderator/suppliers" : "/en/admin/suppliers" }
             >
@@ -208,8 +206,7 @@ const HomePage = ({moderator}) => {
                     onClick={() => goToDetails(`suppliers/${list.supplierId}`)}
                   >
                     <td>{list.supplierId}</td>
-                    <td>{list.account.name.split(" ")[0]}</td>
-                    <td className="font-arabic">{list.account.nameInArabic.split(" ")[0]}</td>
+                    <td>{list.companyInEnglish.split(" ")[0]}</td>
                   </tr>
                 ))}
               </Table>
@@ -224,7 +221,7 @@ const HomePage = ({moderator}) => {
 
           <GridLayout>
             <GridData
-              icon={<AiOutlinePlus size={25} color="white" />}
+              icon={<AiOutlinePlus size={25} color="#ffd523" />}
               title="Last 5 submitted requests"
               link={moderator ? "/en/moderator/requests" : "/en/admin/requests"}
             >
@@ -247,7 +244,7 @@ const HomePage = ({moderator}) => {
             </GridData>
 
             <GridData
-              icon={<AiOutlineCheck size={25} color="white" />}
+              icon={<AiOutlineCheck size={25} color="#ffd523" />}
               title="Last 5 completed requests"
               link={moderator ? "/en/moderator/requests"  : "/en/admin/requests"}
             >
@@ -269,7 +266,7 @@ const HomePage = ({moderator}) => {
               </Table>
             </GridData>
             <GridData
-              icon={<AiOutlineClose size={25} color="white" />}
+              icon={<AiOutlineClose size={25} color="#ffd523" />}
               title="Last 5 canceled requests"
               link={moderator ? "/en/moderator/clients":"/en/admin/clients"}
             >
@@ -298,22 +295,22 @@ const HomePage = ({moderator}) => {
 
           <GridLayout>
             <GridData
-              icon={<BsHash size={25} color="white" />}
+              icon={<BsHash size={25} color="#ffd523" />}
               title="Total numbers of registered clients"
               link= {moderator ? "/en/admin/clients" : "/en/admin/clients"}
-              children={clients.clients.length}
+              data={clients.clients.length}
             />
             <GridData
-              icon={<BsHash size={25} color="white" />}
+              icon={<BsHash size={25} color="#ffd523" />}
               title="Total numbers of registered suppliers"
               link= {moderator ? "/en/moderator/suppliers" : "/en/admin/suppliers"}
-              children={suppliers.suppliers.length}
+              data={suppliers.suppliers.length}
             />
             <GridData
-              icon={<BsHash size={25} color="white" />}
+              icon={<BsHash size={25} color="#ffd523" />}
               title="Total numbers of submitted requests"
               link={moderator ? "/en/moderator/requests" : "/en/admin/requests"}
-              children={requests.requests.length}
+              data={requests.requests.length}
             />
           </GridLayout>
 
@@ -343,7 +340,7 @@ const HomePage = ({moderator}) => {
           {/** END THE CHART GRID */}
 
           {/** END THE THIRD GRID */}
-        </Fragment>
+        </div>
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 
 
 const Footer = ({children}) => {
-    return <footer className="footer-container">
+    return <footer style={{backgroundColor:'#1d1d1d'}}>
         {children}
     </footer>
 }

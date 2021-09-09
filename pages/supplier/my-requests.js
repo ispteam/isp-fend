@@ -16,11 +16,11 @@ const PendingRequests = (props) => {
           const formattedRequests = formatRecordsAddress(props.requests);
           dispatch(requestsActions.addAllRequests(formattedRequests, props.length, ( props.length - props.requests.length )));
     }, []);
-    return <SharedNavLayout navList={generalReducer.supplierArabicNav} logoLink={"/supplier"} arabic={true} supplier={true}> 
+    return <SharedNavLayout session={props.session} navList={generalReducer.supplierArabicNav} logoLink={"/supplier"} arabic={true} supplier={true}> 
         <Head>
           <title>طلباتي</title>
         </Head>
-       <AllRequests supplier={true} token={props.token} arabic={true} view={true}/>
+       <AllRequests supplier={true} session={props.session} token={props.token} arabic={true} view={true}/>
     </SharedNavLayout>
 }
 
@@ -81,7 +81,8 @@ export async function getServerSideProps(context){
         props:{
             requests: response.requests == null ? [] : response.requests,
             length: response.length,
-            token
+            token: token,
+            session: session
         }
     }
 }

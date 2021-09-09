@@ -1,62 +1,43 @@
-:root {
-    --bg-header: #f1f1f1;
-    --text-active: black;
-    --nav-link-container-color: #e6e6e6;
-    --radius-ratio: 3rem;
-    --font-color: #400082;
-    --background: #FE346E;
-    --font-family-arabic: 'El Messiri', sans-serif;
-    --font-family-english: 'Urbanist', sans-serif;
-}
-
 .table-container{
-    width: 100%;
-    text-align: center;
-}
-
-
-.table-container tr, .table-details-container tr{
-    border-bottom: 1px solid var(--font-color);
-    /* position: relative; */
-}
-
-.table-details-container td{
-    padding: 1rem;
-}
-
-.table-details-container{
-    width: 90%;
-    height: 90%;
-    text-align: center;
-    display: block;
-    overflow: auto;
-    margin: auto;
+    table-layout: fixed;
+    background-color: var(--main-color);
     border-collapse: collapse;
-    position: relative;
+
 }
 
 .table-container th, .table-details-container th{
-    color: var(--font-color) ;
-    font-family: var(--font-family-english);
-    font-weight: bold;
-    font-size: 14px;
+    color: var(--third-color);
+    font-family: var(--font-english);
+    padding: 0.5rem;
 }
-
 
 .table-container td, .table-details-container td{
-    color: var(--background);
-    font-family: var(--font-family-english);
-    font-size: 14px;
-    font-weight: 500;
+    text-align: center;
+    padding: 0.5rem;
+    font-family: var(--font-english);
+    color: var(--secondary-color);
+    border-bottom: 1px solid var(--third-color);
 }
 
+.table-details-container{
+    /* table-layout: fixed; */
+    background-color: var(--main-color);
+    border-collapse: collapse;
+    margin-bottom: 4rem;
+    display: block;
+    overflow-x: auto;
+}
 
 @media only screen and (min-width:735px){
     .table-details-container{
-        width: max-content;
+        /* table-layout: fixed; */
+        width: 70%;
+        margin: auto;
+        margin-bottom: 10rem;
     }
-    .table-container td{
-        padding: 1rem;
-        border-bottom: 1px solid var(--font-color);
-    }
+
+    /* .table-details-container th, .table-details-container td{
+        width: 40%;
+        text-align: center;
+    } */
 }

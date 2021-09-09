@@ -1,0 +1,118 @@
+.offers-container{
+    position: absolute;
+    top: 0rem;
+    border: 1px solid var(--main-color);
+    border-radius: 0.2rem;
+    /* padding: 0.5rem; */
+    margin: auto -0.5rem;
+    background-color: white;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    animation-duration: 0.5s;
+}
+
+.offers-table{
+    table-layout: fixed;
+    border-collapse: collapse ;
+}
+
+.offers-container th, .offers-table td{
+   width: 100% ;
+   font-family: var(--font-arabic);
+   border-bottom: 1px solid var(--main-color);
+
+}
+
+/* .offers-table tr{
+    border: 1px solid var(--main-color);
+} */
+
+.offers-table td{
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 13px;
+}
+
+
+.btn-select-offer{
+    width: 20vw;
+    padding: 0.3rem;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);;
+    color: var(--secondary-color);
+    margin-left: -1.2rem;
+    font-family: var(--font-arabic);
+    margin-bottom: 0.5rem;
+}
+
+.btn-reject-offer{
+    width: 20vw;
+    padding: 0.3rem;
+    background-color: #ff274b;
+    border: 1px solid #ff274b;
+    color: var(--third-color);
+    margin-left: -1.2rem;
+    font-family: var(--font-arabic);
+}
+
+.clsoe-offers-btn{
+    margin: 1rem 4.5rem;
+    width: 50%;
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-family: var(--font-arabic);
+}
+
+.reason-container{
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.reason-container label{
+    color: #ff274b;
+    font-family: var(--font-arabic);
+    font-size: 14px;
+}
+
+.reason-container input {
+    width: 30px;
+}
+
+.confinm-cancel-btn-container{
+    width: 50%;
+    margin: auto;
+}
+
+.confinm-cancel-btn-container button{
+    padding: 0.3rem;
+    font-family: var(--font-arabic);
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--secondary-color);
+}
+
+.warning-cancelation-text{
+    text-align: center;
+    font-family: var(--font-arabic);
+    font-size: 13px;
+    color: #002545;
+}
+
+@media only screen and (min-width:735px) {
+    .offers-container{
+        height: 75.2vh;
+    }
+
+    .btn-select-offer, .btn-reject-offer{
+        width: 5vw;
+    }
+    .clsoe-offers-btn{
+        margin: 1rem 6rem;
+    }
+}

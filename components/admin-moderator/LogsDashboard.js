@@ -32,8 +32,7 @@ const HOVER_COLORS = [
 
 const TABLE_LOGS_HEADERS = ["Request NO","Phone" ,"Status", "Amount" ,"Date&Time", "Action"];
 
-const LogsDashboard = ({logs, token}) => {
-    const [session, setSession] = useState();
+const LogsDashboard = ({logs, token, session}) => {
     const generalReducer = useSelector((state)=>state.generalReducer);
     const dispatch = useDispatch();
     const paidRequests = logs.filter(log=>log.status == "paid");
@@ -55,11 +54,6 @@ const LogsDashboard = ({logs, token}) => {
         refund: false
     });
 
-    useEffect(async()=>{
-        const session = await getSession();
-        setSession(session);
-        dispatch(generalActions.closeNavMenu());
-      }, []);
       
       useEffect(()=>{
           setPaymentOrder(logs);
@@ -188,83 +182,32 @@ const LogsDashboard = ({logs, token}) => {
 
     return <Fragment>
 
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+            <div className="grid-data-details-container">
                 <GridData
                 icon={<BsHash size={25} color="white" />}
                 title="Total numbers of payments"
                 link="/en/admin/requests"
-                children={logs.length}
+                data={logs.length}
                 />
             </div>
 
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+            <div className="grid-data-details-container">
                 <GridData
                 icon={<BsHash size={25} color="white" />}
                 title="Total paid requests"
                 link="/en/admin/logs"
-                children={"SR"+totalPaidRequests}
+                data={"SR"+totalPaidRequests}
                 />
             </div>
 
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+            <div className="grid-data-details-container">
                 <GridData
                 icon={<BsHash size={25} color="white" />}
                 title="Total refund requests"
                 link="/en/admin/logs"
-                children={"SR" + totalRefundRequests}
+                data={"SR" + totalRefundRequests}
                 />
             </div>
-
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
-                <MyChart
-                Component={Pie}
-                label = "Succeed paid requests"
-                title="Numbers of succeed requests payment per month"
-                data={paidRequestsData}
-                bgColor = {BG_COLORS}
-                hoverColor = {HOVER_COLORS}
-            />
-            </div>
-
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
-                <MyChart
-                Component={Pie}
-                label = "Failed paid requests"
-                title="Numbers of failure requests payment per month"
-                data={failedRequestsData}
-                bgColor = {BG_COLORS}
-                hoverColor = {HOVER_COLORS}
-            />
-            </div>
-
-
-            <br/> <br />
-
-            <div>
-                <div className="sort-option-container-supplier">
-                <div>
-                    <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
-                    <label htmlFor="sort">ASC</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="paid" name="paid" checked={filtering.paid ? true : false} onChange={filterData}/>
-                    <label htmlFor="paid">Paid</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="failed" name="failed" checked={filtering.failed ? true : false} onChange={filterData}/>
-                    <label htmlFor="failed">Failed</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="refund" name="refund" checked={filtering.refund ? true : false} onChange={filterData} />
-                    <label htmlFor="refund">Refund</label>
-                </div>
-                </div>
-                <div className="search-input english">
-                    <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Request number" inputMode='numeric'/>
-                </div>
-            </div>
-
-            <br /> <br /> <br />
 
             <Table
         headers={TABLE_LOGS_HEADERS.map((header) => (
@@ -274,7 +217,7 @@ const LogsDashboard = ({logs, token}) => {
       >
         {!searchedValue.showSearchedValue ? paymentsOrder.length > 0 && paymentsOrder[0].requests != null && paymentsOrder.sort().map((payment, idx) => {
           return (
-            <Fragment>
+            <Fragment key={payment.paymentId}>
               <tr key={payment.paymentId}>
                 <Td key={payment.requests.requestNum} value={payment.requests.requestNum}/>
                 <Td key={payment.clients.phone} value={payment.clients.phone}/>
@@ -287,10 +230,9 @@ const LogsDashboard = ({logs, token}) => {
                   <Fragment>
                     <Td key={payment.requests.finalAmount} value={<button
                        className="english"
-                        children={generalReducer.status.sending ? "Refunding.." : "Refund" }
                         disabled={generalReducer.status.sending ? true : false}
-                        style={{backgroundColor: '#059669', border: '#059669', color:'white'}}
-                    onClick={()=>isRefund(payment.paymentId, payment.clients.email, payment.requests.requestNum)}/>}  />
+                        style={{backgroundColor: '#059669', border: '#059669', color:'white', padding:'0.3rem'}}
+                    onClick={()=>isRefund(payment.paymentId, payment.clients.email, payment.requests.requestNum)}>{generalReducer.status.sending ? "Refunding.." : "Refund" }</button>}  />
                    </Fragment>
                   : <Td key={payment.requests.finalAmount  * (Math.random() * 100)} value="NULL"/>
                   }
@@ -309,10 +251,9 @@ const LogsDashboard = ({logs, token}) => {
                   {searchedValue.value.status == "refund" ? 
                   <Td key={searchedValue.value.requests.finalAmount} value={<button
                     className="english"
-                    children={generalReducer.status.sending ? "Refunding.." : "Refund" }
                     disabled={generalReducer.status.sending ? true : false}
-                    style={{backgroundColor: '#059669', border: '#059669', color:'white'}}
-                   onClick={()=>isRefund(searchedValue.value.paymentId, searchedValue.value.clients.email, searchedValue.value.requests.requestNum)}/>}  />
+                    style={{backgroundColor: '#059669', border: '#059669', color:'white', padding:'0.3rem'}}
+                   onClick={()=>isRefund(searchedValue.value.paymentId, searchedValue.value.clients.email, searchedValue.value.requests.requestNum)}>{generalReducer.status.sending ? "Refunding.." : "Refund" }</button>}  />
                   : <Td key={searchedValue.value.requests.finalAmount  * (Math.random() * 100)} value="NULL"/>
                   }
               </tr>
@@ -322,6 +263,52 @@ const LogsDashboard = ({logs, token}) => {
       </Table>
 
 
+
+            <div className="grid-data-details-container">
+                <MyChart
+                Component={Pie}
+                label = "Succeed paid requests"
+                title="Numbers of succeed requests payment per month"
+                data={paidRequestsData}
+                bgColor = {BG_COLORS}
+                hoverColor = {HOVER_COLORS}
+            />
+            </div>
+
+            <div className="grid-data-details-container">
+                <MyChart
+                Component={Pie}
+                label = "Failed paid requests"
+                title="Numbers of failure requests payment per month"
+                data={failedRequestsData}
+                bgColor = {BG_COLORS}
+                hoverColor = {HOVER_COLORS}
+            />
+            </div>
+
+            <div>
+                <div className="sort-option-container">
+                <div>
+                    <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
+                    <label htmlFor="sort">ASC</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="paid" name="paid" checked={filtering.paid ? true : false} onChange={filterData}/>
+                    <label htmlFor="paid">Paid</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="failed" name="failed" checked={filtering.failed ? true : false} onChange={filterData}/>
+                    <label htmlFor="failed">Failed</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="refund" name="refund" checked={filtering.refund ? true : false} onChange={filterData} />
+                    <label htmlFor="refund">Refund</label>
+                </div>
+                </div>
+                <div className="search-input english">
+                    <input type="text" maxLength="13" className="english-input" onChange={(e)=>searchRecord(e)} placeholder="Search By Request number" inputMode='numeric'/>
+                </div>
+            </div>
 
     </Fragment>
 

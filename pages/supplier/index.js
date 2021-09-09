@@ -16,11 +16,11 @@ const PendingRequests = (props) => {
           const formattedRequests = formatRecordsAddress(props.requests);
           dispatch(requestsActions.addAllRequests(formattedRequests, props.length, ( props.length - props.requests.length )));
     }, []);
-    return <SharedNavLayout navList={generalReducer.supplierArabicNav} logoLink={"/supplier"} arabic={true} supplier={true}> 
+    return <SharedNavLayout session={props.session} navList={generalReducer.supplierArabicNav} logoLink={"/supplier"} arabic={true} supplier={true}> 
         <Head>
           <title>الرئيسية</title>
         </Head>
-       <AllRequests supplier={true} token={props.token} arabic={true}/>
+       <AllRequests supplier={true} token={props.token} arabic={true} session={props.session}/>
     </SharedNavLayout>
 }
 
@@ -66,13 +66,6 @@ export async function getServerSideProps(context){
       }
     }
 
-    // let pref = cookies['pref'];
-    // let carsPref = cookies['carsPref'];
-
-    // if(!pref && !carsPref){
-    //   pref = session.user.name.pref;
-    //   carsPref = session.user.name.carsPref;
-    // }
 
     let data;
     if(session.user.name.pref == 'cars'){
@@ -107,7 +100,8 @@ export async function getServerSideProps(context){
         props:{
             requests: response.requests,
             length: response.length,
-            token
+            token: token,
+            session: session
         }
     }
 }

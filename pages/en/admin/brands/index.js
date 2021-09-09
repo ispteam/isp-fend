@@ -23,11 +23,11 @@ const Brands = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
         <Head>
           <title>Brands</title>
         </Head>
-        <BrandsDashboard token={props.token}/>
+        <BrandsDashboard token={props.token} session={props.session}/>
     </SharedNavLayout>
   );
 };
@@ -84,7 +84,8 @@ export async function getServerSideProps({req}){
   return {
     props: {
       token: token,
-      brands: response.brands
+      brands: response.brands,
+      session: session
     },
   };
 }

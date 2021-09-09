@@ -3,32 +3,36 @@ import Footer from "./Footer";
 import {BsChevronLeft } from "react-icons/bs";
 import {useRouter} from 'next/router';
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
+import Feedback from "./Feedback";
+import Login from "./Login";
 
-const SharedNavLayout = ({navList, logoLink, children, footerInnerValue, client, supplier, arabic, disable, admin}) => {
+const SharedNavLayout = ({navList, logoLink, children, footerInnerValue, client, supplier, arabic, disable, admin, session}) => {
     const generalReducer = useSelector((state)=>state.generalReducer);
     const router = useRouter();
+
     useEffect(()=>{
-        const container = document.querySelector("#container");
-        // const body = document.querySelector('body');
-        if(generalReducer.showModalLogin){
-            container.style.opacity = '0.09';
-            container.style.overflow = 'hidden'
+        const bodyContent = document.querySelector("#container");
+        if(generalReducer.status.show || generalReducer.status.sending){
+            bodyContent.style.opacity = "0.2";
+        }else if(generalReducer.showModalLogin){
+            bodyContent.style.opacity = "0.2";
         }else{
-            container.style.opacity = '1';
-            container.style.overflow = 'auto';
+            bodyContent.style.opacity = "1";
         }
-    }, [generalReducer.showModalLogin])
-    return <div>
-            <MainNavbar navList={navList} logoLink={logoLink} client={client} supplier={supplier} arabic={arabic} disable={disable} admin={admin}/>
+    }, [generalReducer.status.show, generalReducer.status.sending, generalReducer.showModalLogin])
+    return <Fragment>
+            <MainNavbar session={session} navList={navList} logoLink={logoLink} client={client} supplier={supplier} arabic={arabic} disable={disable} admin={admin}/>
+            <Feedback arabic={arabic} />
+            <Login arabic={arabic}/>
         <div id="container">
             {children}
             <Footer>
                 {footerInnerValue}
-                {!arabic ? <p className="footer-text english">All Rights Reserved &copy;</p> : <p className="footer-text">&copy; جميع الحقوق محفوظة</p>}
+                {!arabic ? <p className="footer-inner-text english">All Rights Reserved &copy;</p> : <p className="footer-inner-text">&copy; جميع الحقوق محفوظة</p>}
             </Footer>
         </div>
-    </div>
+    </Fragment>
 }
 
 export default SharedNavLayout;

@@ -18,11 +18,11 @@ const Suppliers = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.moderatorNav} logoLink={"/en/moderator"} footerInnerValue={<p className="footer-inner-text">MODERATOR PAGE</p>}>
         <Head>
           <title>Suppliers</title>
         </Head>
-        <SuppliersDashboard token={props.token} />
+        <SuppliersDashboard session={props.session} token={props.token} />
     </SharedNavLayout>
   );
 };
@@ -79,6 +79,7 @@ export async function getServerSideProps({req}){
     props: {
       token: token,
       suppliers:response.suppliers,
+      session: session
     },
   };
 }

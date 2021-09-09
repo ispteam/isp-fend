@@ -9,11 +9,11 @@ const Profile = (props) => {
   const generalReducer = useSelector((state) => state.generalReducer);
 
 
-    return <SharedNavLayout navList={generalReducer.clientNav} client={true} logoLink={"/en"} footerInnerValue={<InnerFooter/>}>
+    return <SharedNavLayout navList={generalReducer.clientNav} session={props.session} client={true} logoLink={"/en"} footerInnerValue={<InnerFooter/>}>
             <Head>
                 <title>Profile</title>
             </Head>
-            <ProfileInformation client={true} token={props.token}/>
+            <ProfileInformation client={true} token={props.token} session={props.session}/>
         </SharedNavLayout>
 }
 

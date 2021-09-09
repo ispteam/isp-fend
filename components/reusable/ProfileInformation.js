@@ -8,7 +8,7 @@ import generalActions from 'stores/actions/generalActions';
 import Feedback from './Feedback';
 // import Cookies from 'js-cookie';
 
-const ProfileInformation = ({token, admin, moderator, client, arabic, supplier}) => {
+const ProfileInformation = ({token, admin, moderator, client, arabic, supplier, session}) => {
 
         /**
      * ======================
@@ -19,7 +19,6 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const generalReducer=useSelector((state) => state.generalReducer);
-    const [session, setSession] = useState();
     const [profileInfo, setProfileInfo] = useState({});
     const [profileCopy, setProfileCopy] = useState({});
     const [editMood, setEditMood] = useState(false);
@@ -31,11 +30,7 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
       carsPrefUpdated: []
     });
 
-    useEffect(async()=>{
-        const session = await getSession();
-        setSession(session);
-        dispatch(generalActions.closeNavMenu());
-    }, []);
+
 
 
     
@@ -83,11 +78,11 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
         }
    } 
 
-   useEffect(async()=>{
+   useEffect(()=>{
         if(!session){
             return
         }
-        await fetchProfileInfo();
+        fetchProfileInfo();
    }, [session]);
 
    const changeHandler = (e) => {
@@ -119,30 +114,33 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
    const submitHandler = async() => {
     try {
         let data;
+        window.scrollTo({
+          behavior:'smooth',
+          top:20
+        })
         dispatch(generalActions.emptyState());
         dispatch(generalActions.sendRequest(!arabic ? "Updating..." : "..تحديث"));
+        dispatch(generalActions.changeMood("profile"))
+        let validateNameMessage = null;
         let validateEmailMessage = validateAccountsInput(profileCopy.account.email, false, false, true, false, false);
-        let validateNameMessage = validateAccountsInput(profileCopy.account.name,false,true,false,false,false);
-        let validateNameArabicMessage = validateAccountsInput(profileCopy.account.nameInArabic,true,false,false,false,false);
+        if(!supplier){
+           validateNameMessage = validateAccountsInput(profileCopy.account.name,false,false,false,false,false, false, false, false, false, false, false, false, false, false, false, false, true);
+        }
         let validatePhoneMessage = validateAccountsInput(profileCopy.account.phone, false, false, false, true);
         let validateCompanyNameMessage= null;
         let validateCompanyNameInArabicMessage = null;
         let validateCarsPrefMessage = null;
         if(supplier){
-            validateCompanyNameMessage = validateAccountsInput(profileCopy.companyInEnglish, false, true);
+            validateCompanyNameMessage = validateAccountsInput(profileCopy.companyInEnglish, false, true );
             validateCompanyNameInArabicMessage = validateAccountsInput(profileCopy.companyInArabic, true);
-            if(validateCompanyNameMessage.length > 0){
-                dispatch(generalActions.changeValidation(validateCompanyNameMessage));
-            }
-            if(validateCompanyNameInArabicMessage.length > 0){
-                dispatch(generalActions.changeValidation(validateCompanyNameInArabicMessage));
-            }
             if(supplierPref.pref == 'cars'){
               if(supplierPref.carsPrefUpdated.length > 1){
-                  validateCarsPrefMessage = validateAccountsInputArabic(supplierPref.carsPrefUpdated.length, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+                  validateCarsPrefMessage = validateAccountsInput(supplierPref.carsPrefUpdated.length, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
               }
             }
             if(arabic){
+              validateCompanyNameMessage = validateAccountsInputArabic(profileCopy.companyInEnglish, false, true );
+              validateCompanyNameInArabicMessage = validateAccountsInputArabic(profileCopy.companyInArabic, true);
               if(supplierPref.pref == 'cars'){
                 if(supplierPref.carsPrefUpdated.length > 1)
                     validateCarsPrefMessage = validateAccountsInputArabic(supplierPref.carsPrefUpdated.length, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
@@ -151,21 +149,26 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
         }
         if(arabic){
          validateEmailMessage = validateAccountsInputArabic(profileCopy.account.email, false, false, true, false, false);
-         validateNameMessage = validateAccountsInputArabic(profileCopy.account.name,false,true,false,false,false);
-         validateNameArabicMessage = validateAccountsInputArabic(profileCopy.account.nameInArabic,true,false,false,false,false);
+         if(!supplier){
+           validateNameMessage = validateAccountsInputArabic(profileCopy.account.name,false,false,false,false,false, false, false, false, false, false, false, false, false, false, false, false, true);
+         }
          validatePhoneMessage = validateAccountsInputArabic(profileCopy.account.phone,false,false,false,true,false);
         }
         if (validateEmailMessage.length > 0) {
           dispatch(generalActions.changeValidation(validateEmailMessage));
         }
-        if (validateNameMessage.length > 0) {
+        if (validateNameMessage != null && validateNameMessage.length > 0) {
           dispatch(generalActions.changeValidation(validateNameMessage));
-        }
-        if (validateNameArabicMessage.length > 0) {
-          dispatch(generalActions.changeValidation(validateNameArabicMessage));
         }
         if (validatePhoneMessage.length > 0) {
           dispatch(generalActions.changeValidation(validatePhoneMessage));
+        }
+
+        if(validateCompanyNameMessage != null && validateCompanyNameMessage.length > 0){
+          dispatch(generalActions.changeValidation(validateCompanyNameMessage));
+        }
+        if(validateCompanyNameInArabicMessage != null && validateCompanyNameInArabicMessage.length > 0){
+          dispatch(generalActions.changeValidation(validateCompanyNameInArabicMessage));
         }
 
         if(profileCopy.pref == 'cars'){
@@ -179,8 +182,7 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
           validateCompanyNameInArabicMessage != null && validateCompanyNameInArabicMessage.length > 0 ||
           validateCarsPrefMessage != null && validateCarsPrefMessage.length > 1 ||
           validateEmailMessage.length > 0 ||
-          validateNameMessage.length > 0 ||
-          validateNameArabicMessage.length > 0 ||
+          validateNameMessage != null && validateNameMessage.length > 0 ||
           validatePhoneMessage.length > 0
         ) {
           dispatch(generalActions.showValidationMessages());
@@ -244,8 +246,6 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
             body: JSON.stringify({
               uid: session.user.name.id,
               supplierId: session.user.name.id,
-              name: profileCopy.account.name,
-              nameInArabic: profileCopy.account.nameInArabic,
               email: profileCopy.account.email,
               phone: profileCopy.account.phone,
               companyInEnglish: profileCopy.companyInEnglish,
@@ -301,9 +301,9 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
     }
 }
 
-    useEffect(async()=>{
+    useEffect(()=>{
         if(supplier){
-            await fetchBrands()
+            fetchBrands()
         }
     }, [])
 
@@ -354,6 +354,7 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
         dispatch(generalActions.sendRequest(!arabic ? response.message : response.messageInArabic));
         setTimeout(() => {
           dispatch(generalActions.emptyState());
+          window.location.reload();
         }, 3000);
       }catch(err){
           dispatch(generalActions.changeValidation(err.message));
@@ -365,9 +366,8 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
     return  <div>
     <div>
     {isLoading ? <div><Spinner/></div> : profileInfo &&
-    <div>
-      {!arabic ? <div className="profile-title english">{profileInfo.account.name + "'s"} Profile</div> :
-      <div className="profile-title">معلومات {profileInfo.account.nameInArabic}</div>} 
+    <div className="profile-container" >
+       <div className={!arabic ? "profile-title english" : "profile-title"}>{!arabic ? 'Profile' : 'المعلومات الشخصية' }</div>
       {!arabic ?   
       <div className="user-type english">
       {profileInfo.account.userType == 0 ? "ADMIN" 
@@ -379,71 +379,70 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
         : profileInfo.account.userType == 1 ? "مشرف" 
         : profileInfo.account.userType == 2 ? "موّرد" 
         : profileInfo.account.userType == 3 ? "عميل" : null}</div> }
-        <form>
-            <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+        <form className="form-profile-container">
+            <div className="form-inner-container">
                 <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Email' : 'البريد الالكتروني'}</label>
-                <input type="email" name="email" disabled={editMood ? false : true} value={profileCopy.account.email} onChange={(e)=>changeHandler(e)}/>
+                <input type="email" name="email" className={!arabic ? 'english-input' : ''} disabled={editMood ? false : true} value={profileCopy.account.email} onChange={(e)=>changeHandler(e)}/>
             </div>
-            <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
-                <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Name' : 'الاسم بالانجليزي'}</label>
-                <input type="text" name="name" disabled={editMood ? false : true} value={profileCopy.account.name} onChange={(e)=>changeHandler(e)}/>
+            {!supplier &&
+            <div className="form-inner-container">
+                <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Name' : 'الاسم'}</label>
+                <input type="text" name="name" className={!arabic ? 'english-input' : ''} disabled={editMood ? false : true} value={profileCopy.account.name} onChange={(e)=>changeHandler(e)}/>
             </div>
-            <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
-                <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Name(AR)' : 'الاسم بالعربي' }</label>
-                <input type="text" name="nameInArabic" disabled={editMood ? false : true} value={profileCopy.account.nameInArabic} onChange={(e)=>changeHandler(e)}/>
-            </div>
-            <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+            }
+            <div className="form-inner-container">
                 <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Phone' : 'رقم الجوال'}</label>
-                <input type="text" name="phone" disabled={editMood ? false : true} value={profileCopy.account.phone} onChange={(e)=>changeHandler(e)}/>
+                <input type="text" name="phone" className={!arabic ? 'english-input' : ''} disabled={editMood ? false : true} value={profileCopy.account.phone} onChange={(e)=>changeHandler(e)}/>
             </div>
             {supplier &&
               <Fragment>
-                <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+                <div className="form-inner-container">
                     <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Company/Shop Name In English' : 'اسم الشركة/المحل بالانجليزي'}</label>
-                    <input type="text" name="companyInEnglish" disabled={editMood ? false : true} value={profileCopy.companyInEnglish} onChange={(e)=>changeHandler(e)}/>
+                    <input type="text" className={!arabic ? 'english-input' : ''} name="companyInEnglish" disabled={editMood ? false : true} value={profileCopy.companyInEnglish} onChange={(e)=>changeHandler(e)}/>
                 </div>
-                <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+                <div className="form-inner-container">
                     <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Comapny/Shop Name In Arabic' : 'اسم الشركة/المحل بالعربي'}</label>
-                    <input type="text" name="companyInArabic" disabled={editMood ? false : true} value={profileCopy.companyInArabic} onChange={(e)=>changeHandler(e)}/>
+                    <input type="text" className={!arabic ? 'english-input' : ''} name="companyInArabic" disabled={editMood ? false : true} value={profileCopy.companyInArabic} onChange={(e)=>changeHandler(e)}/>
                 </div>
                 {/* <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
                     <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Requests completed time' : 'عدد الطلبات المكتلمة'}</label>
                     <input type="text" name="completedRequests" disabled={true} value={profileCopy.cancelTimes} onChange={(e)=>changeHandler(e)}/>
                 </div> */}
-                <div className={!arabic ? "form-inner-container english" : "form-inner-container"}>
+                <div className="form-inner-container">
                     <label className={!arabic ? "english" : ''} style={{fontSize:'15px'}}>{!arabic ? 'Requests cancelations time' : 'عدد مرات الغاء الطلبات'}</label>
-                    <input type="text" name="cancelationsTime" disabled={true} value={profileCopy.cancelTimes} onChange={(e)=>changeHandler(e)}/>
+                    <input type="text" className={!arabic ? 'english-input' : ''} name="cancelationsTime" disabled={true} value={profileCopy.cancelTimes} onChange={(e)=>changeHandler(e)}/>
                 </div>
                 <div className="field-container">
                       <div>
-                          <label htmlFor="cars" className={!arabic ? 'english' : ''} >{!arabic ? 'Cars' : 'سيارات'}</label>
+                          <label style={{color:'#1d1d1d'}} htmlFor="cars" className={!arabic ? 'english' : ''} >{!arabic ? 'Cars' : 'سيارات'}</label>
                           <input type="radio" id="cars" value="cars" name="pref" checked={supplierPref.pref == "cars" ? true : false} onChange={changeSupplierPref}/> 
                       </div>
                       <div>
-                          <label htmlFor="vehicles" className={!arabic ? 'english' : ''}>{!arabic ? 'Vehicles' : 'مركبات'}</label>
+                          <label style={{color:'#1d1d1d'}} htmlFor="vehicles" className={!arabic ? 'english' : ''}>{!arabic ? 'Vehicles' : 'مركبات'}</label>
                           <input type="radio" id="vehicles" value="vehicles" name="pref" checked={supplierPref.pref == "vehicles" ? true : false} onChange={changeSupplierPref}/>
                       </div>
                       <div>
-                          <label htmlFor="all" className={!arabic ? 'english' : ''}>{!arabic ? 'All' : 'الكل'}</label>
+                          <label style={{color:'#1d1d1d'}} htmlFor="all" className={!arabic ? 'english' : ''}>{!arabic ? 'All' : 'الكل'}</label>
                           <input type="radio" id="all" value="all" name="pref"  checked={supplierPref.pref == "all" ? true : false} onChange={changeSupplierPref}/>
                       </div>
                   </div>
                   {supplierPref.pref == "cars" && brands.length > 0 &&
                     <Fragment>
                       <div className="cars-pref-container">
-                      <p>{!arabic ? "Your cars preferences" : "تفضيلات السيارات المختارة"}</p>
-                      <div>
+                      <p className={!arabic ? "english" : ""}>{!arabic ? "Your cars preferences" : "تفضيلات السيارات المختارة"}</p>
+                      <div className="cars-profile-prefs">
                         {supplierPref.carsPref.map(carPref=><p key={carPref} className={!arabic ? 'english' : ''}>{carPref}</p>)}
                       </div>
                       </div>
-                        <div className="cars-brands-container-profile">
+                      <hr className="hr" />
+                        <div className="cars-brands-container">
                             <div>
-                                <label htmlFor="all cars" className={!arabic ? 'english' : ''} >{"All - الكل"}</label>
+                                <label style={{color:'#1d1d1d'}} htmlFor="all cars" className={!arabic ? 'english' : ''} >{"All - الكل"}</label>
                                 <input type="checkbox" id="all" value="all cars" name="all cars" onChange={changeSupplierPref}/> 
                             </div>
                             {brands.map((br, idx)=>(
                               <div key={br.text}>
-                                  <label htmlFor={br.value} className={!arabic ? 'english' : ''} >{br.value}</label>
+                                  <label style={{color:'#1d1d1d'}} htmlFor={br.value} className={!arabic ? 'english' : ''} >{br.text}</label>
                                   <input type="checkbox" id={br.value} value={br.value} name={br.value} onChange={changeSupplierPref}/> 
                               </div>
                             ))}
@@ -457,7 +456,7 @@ const ProfileInformation = ({token, admin, moderator, client, arabic, supplier})
         {editMood && <button className={!arabic ? 'update-btn english' : 'update-btn' } disabled={generalReducer.status.sending ? true : false}  onClick={submitHandler}>{!arabic ? "Update" :"تحديث"}</button>
          }
 
-         {supplier && profileCopy.updateRequest == 1 && <p className="warning-text">{!arabic ? 'Request for updating information has been sent' : 'تم ارسال طلب تحديث معلوماتك'}</p>}
+         {supplier && profileCopy.updateRequest == 1 && <p className={!arabic ? "warning-cancelation-text english" : "warning-cancelation-text" }>{!arabic ? 'Request for updating information has been sent' : 'تم ارسال طلب تحديث معلوماتك'}</p>}
 
          {supplier && profileCopy.updateRequest == 0 &&
            <button 

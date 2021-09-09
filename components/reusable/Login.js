@@ -5,7 +5,7 @@ import { Fragment, useEffect, useState } from 'react';
 import {AiOutlineClose, AiOutlineUpload} from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import generalActions from 'stores/actions/generalActions';
-import Feedback from './Feedback';
+import Link from 'next/link';
 
 const Login = ({arabic, disable}) => {
     const dispatch = useDispatch();
@@ -17,7 +17,6 @@ const Login = ({arabic, disable}) => {
         email:'',
         password: '',
         name: '',
-        nameInArabic: '',
         phone: '',
         companyName: '',
         companyNameInArabic: '',
@@ -28,12 +27,6 @@ const Login = ({arabic, disable}) => {
 
     const [brands, setBrands] = useState([]);
 
-    // useEffect(()=>{
-    //     window.scrollTo({
-    //         top:0,
-    //         behavior:'smooth'
-    //     })
-    // },[])
 
     const changeHandler = (e) => {
         if(e.target.files){
@@ -148,18 +141,21 @@ const Login = ({arabic, disable}) => {
             let data;
             e.preventDefault();
             dispatch(generalActions.emptyState());
-            dispatch(generalActions.sendRequest(!arabic ? "Registering.." : "..تسجيل"))
+            dispatch(generalActions.sendRequest(!arabic ? "Registering.." : "..تسجيل"));
             let validateEmailMessage = validateAccountsInput(loginInfo.email, false, false, true, false, false, false);
             let validatePasswordMessage = validateAccountsInput(loginInfo.password,false,false,false,false,false, false, true);
-            let validateNameMessage = validateAccountsInput(loginInfo.name, false, true);
-            let validateNameInArabicMessage = validateAccountsInput(loginInfo.nameInArabic, true);
+            let validateNameMessage = null;
+            if(userType != "supplier"){
+                validateNameMessage = validateAccountsInput(loginInfo.name, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+            } 
             let validatePhoneMessage = validateAccountsInput(loginInfo.phone, false, false, false, true);
-            
+
             if(arabic){
                 validateEmailMessage = validateAccountsInputArabic(loginInfo.email, false, false, true, false, false, false);
                 validatePasswordMessage = validateAccountsInputArabic(loginInfo.password,false,false,false,false,false, false, true);
-                validateNameMessage = validateAccountsInputArabic(loginInfo.name, false, true);
-                validateNameInArabicMessage = validateAccountsInputArabic(loginInfo.nameInArabic, true);
+                if(userType != "supplier"){
+                    validateNameMessage = validateAccountsInputArabic(loginInfo.name, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+                }
                 validatePhoneMessage = validateAccountsInputArabic(loginInfo.phone, false, false, false, true);
             }
             let validateCompanyNameMessage= null;
@@ -173,11 +169,8 @@ const Login = ({arabic, disable}) => {
             if (validatePasswordMessage.length > 0) {
                 dispatch(generalActions.changeValidation(validatePasswordMessage));
             }
-            if(validateNameMessage.length > 0){
+            if(validateNameMessage != null && validateNameMessage.length > 0){
                 dispatch(generalActions.changeValidation(validateNameMessage))
-            }
-            if(validateNameInArabicMessage.length > 0){
-                dispatch(generalActions.changeValidation(validateNameInArabicMessage));
             }
             
             if(validatePhoneMessage.length > 0){
@@ -229,8 +222,7 @@ const Login = ({arabic, disable}) => {
                 validateEmailMessage.length > 0 ||
                 validatePhoneMessage.length > 0 ||
                 validatePasswordMessage.length > 0 ||
-                validateNameMessage.length > 0 ||
-                validateNameInArabicMessage.length > 0
+                validateNameMessage != null && validateNameMessage.length > 0
                 ) {
                 dispatch(generalActions.showValidationMessages())
                 return;
@@ -251,12 +243,14 @@ const Login = ({arabic, disable}) => {
                     })
                 })
             }else if(userType == "supplier"){
+                window.scrollTo({
+                    behavior:'smooth',
+                    top:2
+                })
                 const formData = new FormData();
-                formData.append('name', loginInfo.name);
-                formData.append('nameInArabic', loginInfo.nameInArabic);
                 formData.append("email", loginInfo.email);
                 formData.append("password", loginInfo.password);
-                formData.append("phone", loginInfo.phone);
+                formData.append("phone", "+"+loginInfo.phone);
                 formData.append("companyInEnglish", loginInfo.companyName.toUpperCase());
                 formData.append("companyInArabic", loginInfo.companyNameInArabic);
                 formData.append("companyCertificate", loginInfo.shopCertificate);
@@ -334,38 +328,40 @@ const Login = ({arabic, disable}) => {
         }
     }
     
-    useEffect(async()=>{
+    useEffect(()=>{
         if(userType == "supplier"){
-            await fetchBrands()
+            fetchBrands()
         }
     }, [userType])
 
 
-    return <div className={!generalReducer.showModalLogin ? "modal-container" : "modal-container show"}>
-        <div className="header-modal-container">
-            {!disable && <AiOutlineClose size={27} color={"#FE346E"} className="close-icon" onClick={()=>{
+    return <div className={!generalReducer.showModalLogin ? "modal-container" : "modal-container animate__bounceInDown show-login"}>
+        <div className="header-modal-login-container">
+            <AiOutlineClose size={27} color={"#ffd523"} className="close-icon" onClick={()=>{
                 dispatch(generalActions.toggleLoginModal())
                 dispatch(generalActions.emptyState())
-                }}/> }
-            <h3 className={!arabic ? "login-title english" : "login-title"} style={{fontSize:!arabic && '18px'}}>{!arabic ? "Login" : "تسجيل دخول"}</h3>
+                }}/>
+            <h3 className={!arabic ? "login-title english" : "login-title"} style={{fontSize:!arabic && '18px'}}>{!login && !arabic ? 'Register' : !login && arabic ? 'تسجيل' : login && !arabic ? 'Login': login && arabic ? 'دخول' : null}</h3>
         </div>
         <div className="user-type-container">
-            <p className={!arabic ? 'english' : ''} onClick={()=>changeUserType('client')} style={{borderBottom: userType == 'client' && '3px solid #FE346E', transition:'all 0.2s'}}>{!arabic? 'Client' : 'عميل'}</p>
-            <p className={!arabic ? 'english' : ''} onClick={()=>changeUserType('supplier')} style={{borderBottom: userType != 'client' && '3px solid #FE346E', transition:'all 0.2s'}}>{!arabic? 'Supplier' : 'مورد'}</p>
+            <p className={!arabic ? 'english' : ''} onClick={()=>changeUserType('client')} style={{borderBottom: userType == 'client' && '3px solid #ffd523', transition:'all 0.2s'}}>{!arabic? 'Client' : 'عميل'}</p>
+            <p className={!arabic ? 'english' : ''} onClick={()=>changeUserType('supplier')} style={{borderBottom: userType != 'client' && '3px solid #ffd523', transition:'all 0.2s'}}>{!arabic? 'Supplier' : 'مورد'}</p>
         </div>
         <hr/>
         <form className={!arabic ? "form-auth-container english" : "form-auth-container"} onSubmit={login ? submitHandler : submitRegistarionHandler}>
-            <input type='text' name="email" value={loginInfo.email} onChange={changeHandler} placeholder={!arabic ? "email" : "البريد"}  />
-            <input type='password' name="password" value={loginInfo.password} onChange={changeHandler} placeholder={!arabic ? "password" : "الرقم السري"}  />
+            <input type='text' className={!arabic ? 'english-input': ''} name="email" value={loginInfo.email} onChange={changeHandler} placeholder={!arabic ? "email" : "البريد"}  />
+            <input type='password' className={!arabic ? 'english-input': ''} name="password" value={loginInfo.password} onChange={changeHandler} placeholder={!arabic ? "password" : "الرقم السري"}  />
             {!login &&
                 <Fragment>
-                    <input type='text' name="name" value={loginInfo.name} onChange={changeHandler} placeholder={!arabic ? "Name English" : "الاسم بالانجليزي"}  />
-                    <input type='text' name="nameInArabic" value={loginInfo.nameInArabic} onChange={changeHandler} placeholder={!arabic ? "Name Arabic" : "الاسم بالعربي"}  />
-                    <input type='number' name="phone" value={loginInfo.phone} onChange={changeHandler} placeholder={!arabic ? "Phone 9665xxx" : "9665xxx الجوال"}  />
+                    {userType == "supplier" ?
+                        null
+                        : <input type='text' className={!arabic ? 'english-input': ''} name="name" value={loginInfo.name} onChange={changeHandler} placeholder={!arabic ? "Name" : "الاسم"}  /> 
+                    }
+                    <input type='number' className={!arabic ? 'english-input': ''} name="phone" value={loginInfo.phone} onChange={changeHandler} placeholder={!arabic ? "Phone 9665xxx" : "9665xxx الجوال"}  />
                     {userType == "supplier" && 
                     <Fragment>
-                        <input type='text' name="companyName" value={loginInfo.companyName} onChange={changeHandler} placeholder={!arabic ? "Company/Shop Name" : "اسم الشركة/المحل"}  />
-                        <input type='text' name="companyNameInArabic" value={loginInfo.companyNameInArabic} onChange={changeHandler} placeholder={!arabic ? "Company/Shop Name Arabic" : "اسم الشركة/المحل عربي"}  />
+                        <input type='text' className={!arabic ? 'english-input': ''} name="companyName" value={loginInfo.companyName} onChange={changeHandler} placeholder={!arabic ? "Company/Shop Name" : "اسم الشركة/المحل"}  />
+                        <input type='text' className={!arabic ? 'english-input': ''} name="companyNameInArabic" value={loginInfo.companyNameInArabic} onChange={changeHandler} placeholder={!arabic ? "Company/Shop Name Arabic" : "اسم الشركة/المحل عربي"}  />
                         <div onChange={changeSupplierPref} className="flex flex-col justify-center items-center">
                         <p className={!arabic ? 'field-title english' : 'field-title'}>{!arabic ? 'What is your field ?' : 'ماهو مجالك؟' }</p>
                         <div className="field-container">
@@ -400,11 +396,11 @@ const Login = ({arabic, disable}) => {
                         <div className='upload-container'>
                             <label className={!arabic ? 'english' : ''}>
                                 {!arabic ? 'Upload Your Store/Warehouse Certificate' : 'ارفع شهادة السجل التجاري'}
-                                <span>PNG, JPG, JPEG, PDF ONLY</span>
-                                <span>{!arabic ? 'Max file size is 100MB' : 'اقصى حجم 100 ميقا'}</span>
+                                <p>PNG, JPG, JPEG, PDF ONLY</p>
+                                <p>{!arabic ? 'Max file size is 100MB' : 'اقصى حجم 100 ميقا'}</p>
                                 <AiOutlineUpload size={45} color={"#b1b1b1"} style={{marginTop:'1rem'}}/>
                                 {loginInfo.shopCertificate != null && 
-                                <span>{loginInfo.shopCertificate.name}</span>
+                                <p>{loginInfo.shopCertificate.name}</p>
                                 }
                                 <input hidden type='file' name="shopCertificate" accept=".png , .jpeg, .jpg, .pdf" onChange={changeHandler}/>
                             </label>
@@ -416,13 +412,11 @@ const Login = ({arabic, disable}) => {
             <button className={!arabic ? 'english' : ''} type='submit'>{!login && !arabic ? 'Register' : !login && arabic ? 'تسجيل' : login && !arabic ? 'Login': login && arabic ? 'دخول' : null}</button>
         </form>
         <p onClick={toggleAuth} className={!arabic ? 'register-text english' : 'register-text'} >{login && !arabic ? 'Register' : login && arabic ? 'تسجيل' : !login && !arabic ? 'Login': !login && arabic ? 'دخول' : null}</p>
-        {disable && <p className={!arabic ? 'register-text english' : 'register-text'} onClick={()=>{
-            router.push(!arabic ? '/en' : '/')
-            dispatch(generalActions.toggleLoginModal())
-        }}>{!arabic ? 'Go home' : 'الرئيسية'}</p>}
-
-        <Feedback arabic={arabic} />
-        
+        <p className={!arabic ? "forget-pass-text english" : "forget-pass-text"}>
+            <Link href={!arabic ? "/en/auth/forget-password" : "/auth/forget-password"}>
+                <a>{!arabic ? "Forget Password ?" : "نسيت كلمة السر؟" }</a>
+            </Link>
+        </p>
     </div>
 }
 

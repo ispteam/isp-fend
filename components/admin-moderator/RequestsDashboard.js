@@ -155,18 +155,18 @@ const toggleModalDetails = (idx) => {
 
     return <Fragment>
 
-            <div className="grid-data-details-container" style={{marginTop:'2.5rem'}}>
+            <div className="grid-data-details-container">
                 <GridData
                 icon={<BsHash size={25} color="white" />}
                 title="Total numbers of requests"
                 link="/en/admin/requests"
-                children={requests.requests.length}
+                data={requests.requests.length}
                 />
             </div>
             <br/> <br />
 
             <div>
-                <div className="sort-option-container-supplier">
+                <div className="sort-option-container">
                 <div>
                     <input type="checkbox" id="sort" name="sort" onChange={filterData}/>
                     <label htmlFor="sort">DESC</label>
@@ -185,13 +185,11 @@ const toggleModalDetails = (idx) => {
                 </div>
                 </div>
                 <div className="search-input english">
-                    <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Request Number.."/>
+                    <input type="text" maxLength="13" onChange={(e)=>searchRecord(e)} placeholder="Search By Request Number.." inputMode="numeric" className="english-input" />
                 </div>
             </div>
 
-            <br /> <br /> <br />
-
-            {data !== null &&  <ModalDetails request={true} info={data}  title={"Request Details"}/> }
+            {data !== null &&  <ModalDetails request={true} info={data} setDatas={setData} title={"Request Details"}/> }
 
             <Table
         headers={TABLE_REQUESTS_HEADERS.map((header) => (
@@ -201,7 +199,7 @@ const toggleModalDetails = (idx) => {
       >
         {!searchedValue.showSearchedValue ? requestsOrder.length > 0 && requestsOrder[0].model != null  && requestsOrder.sort().map((request, idx) => {
           return (
-            <Fragment>
+            <Fragment key={request.requestId}>
               <tr key={request.requestId}>
                 <Td key={request.requestNum} value={request.requestNum}/>
                 <Td key={request.model.partNo} value={request.model.partNo}/>

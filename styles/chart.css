@@ -1,28 +1,24 @@
-:root {
-    --bg-header: #f1f1f1;
-    --text-active: black;
-    --nav-link-container-color: #e6e6e6;
-    --radius-ratio: 3rem;
-    --font-color: #400082;
-    --background: #FE346E;
-    --font-family-arabic: 'El Messiri', sans-serif;
-    --font-family-english: 'Urbanist', sans-serif;
-}
-
 .chart-title{
-    color: var(--font-color);
-    font-family: var(--font-family-english);
-    font-size: 20px;
     text-align: center;
+    font-family: var(--font-english);
+    /* background-color: var(--main-color); */
+    color: var(--main-color);
+    font-style: italic;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.chart-container{
-    margin-top: 2rem;
+.btn-details-admin{
+    width: 50%;
 }
 
-@media only screen and (min-width:735px) {
+@media only screen and (min-width: 735px) {
     .chart-container{
         width: 70%;
         margin: auto;
-    }   
+    }
+    .chart-title{
+        margin-top: 1rem;
+    }
 }

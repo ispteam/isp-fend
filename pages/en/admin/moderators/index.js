@@ -18,11 +18,11 @@ const Moderators = (props) => {
 
   
   return (
-    <SharedNavLayout admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
+    <SharedNavLayout session={props.session} admin={true} navList={generalReducer.adminNav} logoLink={"/en/admin"} footerInnerValue={<p className="footer-inner-text">ADMIN PAGE</p>}>
         <Head>
           <title>Moderators</title>
         </Head>
-        <ModeratorsDashboard token={props.token} />
+        <ModeratorsDashboard session={props.session} token={props.token} />
     </SharedNavLayout>
   );
 };
@@ -79,6 +79,7 @@ export async function getServerSideProps({req}){
     props: {
       token: token,
       moderators:response.moderators,
+      session: session
     },
   };
 }
