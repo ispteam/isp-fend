@@ -14,7 +14,7 @@
     text-align: center;
     color: var(--third-color);
     padding-top: 5rem;
-    animation-duration: 4s;
+    animation-duration: 7s;
     animation-iteration-count: infinite;
 }
 
@@ -34,7 +34,7 @@
     padding: 1.5rem;
     border-radius: 0.4rem;
     margin: auto;
-    animation-duration: 2s;
+    animation-duration: 5s;
 }
 
 .option-container h3 {
@@ -57,7 +57,7 @@
     margin-left:0.6rem;
     margin-top:0.7rem;
     animation-name: iconPulse;
-    animation-duration: 3s;
+    animation-duration: 7s;
     animation-iteration-count: infinite;
 }
 
@@ -163,7 +163,7 @@
     top: 4rem;
     right: 10rem;
     animation: iconAnimation;
-    animation-duration: 4s;
+    animation-duration: 6s;
     animation-iteration-count: infinite;
 }
 
@@ -232,14 +232,14 @@
 .step-icon-right{
     width: 10%;
     padding-right: 5rem;
-    animation-duration: 2s;
+    animation-duration: 7s;
     animation-iteration-count: infinite;
 }
 
 .step-icon-left{
     width: 10%;
     padding-left: 5rem;
-    animation-duration: 2s;
+    animation-duration: 7s;
     animation-iteration-count: infinite;
 }
 
