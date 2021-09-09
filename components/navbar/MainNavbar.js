@@ -105,7 +105,7 @@ const MainNavbar = ({navList, logoLink, client, supplier, arabic, admin, session
                         <button className={!arabic ? 'english' : ''} onClick={signOutHandler}>{!arabic ? "Logout" : "تسجيل خروج"}</button>
                     </div>:
                     <div className="auth-btn-container">
-                        <button className={!arabic ? 'english' : ''}  onClick={navigateToSignIn}>{!arabic ? "Login | Register" : "دخول | تسجيل"}</button>
+                        <button className={!arabic ? 'english' : ''}  onClick={navigateToSignIn}>{!arabic ? "Login | Register | Supplier" : "دخول | تسجيل | مورد"}</button>
                     </div>
                 }
                     
