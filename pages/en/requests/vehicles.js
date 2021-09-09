@@ -1,9 +1,9 @@
-import InnerFooter from "components/client/InnerFooter";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import InnerFooter from "../../../components/client/InnerFooter";
+import SharedNavLayout from "../../../components/reusable/SharedLayout";
 import Head from 'next/head';
-import AddRequest from "components/client/AddRequest";
+import AddRequest from "../../../components/client/AddRequest";
 import { getSession } from "next-auth/client";
-import { addToken, parseCookie } from "helper/functions";
+import { addToken, parseCookie } from "../../../helper/functions";
 
 const vehicles = (props) => {
     return <SharedNavLayout navList={generalReducer.clientNav} session={props.session} client={true} logoLink={"/en"} footerInnerValue={<InnerFooter/>}>

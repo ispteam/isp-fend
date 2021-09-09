@@ -2,7 +2,7 @@ import {BsCheckCircle} from 'react-icons/bs';
 import {AiOutlineClose} from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { sendEmail } from 'helper/functions';
+import { sendEmail } from '../../helper/functions';
 import { useRouter } from 'next/router';
 
 const BilInformation =({arabic, session, status, token}) => {

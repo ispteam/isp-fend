@@ -1,12 +1,11 @@
 import { getSession } from "next-auth/client";
 import Head from "next/head";
 import {useSelector } from "react-redux";
-import LogsDashboard from "components/admin-moderator/LogsDashboard";
-import SharedNavLayout from 'components/reusable/SharedLayout';
-import ENDPOINT from "helper/ENDPOINT";
-import { addToken, parseCookie } from "helper/functions";
-import { useEffect } from "react";
-import generalActions from "stores/actions/generalActions";
+import LogsDashboard from "../../../../components/admin-moderator/LogsDashboard";
+import SharedNavLayout from '../../../../components/reusable/SharedLayout';
+import ENDPOINT from "../../../../helper/ENDPOINT";
+import { addToken, parseCookie } from "../../../../helper/functions";
+
 const Logs = (props) => {
     const generalReducer = useSelector((state)=>state.generalReducer);
 

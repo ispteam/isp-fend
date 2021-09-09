@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
-import { validateAccountsInput, validateAccountsInputArabic, sendEmail } from "helper/functions";
+import { validateAccountsInput, validateAccountsInputArabic, sendEmail } from "../../helper/functions";
 
 import { useDispatch } from "react-redux";
-import generalActions from "stores/actions/generalActions";
-import Feedback from "components/reusable/Feedback";
-import Footer from "components/reusable/Footer";
+import generalActions from "../../stores/actions/generalActions";
+import Feedback from "../../components/reusable/Feedback";
+import Footer from "../../components/reusable/Footer";
 
 const ChangePasswordForm = ({arabic, rememberToken}) => {
 

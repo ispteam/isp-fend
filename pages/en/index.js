@@ -1,6 +1,6 @@
-import Landing from "components/client/landing";
-import InnerFooter from "components/client/InnerFooter";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import Landing from "../../components/client/landing";
+import InnerFooter from "../../components/client/InnerFooter";
+import SharedNavLayout from "../../components/reusable/SharedLayout";
 import { useSelector } from "react-redux";
 import Head from 'next/head';
 import { getSession } from "next-auth/client";

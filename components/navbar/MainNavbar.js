@@ -8,7 +8,7 @@ import {useSession, signOut, getSession} from 'next-auth/client';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from "react-redux";
 import {useRouter} from 'next/router';
-import Login from "components/reusable/Login";
+import Login from "../../components/reusable/Login";
 import generalActions from "stores/actions/generalActions";
 
 

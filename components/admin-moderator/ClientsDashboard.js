@@ -1,20 +1,19 @@
 import { Fragment, useEffect} from "react";
 import {useRouter} from 'next/router';
-import Table from "components/reusable/Tables";
+import Table from "../reusable/Tables";
 import { useDispatch, useSelector } from "react-redux";
-import GridLayout from "components/reusable/GridLayout";
-import GridData from "components/reusable/GridData";
-import {findStatisticsPerMonth, validateAccountsInput} from "helper/functions";
+import GridLayout from "../reusable/GridLayout";
+import GridData from "../reusable/GridData";
+import {findStatisticsPerMonth, validateAccountsInput} from "../../helper/functions";
 import { useState } from "react";
-import clientsActions from "stores/actions/clientsActions";
+import clientsActions from "../../stores/actions/clientsActions";
 import {BsHash} from "react-icons/bs";
-import MyChart from "components/reusable/Chart";
+import MyChart from "../reusable/Chart";
 import {Bar} from 'react-chartjs-2';
-import {getSession} from 'next-auth/client';
-import Td from "components/reusable/Td";
-import Button from "components/reusable/Button";
+import Td from "../reusable/Td";
+import Button from "../reusable/Button";
 import ModalDetails from "./ModalDetails";
-import generalActions from "stores/actions/generalActions";
+import generalActions from "../../stores/actions/generalActions";
 
 
 const TABLE_CLIENTS_HEADERS = ["Name", "Eamil", "Details"];

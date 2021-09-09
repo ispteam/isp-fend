@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import ForgetPasswordForm from 'components/client/ForgetPasswordForm';
+import ForgetPasswordForm from '../../components/client/ForgetPasswordForm';
 const ForgetPassword = () => {
     return <Fragment>
         <Fragment>

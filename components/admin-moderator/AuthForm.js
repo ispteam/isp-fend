@@ -1,11 +1,11 @@
-import Feedback from "components/reusable/Feedback";
-import Footer from "components/reusable/Footer";
+import Feedback from "../../components/reusable/Feedback";
+import Footer from "../../components/reusable/Footer";
 import { signIn } from "next-auth/client";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import generalActions from "stores/actions/generalActions";
+import generalActions from "../../stores/actions/generalActions";
 import {FiUser} from 'react-icons/fi';
-import { validateAccountsInput } from "helper/functions";
+import { validateAccountsInput } from "../../helper/functions";
 
 const AuthForm = () => {
     const [enteryId, setEnteryId] = useState('');

@@ -1,11 +1,10 @@
-import InnerFooter from "components/client/InnerFooter";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import InnerFooter from "../../components/client/InnerFooter";
+import SharedNavLayout from "../../components/reusable/SharedLayout";
 import { useSelector } from "react-redux";
 import Head from 'next/head';
-import AddRequest from "components/client/AddRequest";
 import { getSession } from "next-auth/client";
-import { addToken, parseCookie } from "helper/functions";
-import BillInformation from "components/client/BilInformation";
+import { addToken, parseCookie } from "../../helper/functions";
+import BillInformation from "../../components/client/BilInformation";
 
 const Bill = (props) => {
     const generalReducer = useSelector(state=>state.generalReducer);

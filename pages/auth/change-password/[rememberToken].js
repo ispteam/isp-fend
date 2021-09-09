@@ -1,4 +1,4 @@
-import ChangePasswordForm from "components/client/ChangePassword";
+import ChangePasswordForm from "../../../components/client/ChangePassword";
 import Head from "next/head";
 import { Fragment } from "react";
 

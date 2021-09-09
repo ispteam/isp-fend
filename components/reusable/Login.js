@@ -1,10 +1,10 @@
-import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from 'helper/functions';
+import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from '../../helper/functions';
 import { signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import {AiOutlineClose, AiOutlineUpload} from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import generalActions from 'stores/actions/generalActions';
+import generalActions from '../../stores/actions/generalActions';
 import Link from 'next/link';
 
 const Login = ({arabic, disable}) => {

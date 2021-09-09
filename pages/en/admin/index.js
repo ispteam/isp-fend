@@ -1,15 +1,15 @@
-import HomePage from "components/admin-moderator/HomePage";
-import SharedNavLayout from "components/reusable/SharedLayout";
-import ENDPOINT from "helper/ENDPOINT";
-import { addToken, parseCookie } from "helper/functions";
+import HomePage from "../../../components/admin-moderator/HomePage";
+import SharedNavLayout from "../../../components/reusable/SharedLayout";
+import ENDPOINT from "../../../helper/ENDPOINT";
+import { addToken, parseCookie } from "../../../helper/functions";
 import { getSession } from "next-auth/client";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import clientsActions from "stores/actions/clientsActions";
-import generalActions from "stores/actions/generalActions";
-import requestsActions from "stores/actions/requestsActions";
-import suppliersActions from "stores/actions/suppliersActions";
+import clientsActions from "../../../stores/actions/clientsActions";
+import generalActions from "../../../stores/actions/generalActions";
+import requestsActions from "../../../stores/actions/requestsActions";
+import suppliersActions from "../../../stores/actions/suppliersActions";
 
 const Home = (props) => {
     const dispatch = useDispatch();

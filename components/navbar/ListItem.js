@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import {useRouter} from 'next/router';
 import {getSession } from 'next-auth/client';
-import generalActions from 'stores/actions/generalActions';
+import generalActions from '../../stores/actions/generalActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ListItem = ({arabic, list, idx, admin, session}) => {

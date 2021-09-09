@@ -2,7 +2,6 @@ import { useState } from "react";
 import Feedback from "./Feedback";
 import {AiOutlineClose, AiOutlineUpload} from 'react-icons/ai';
 import { useDispatch, useSelector } from "react-redux";
-import generalActions from "stores/actions/generalActions";
 
 
 const Modal = ({arabic, reasons, confirmCancel, data, title, close}) => {

@@ -1,8 +1,8 @@
 const { Fragment, useState } = require("react")
 import countries from 'helper/countries.json';
-import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from 'helper/functions';
+import { sendEmail, validateAccountsInput, validateAccountsInputArabic } from '../../helper/functions';
 import { useDispatch, useSelector } from 'react-redux';
-import generalActions from 'stores/actions/generalActions';
+import generalActions from '../../stores/actions/generalActions';
 
 
 let SUPPLIERS_PREF_EMAILS = [];

@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from 'react';
-import Spinner from 'components/reusable/Spinner/Spinner';
+import Spinner from './Spinner/Spinner';
 import { getSession } from 'next-auth/client';
 import { useDispatch, useSelector } from 'react-redux';
 import {BsToggleOff, BsToggleOn} from 'react-icons/bs';
-import { validateAccountsInput, validateAccountsInputArabic } from 'helper/functions';
-import generalActions from 'stores/actions/generalActions';
+import { validateAccountsInput, validateAccountsInputArabic } from '../../helper/functions';
+import generalActions from '../../stores/actions/generalActions';
 import Feedback from './Feedback';
 // import Cookies from 'js-cookie';
 

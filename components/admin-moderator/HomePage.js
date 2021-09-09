@@ -1,6 +1,6 @@
 import { useEffect, useState, Fragment } from "react";
-import GridLayout from "components/reusable/GridLayout";
-import GridData from "components/reusable/GridData";
+import GridLayout from "../../components/reusable/GridLayout";
+import GridData from "../../components/reusable/GridData";
 import {
   AiOutlineUserAdd,
   AiOutlineUserDelete,
@@ -10,17 +10,17 @@ import {
 } from "react-icons/ai";
 import { BsHash } from "react-icons/bs";
 import { FiUserX } from "react-icons/fi";
-import Table from "components/reusable/Tables";
+import Table from "../../components/reusable/Tables";
 import { useRouter } from "next/router";
-import MyChart from "components/reusable/Chart";
+import MyChart from "../../components/reusable/Chart";
 import { Bar, Line } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import {
   findStatisticsPerMonth,
   formatRecordsAddress,
-} from "helper/functions";
-import Spinner from "components/reusable/Spinner/Spinner";
-import generalActions from "stores/actions/generalActions";
+} from "../../helper/functions";
+import Spinner from "../../components/reusable/Spinner/Spinner";
+import generalActions from "../../stores/actions/generalActions";
 
 const HEADERS_SET_ONE = ["ID", "Name"];
 const HEADERS_SET_TWO = ["ID", "From", "To City"];

@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import SharedNavLayout from "components/reusable/SharedLayout";
-import ClientsDashboard from "components/admin-moderator/ClientsDashboard";
+import SharedNavLayout from "../../../../components/reusable/SharedLayout";
+import ClientsDashboard from "../../../../components/admin-moderator/ClientsDashboard";
 import { useEffect } from "react";
-import { addToken, formatRecordsAddress, parseCookie } from "helper/functions";
-import clientsActions from "stores/actions/clientsActions";
+import { addToken, formatRecordsAddress, parseCookie } from "../../../../helper/functions";
+import clientsActions from "../../../../stores/actions/clientsActions";
 import { getSession } from "next-auth/client";
-import ENDPOINT from "helper/ENDPOINT";
+import ENDPOINT from "../../../../helper/ENDPOINT";
 import Head from "next/head";
-import generalActions from "stores/actions/generalActions";
 
 const Clients = (props) => {
   const dispatch= useDispatch();

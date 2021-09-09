@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import SharedNavLayout from "../../../../components/reusable/SharedLayout";
 import { useEffect } from "react";
-import { addToken, parseCookie } from "helper/functions";
-import brandsActions from "stores/actions/brandsActions";
-import BrandsDashboard from "components/admin-moderator/BrandsDashboard";
+import { addToken, parseCookie } from "../../../../helper/functions";
+import brandsActions from "../../../../stores/actions/brandsActions";
+import BrandsDashboard from "../../../../components/admin-moderator/BrandsDashboard";
 import { getSession } from "next-auth/client";
-import ENDPOINT from 'helper/ENDPOINT';
+import ENDPOINT from '../../../../helper/ENDPOINT';
 import Head from "next/head";
-import generalActions from "stores/actions/generalActions";
 
 const Brands = (props) => {
   const dispatch= useDispatch();

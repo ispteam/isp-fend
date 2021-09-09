@@ -1,10 +1,10 @@
-import InnerFooter from "components/client/InnerFooter";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import InnerFooter from "../../../components/client/InnerFooter";
+import SharedNavLayout from "../../../components/reusable/SharedLayout";
 import { useSelector } from "react-redux";
 import Head from 'next/head';
-import AddRequest from "components/client/AddRequest";
+import AddRequest from "../../../components/client/AddRequest";
 import { getSession } from "next-auth/client";
-import { addToken, parseCookie } from "helper/functions";
+import { addToken, parseCookie } from "../../../helper/functions";
 const Cars = (props) => {
     const generalReducer = useSelector(state=>state.generalReducer);
     return <SharedNavLayout navList={generalReducer.clientNav} session={props.session} logoLink={"/en"} client={true} footerInnerValue={<InnerFooter/>}>

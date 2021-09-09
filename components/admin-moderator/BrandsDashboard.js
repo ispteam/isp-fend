@@ -1,18 +1,15 @@
 import { Fragment, useEffect, useRef} from "react";
-import Table from "components/reusable/Tables";
+import Table from "../reusable/Tables";
 import { useDispatch, useSelector } from "react-redux";
-import GridData from "components/reusable/GridData";
-import {sendEmail, validateAccountsInput} from "helper/functions";
+import GridData from "../reusable/GridData";
+import {sendEmail, validateAccountsInput} from "../../helper/functions";
 import { useState } from "react";
 import {BsHash} from "react-icons/bs";
-import {getSession} from 'next-auth/client';
-import Td from "components/reusable/Td";
-import Button from "components/reusable/Button";
+import Td from "../reusable/Td";
+import Button from "../reusable/Button";
 import ModalDetails from "./ModalDetails";
-import generalActions from "stores/actions/generalActions";
-import Feedback from "components/reusable/Feedback";
-import moderatorsActions from "stores/actions/moderatorActions";
-import brandsActions from "stores/actions/brandsActions";
+import generalActions from "../../stores/actions/generalActions";
+import brandsActions from "../../stores/actions/brandsActions";
 
 const TABLE_BRANDS_HEADERS = ["Brand Name", "Brand Name(AR)", "Field", "Details"];
 

@@ -1,18 +1,18 @@
 import { Fragment, useEffect, useRef} from "react";
-import Table from "components/reusable/Tables";
+import Table from "../reusable/Tables";
 import { useDispatch, useSelector } from "react-redux";
-import GridData from "components/reusable/GridData";
-import {findStatisticsPerMonth, sendEmail, validateAccountsInput} from "helper/functions";
+import GridData from "../reusable/GridData";
+import {findStatisticsPerMonth, sendEmail, validateAccountsInput} from "../../helper/functions";
 import {useState } from "react";
 import {BsHash} from "react-icons/bs";
 import {getSession} from 'next-auth/client';
-import Td from "components/reusable/Td";
-import Button from "components/reusable/Button";
+import Td from "../reusable/Td";
+import Button from "../reusable/Button";
 import ModalDetails from "./ModalDetails";
-import generalActions from "stores/actions/generalActions";
-import MyChart from "components/reusable/Chart";
+import generalActions from "../../stores/actions/generalActions";
+import MyChart from "../reusable/Chart";
 import { Pie } from "react-chartjs-2";
-import Feedback from "components/reusable/Feedback";
+import Feedback from "../reusable/Feedback";
 
 const BG_COLORS =  [
     '#B21F00',

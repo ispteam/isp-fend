@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
-import { validateAccountsInput, validateAccountsInputArabic, sendEmail } from "helper/functions";
+import { validateAccountsInput, validateAccountsInputArabic, sendEmail } from "../../helper/functions";
 import {v4 as uuid4} from 'uuid';
 import Link from 'next/link';
 import Feedback from "../reusable/Feedback";

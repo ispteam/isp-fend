@@ -1,11 +1,11 @@
 import { getSession } from "next-auth/client"; 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ENDPOINT from "helper/ENDPOINT";
-import { addToken, formatRecordsAddress, parseCookie } from "helper/functions";
-import SharedNavLayout from "components/reusable/SharedLayout";
-import AllRequests from "components/reusable/AllRequests";
-import requestsActions from "stores/actions/requestsActions";
+import ENDPOINT from "../../helper/ENDPOINT";
+import { addToken, formatRecordsAddress, parseCookie } from "../../helper/functions";
+import SharedNavLayout from "../../components/reusable/SharedLayout";
+import AllRequests from "../../components/reusable/AllRequests";
+import requestsActions from "../../stores/actions/requestsActions";
 import Head from "next/head";
 
 const PendingRequests = (props) => {

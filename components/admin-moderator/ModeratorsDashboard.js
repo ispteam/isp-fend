@@ -1,16 +1,16 @@
 import { Fragment, useEffect} from "react";
-import Table from "components/reusable/Tables";
+import Table from "../../components/reusable/Tables";
 import { useDispatch, useSelector } from "react-redux";
-import GridData from "components/reusable/GridData";
-import {sendEmail, validateAccountsInput} from "helper/functions";
+import GridData from "../../components/reusable/GridData";
+import {sendEmail, validateAccountsInput} from "../../helper/functions";
 import { useState } from "react";
 import {BsHash} from "react-icons/bs";
 import {getSession} from 'next-auth/client';
-import Td from "components/reusable/Td";
-import Button from "components/reusable/Button";
+import Td from "../../components/reusable/Td";
+import Button from "../../components/reusable/Button";
 import ModalDetails from "./ModalDetails";
 import generalActions from "stores/actions/generalActions";
-import Feedback from "components/reusable/Feedback";
+import Feedback from "../../components/reusable/Feedback";
 import moderatorsActions from "stores/actions/moderatorActions";
 
 const TABLE_MODERATORS_HEADERS = ["Name", "Eamil", "Phone", "Details"];

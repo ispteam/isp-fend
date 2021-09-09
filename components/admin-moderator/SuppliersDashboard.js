@@ -1,20 +1,20 @@
 import { Fragment, useEffect} from "react";
 import {useRouter} from 'next/router';
-import Table from "components/reusable/Tables";
+import Table from "../../components/reusable/Tables";
 import { useDispatch, useSelector } from "react-redux";
-import GridLayout from "components/reusable/GridLayout";
-import GridData from "components/reusable/GridData";
-import {findStatisticsPerMonth, sendEmail, validateAccountsInput} from "helper/functions";
+import GridLayout from "../../components/reusable/GridLayout";
+import GridData from "../../components/reusable/GridData";
+import {findStatisticsPerMonth, sendEmail, validateAccountsInput} from "../../helper/functions";
 import { useState } from "react";
 import {BsHash} from "react-icons/bs";
-import MyChart from "components/reusable/Chart";
+import MyChart from "../../components/reusable/Chart";
 import {Bar} from 'react-chartjs-2';
 import {getSession} from 'next-auth/client';
-import Td from "components/reusable/Td";
-import Button from "components/reusable/Button";
+import Td from "../../components/reusable/Td";
+import Button from "../../components/reusable/Button";
 import ModalDetails from "./ModalDetails";
-import generalActions from "stores/actions/generalActions";
-import suppliersActions from "stores/actions/suppliersActions";
+import generalActions from "../../stores/actions/generalActions";
+import suppliersActions from "../../stores/actions/suppliersActions";
 
 const TABLE_SUPPLIERS_HEADERS = ["Eamil", "Phone", "CO", "CO(AR)", "Cert" ,"Verified", "Details"];
 

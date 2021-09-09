@@ -1,4 +1,4 @@
-import { validateCreditCard, validateCreditCardArabic } from "helper/functions";
+import { validateCreditCard, validateCreditCardArabic } from "../../helper/functions";
 
 const { useRouter } = require("next/router");
 const { useState, useEffect, Fragment } = require("react")

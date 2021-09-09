@@ -1,8 +1,7 @@
-import Feedback from "components/reusable/Feedback";
+import Feedback from "../../components/reusable/Feedback";
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import generalActions from "stores/actions/generalActions";
-import generalReducer from "stores/reducers/generalReducer";
+import generalActions from "../../stores/actions/generalActions";
 
 const ModalDetails = ({client ,supplier, brands, request ,info, title, update, remove, manageSupplier, acceptUpdate, rejectUpdate, setDatas}) => {
     const generalReducer = useSelector(state=>state.generalReducer);

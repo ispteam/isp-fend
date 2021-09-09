@@ -1,5 +1,5 @@
-import AuthForm from "components/admin-moderator/AuthForm";
-import Footer from "components/reusable/Footer";
+import AuthForm from "../../../components/admin-moderator/AuthForm";
+import Footer from "../../../components/reusable/Footer";
 import { getSession } from "next-auth/client";
 import Head from "next/head";
 import { Fragment } from "react";

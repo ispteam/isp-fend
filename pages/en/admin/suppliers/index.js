@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import SharedNavLayout from "components/reusable/SharedLayout";
+import SharedNavLayout from "../../../../components/reusable/SharedLayout";
 import { useEffect } from "react";
-import { addToken, parseCookie } from "helper/functions";
-import suppliersActions from "stores/actions/suppliersActions";
+import { addToken, parseCookie } from "../../../../helper/functions";
+import suppliersActions from "../../../../stores/actions/suppliersActions";
 import { getSession, session } from "next-auth/client";
-import ENDPOINT from "helper/ENDPOINT";
-import SuppliersDashboard from "components/admin-moderator/SuppliersDashboard";
+import ENDPOINT from "../../../../helper/ENDPOINT";
+import SuppliersDashboard from "../../../../components/admin-moderator/SuppliersDashboard";
 import Head from "next/head";
-import generalActions from "stores/actions/generalActions";
 
 const Suppliers = (props) => {
   const dispatch= useDispatch();

@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import ENDPOINT from 'helper/ENDPOINT';
+import ENDPOINT from './ENDPOINT';
 
 export const formatRecordsAddress = (records) => {
 

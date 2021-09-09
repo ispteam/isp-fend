@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SharedNavLayout from "components/reusable/SharedLayout";
-import ENDPOINT from "helper/ENDPOINT";
-import { addToken, formatRecordsAddress, parseCookie } from "helper/functions";
-import requestsActions from "stores/actions/requestsActions";
-import AllRequests from "components/reusable/AllRequests";
-import InnerFooter from "components/client/InnerFooter";
+import SharedNavLayout from "../../components/reusable/SharedLayout";
+import ENDPOINT from "../../helper/ENDPOINT";
+import { addToken, formatRecordsAddress, parseCookie } from "../../helper/functions";
+import requestsActions from "../../stores/actions/requestsActions";
+import AllRequests from "../../components/reusable/AllRequests";
+import InnerFooter from "../../components/client/InnerFooter";
 import { getSession } from "next-auth/client";
 import Head from "next/head";
 const MyRequests = (props) => { 
