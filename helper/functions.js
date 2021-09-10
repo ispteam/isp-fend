@@ -119,8 +119,8 @@ export const validateAccountsInput = (value, isArabic, isEnglish ,isEmail, isPho
             error = "Model Name/PartNo/Description can not be ignored or empty!";
         }else if(value.length < 2 || value.length > 100){
             error = "Model NamePartNo/Description must be between 3 characters and 100 characters" ;
-        }else if(!value.match("[A-Za-z0-9]+$")){
-             error = "Model NamePartNo/Description must contain only english characters and numbers"
+        }else if(!value.match("[A-Za-z0-9\u0600-\u06FF]+$")){
+             error = "Model NamePartNo/Description must contain only arabic or english characters and numbers"
         }
     }else if(isYear){
         if(!value || value.trim()==""){
@@ -223,16 +223,16 @@ export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail,
            error = "خانة الدولة ضرورية";
        }else if(value.length < 3 || value.length > 25){
            error = "خانة الدولة بين 3 كلمات الى 25 كلمة" ;
-       }else if(!value.match("[\u0600-\u06FF]")){
-            error = "خانة الدولة يجب ان تحتوي على حروف عربية فقط"
+       }else if(!value.match("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]*$")){
+            error = "خانة الدولة يجب ان تحتوي على حروف عربية او انجليزية فقط"
        }
    }else if(city){
        if(!value || value.trim()==""){
            error = "خانة المدينة ضرورية";
        }else if(value.length < 3 || value.length > 20){
            error = "خانة المدينة بين 3 كلمات الى 25 كلمة" ;
-       }else if(!value.match("[\u0600-\u06FF]")){
-            error = "خانة المدينة يجب ان تحتوي على حروف عربية فقط"
+       }else if(!value.match("^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]+[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF a-zA-Z]*$")){
+            error = "خانة المدينة يجب ان تحتوي على حروف عربية او انجليزية فقط"
        }
    }else if(isPassword){
        if(!value || value.trim()==""){
@@ -248,7 +248,7 @@ export const validateAccountsInputArabic = (value, isArabic, isEnglish ,isEmail,
        }else if(value.length < 2 || value.length > 100){
            error = "الموديل/القطعة/الوصف بين 3 كلمات الى 100 كلمة" ;
        }else if(!value.match("[A-Za-z0-9\u0600-\u06FF]+$")){
-            error = "الموديل/القطعة/الوصف يجب ان تحتوي على حروف وارقام فقط"
+            error = "الموديل/القطعة/الوصف يجب ان تحتوي على حروف عربية او انجليزية وارقام فقط"
        }
    }else if(isYear){
        if(!value || value.trim()==""){

@@ -40,7 +40,7 @@ const Login = ({arabic, disable}) => {
                     }));
                     return;
                 }else if(e.target.files[0].size > 100000){
-                    window.alert("File type is too large. Please choose another");
+                    window.alert(!arabic ? "File type is too large. Please choose another" : "حجم الملف كبير. فضلا اختر ملف اخر");
                     setLoginInfo(prevState=>({
                         ...prevState,
                         [e.target.name]: []
@@ -138,6 +138,10 @@ const Login = ({arabic, disable}) => {
 
     const submitRegistarionHandler = async (e) => {
         try{
+            window.scrollTo({
+                behavior:'smooth',
+                top:25
+            })
             let data;
             e.preventDefault();
             dispatch(generalActions.emptyState());
@@ -291,12 +295,12 @@ const Login = ({arabic, disable}) => {
                 pref: userType == "supplier" ? '' : null,
                 carsPref: userType == "supplier"? '' : null
               })
-            //   setLogin(!login);
-            //   if(userType == "client"){
-            //     await sendEmail(loginInfo.email, "registration", "client")
-            //   }else if(userType == "supplier"){
-            //     await sendEmail(loginInfo.email, "registration", "supplier")
-            //   }
+              setLogin(!login);
+              if(userType == "client"){
+                await sendEmail(loginInfo.email, "registration", "client")
+              }else if(userType == "supplier"){
+                await sendEmail(loginInfo.email, "registration", "supplier")
+              }
             setTimeout(()=>{
                 dispatch(generalActions.emptyState());
           }, 3000)
@@ -337,9 +341,10 @@ const Login = ({arabic, disable}) => {
 
     return <div className={!generalReducer.showModalLogin ? "modal-container" : "modal-container animate__bounceInDown show-login"}>
         <div className="header-modal-login-container">
-            <AiOutlineClose size={27} color={"#ffd523"} className="close-icon" onClick={()=>{
+            <AiOutlineClose size={27} color={"#ffd523"} className="close-icon" style={{cursor:'pointer'}} onClick={()=>{
                 dispatch(generalActions.toggleLoginModal())
                 dispatch(generalActions.emptyState())
+                setLogin(true);
                 }}/>
             <h3 className={!arabic ? "login-title english" : "login-title"} style={{fontSize:!arabic && '18px'}}>{!login && !arabic ? 'Register' : !login && arabic ? 'تسجيل' : login && !arabic ? 'Login': login && arabic ? 'دخول' : null}</h3>
         </div>
@@ -382,13 +387,13 @@ const Login = ({arabic, disable}) => {
                         {loginInfo.pref == "cars" && brands.length > 0 &&
                             <div className="cars-brands-container">
                                 <div>
-                                    <label htmlFor="all cars" className={!arabic ? 'english' : ''} >{"All - الكل"}</label>
                                     <input type="checkbox" id="all" value="all cars" name="all" onChange={changeSupplierPref}/> 
+                                    <label htmlFor="all cars" className={!arabic ? 'english' : ''} >{"All - الكل"}</label>
                                 </div>
                                 {brands.map(br=>(
                                 <div key={br.text}>
-                                    <label htmlFor={br.value} className={!arabic ? 'english' : ''} >{br.text}</label>
                                     <input disabled={loginInfo.carsPref.includes('all cars') ? true : false} type="checkbox" id={br.value} value={br.value} name={br.value} onChange={changeSupplierPref}/> 
+                                    <label htmlFor={br.value} className={!arabic ? 'english' : ''} >{br.text}</label>
                                 </div>
                                 ))}
                             </div>

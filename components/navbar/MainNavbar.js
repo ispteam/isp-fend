@@ -105,13 +105,13 @@ const MainNavbar = ({navList, logoLink, client, supplier, arabic, admin, session
                         <button className={!arabic ? 'english' : ''} onClick={signOutHandler}>{!arabic ? "Logout" : "تسجيل خروج"}</button>
                     </div>:
                     <div className="auth-btn-container">
-                        <button className={!arabic ? 'english' : ''}  onClick={navigateToSignIn}>{!arabic ? "Login | Register | Supplier" : "دخول | تسجيل | مورد"}</button>
+                        <button className={!arabic ? 'english' : ''}  onClick={navigateToSignIn}>{!arabic ? "Register | Login" : "تسجيل | دخول"}</button>
                     </div>
                 }
                     
                 {/* <AiOutlineArrowUp size={27} className="up-icon" color={"black"} onClick={goUp}/> */}
-                <AiOutlineClose style={{display: show ? "block" : "none"}} size={28} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} /> 
-               <HiMenuAlt3 size={28} style={{display: show ? "none" : "block"}} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} />
+                <AiOutlineClose style={{display: show ? "block" : "none"}} size={28} onClick={toggleNavList} className="menu menu-icon" color={"#ebebeb"} /> 
+               <HiMenuAlt3 size={28} style={{display: show ? "none" : "block"}} onClick={toggleNavList} className="menu menu-icon" color={"#ebebeb"} />
                 <ul className="ul-nav-container">
                     {navList.map((list, idx)=>(
                         <ListItem key={list.link} list={list} idx={idx} arabic={arabic} admin={admin} session={session} />

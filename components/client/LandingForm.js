@@ -99,8 +99,6 @@ const LandingAddRequestForm = ({arabic, option, chooseOption ,brands, yearsList,
                 behavior:'smooth',
                 top:300
             })
-            console.log(requestData);
-            console.log(registerationInfo);
             dispatch(generalActions.emptyState());
             dispatch(generalActions.sendRequest(!arabic ? 'Sending..' : '..ارسال'));
             let validationModelNo = validateAccountsInputArabic(requestData.modelNo, false, false, false, false, false, false, false, true);

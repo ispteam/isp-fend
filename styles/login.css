@@ -102,8 +102,14 @@
 
 .cars-brands-container{
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto;
     margin-top: 2rem;
+    place-content: center;
+    height: 35vh;
+    width: 80%;
+    border: 1px solid var(--secondary-color);
+    overflow-y: auto;
+    margin-left: 2rem;
 }
 
 .cars-brands-container label {
@@ -111,6 +117,11 @@
     font-family: var(--font-arabic);
     font-size: 15px;
 }
+
+.cars-brands-container input{
+    width: 30px;
+}
+
 
 .upload-container{
     border: 1px solid var(--third-color);
@@ -183,9 +194,8 @@
         cursor: pointer;
     }
     .cars-brands-container{
-        grid-template-columns: auto auto auto;
-        place-content: center;
-        gap: 7px;
+        width: 50%;
+        margin-left: 6rem;
     }
 
     .to-website-link {

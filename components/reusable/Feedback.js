@@ -21,7 +21,10 @@ const Feedback = ({arabic}) => {
 
             <ul className="validation-container">
                 {generalReducer.status.show && generalReducer.validation.map(value=>(
+                    <Fragment>
                     <li className={!arabic ? "english" : 'arabic'} key={value}>{value}</li>
+                    <hr className= "hr" />
+                    </Fragment>
                 ))}
             </ul>
             <button onClick={()=>dispatch(generalActions.emptyState())} className={!arabic ? "close-feedback-btn english" : "close-feedback-btn"}>{!arabic ? "Close" : "اغلق"}</button>
