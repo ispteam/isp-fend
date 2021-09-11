@@ -110,8 +110,8 @@ const MainNavbar = ({navList, logoLink, client, supplier, arabic, admin, session
                 }
                     
                 {/* <AiOutlineArrowUp size={27} className="up-icon" color={"black"} onClick={goUp}/> */}
-                <AiOutlineClose style={{display: show ? "block" : "none"}} size={28} onClick={toggleNavList} className="menu menu-icon" color={"#ebebeb"} /> 
-               <HiMenuAlt3 size={28} style={{display: show ? "none" : "block"}} onClick={toggleNavList} className="menu menu-icon" color={"#ebebeb"} />
+                <AiOutlineClose style={{display: show ? "block" : "none"}} size={28} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} /> 
+               <HiMenuAlt3 size={28} style={{display: show ? "none" : "block"}} onClick={toggleNavList} className="menu-icon" color={"#ebebeb"} />
                 <ul className="ul-nav-container">
                     {navList.map((list, idx)=>(
                         <ListItem key={list.link} list={list} idx={idx} arabic={arabic} admin={admin} session={session} />

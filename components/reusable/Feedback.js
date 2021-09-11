@@ -20,8 +20,8 @@ const Feedback = ({arabic}) => {
             {generalReducer.status.sending && <p className={!arabic ? "send-request english" : "send-request"}>{generalReducer.status.text}</p> }
 
             <ul className="validation-container">
-                {generalReducer.status.show && generalReducer.validation.map(value=>(
-                    <Fragment>
+                {generalReducer.status.show && generalReducer.validation.map((value, idx)=>(
+                    <Fragment key={idx}>
                     <li className={!arabic ? "english" : 'arabic'} key={value}>{value}</li>
                     <hr className= "hr" />
                     </Fragment>
